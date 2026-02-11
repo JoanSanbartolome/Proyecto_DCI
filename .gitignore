@@ -1,0 +1,41 @@
+# --- Archivos de Salida y Fabricación ---
+# Ignoramos la carpeta por defecto donde se generan los PDFs, Gerbers, BOMs, etc.
+Project\ Outputs*\
+Out/
+Generated/
+
+# --- Archivos Temporales y de Trabajo de Altium ---
+# Archivos de bloqueo (evitan que dos personas editen a la vez, no deben ir a Git)
+*.Lck
+*.Err
+
+# Historial local de Altium (Backups automáticos)
+# ¡IMPORTANTE! Git ya es tu historial, no necesitas los archivos .Zip de Altium
+History/
+*.Zip
+
+# Archivos de compilación y datos de diseño temporales
+__Preview/
+*.Annotation
+*.PcbDoc.htm
+*.Constraint
+*.Resources
+*.SchDoc.htm
+
+# Logs de validación y reportes
+*.log
+*.rep
+*.DXPLog
+*.StatusReports.txt
+
+# --- Archivos de Simulación ---
+# Si usas SPICE o simulaciones, estos archivos suelen ser pesados y regenerables
+Simulation/
+*.sdf
+*.nsx
+
+# --- Configuraciones de Usuario locales ---
+# Estos archivos guardan cómo TENÍAS TÚ abierta la interfaz (zoom, paneles, etc.)
+# Si los subes, molestarás a tus colaboradores cambiando su configuración visual.
+*.DsnWrk.Annotation
+*.PcbDoc.Annotation
