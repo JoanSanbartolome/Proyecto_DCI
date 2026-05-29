@@ -30,9 +30,51 @@
     - **Outcome:** Confirmed it **cannot** power the Nucleo board; doing so risks current injection and MCU damage.
     - **Documentation:** Created detailed analysis in `outputs/CN13_Power_Compatibility.md` and updated `wiki/Reference_Designs.md` with custom design fix (Schottky diode/Power switch).
 
-### 🗓 2026-04-23
-- **SPI Protocol Consolidation:**
-    - Synthesized disparate SPI recommendations into `outputs/SPI_Protocol_Synthesis.md`.
-    - Created dedicated `wiki/SPI_Protocol.md` for fast access to high-signal implementation data.
-    - Integrated frequency limits (54MHz/27MHz), SI termination (22-33 Ohm), and pin conflict awareness (Ethernet/LEDs).
-    - Verified **SST25VF040B** SPI Mode 0/3 compatibility and pull-up requirements.
+### 🗓 2026-05-14
+- **Peripherals Research & Ingestion:**
+    - **USB Design:** Detailed analysis of differential impedance (90 $\Omega$), integrated matching on STM32F746, and VBUS power circuitry.
+    - **CAN Transceiver:** Analyzed **SN65HVD230Q** datasheet (3.3V logic, slope control via Rs pin, and split termination).
+- **Wiki Updates:**
+    - Created `raw/peripherals/` and `wiki/peripherals/` directories to support topic-based knowledge management.
+    - Ingested raw research into `raw/peripherals/2026-05-14-usb-impedance-power.md` and `raw/peripherals/2026-05-14-sn65hvd230q-can-transceiver.md`.
+    - Compiled curated articles: `wiki/peripherals/usb-design.md` and `wiki/peripherals/can-transceiver.md`.
+    - Updated `wiki/index.md` with the new **Peripherals** section.
+
+### 🗓 2026-05-14 (Remediation)
+- **Wiki Health Audit & Fixes:**
+    - **Resolved Power Contradiction:** Updated `Hardware_Architecture.md` to specify 3.3V for CAN (was 5V).
+    - **Consolidated Peripherals:** Replaced redundant layout rules in `Hardware_Architecture.md` with links to specific articles in `wiki/peripherals/`.
+    - **Component Status:** Formally documented the shift from TJA1051 to SN65HVD230Q in `Components.md` and marked the former as obsolete.
+
+## [2026-05-17] ingest | GPIO and USART Protection
+- Created `raw/protection/2026-05-17-esda6v1bc6-datasheet-summary.md` from `raw/esda6v1bc6.pdf`.
+- Created `wiki/protection/gpio-protection.md` with multi-layer protection strategy.
+- Updated `wiki/index.md` with the new Protection section.
+
+## [2026-05-18] ingest | Ethernet, CAN, and Analog Design
+- Created: `wiki/protection/ethernet-protection.md`
+- Created: `wiki/protection/can-protection.md`
+- Created: `wiki/peripherals/analog-conditioning.md`
+- Created: `wiki/core/Design_Review_2026-05-18.md` (Schematic Audit)
+- Updated: `wiki/peripherals/Components.md`
+- Updated: `wiki/index.md`
+
+## [2026-05-26] ingest | Ethernet and CAN Interfaces
+- Created: `wiki/peripherals/ethernet.md`
+- Created: `wiki/peripherals/can-interface.md`
+- Updated: `wiki/index.md`
+- Updated: `wiki/core/Hardware_Architecture.md`
+- Updated: `wiki/protection/ethernet-protection.md`
+- Updated: `wiki/protection/can-protection.md`
+- Updated: `wiki/core/Microcontroller.md` (Fixed RMII/CAN2 pin conflict)
+- Deleted: `wiki/peripherals/can-transceiver.md` (Superseded)
+
+## [2026-05-24] query | Archived: GPIO Pin Configuration
+
+## [2026-05-24] ingest | PCB Layout: SPI2 Port B & RMII Crosstalk
+- **SPI2 Pinout Optimization:** Reassigned SPI2 to Port B (PB10, PB12, PB14, PB15) to group all flash signals on the right side of the LQFP144 package.
+- **SPI PCB Rules:** Established SCK as critical (no vias, solid GND) and set length matching to 10-15 mm.
+- **Mixed-Signal Warning:** Documented crosstalk risk between PC5 (RMII) and PB0/PB1 (ADC).
+- **ADC Conditioning Update:** Finalized **1.6 kHz Anti-aliasing filter** ($1k\Omega/100nF$) and added post-buffer assistance capacitor (10nF) for high-speed sampling.
+- **Updated:** `wiki/peripherals/SPI_Protocol.md`
+- **Updated:** `wiki/peripherals/analog-conditioning.md`

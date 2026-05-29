@@ -2,17 +2,39 @@
 
 Welcome to the central knowledge base for the STM32F746ZG PCB design project. This wiki synthesizes technical documentation into actionable design data.
 
-## 📂 Project Structure
-- [Project Requirements](Project_Requirements.md) - Design goals and constraints.
-- [Microcontroller Specifications](Microcontroller.md) - Pinouts, electrical characteristics, and peripherals.
-- [Hardware Architecture](Hardware_Architecture.md) - Power delivery, clocks, and decoupling.
-- [SPI Protocol Implementation](SPI_Protocol.md) - Actionable guidelines for SPI bus design.
-- [Reference Designs](Reference_Designs.md) - Insights from the Nucleo-F746ZG board.
-- [Component Selection](Components.md) - Specific ICs (Flash, CAN, etc.).
+## 📂 Core Design
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Project Requirements](core/Project_Requirements.md) | Design goals and constraints. | 2026-04-22 |
+| [Design Review 2026-05-18](core/Design_Review_2026-05-18.md) | **[CRITICAL]** Schematic validation findings and error checklist. | 2026-05-18 |
+| [Microcontroller Specifications](core/Microcontroller.md) | Pinouts, electrical characteristics, and peripherals. | 2026-04-22 |
+| [Hardware Architecture](core/Hardware_Architecture.md) | Power delivery, clocks, and decoupling. | 2026-05-14 |
+| [Reference Designs](core/Reference_Designs.md) | Insights from the Nucleo-F746ZG board. | 2026-04-22 |
+| [GPIO Pin Configuration](core/gpio-pin-configuration.md) | [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions. | 2026-05-24 |
+
+## 🛡️ Protection
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [GPIO Protection](protection/gpio-protection.md) | ESD and overvoltage protection for external I/O pins. | 2026-05-17 |
+| [Ethernet Protection](protection/ethernet-protection.md) | USBLC6-4SC6 layout and differential pair protection. | 2026-05-18 |
+| [CAN Bus Protection](protection/can-protection.md) | SOT-23 TVS placement and grounding for CAN bus. | 2026-05-18 |
+
+## 🔌 Peripherals
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [USB Design](peripherals/usb-design.md) | Guidelines for 90Ω differential impedance and power. | 2026-05-14 |
+| [CAN Interface](peripherals/can-interface.md) | SN65HVD230Q logic, dual node hierarchy, and 120Ω routing. | 2026-05-26 |
+| [Analog Conditioning](peripherals/analog-conditioning.md) | 0-10V scaling, RMII crosstalk mitigation, and Op-Amp buffers. | 2026-05-24 |
+| [Ethernet Interface](ethernet-interface.md) | RMII pin mapping, PHY pinout, and 100Ω differential routing. | 2026-05-26 |
+| [SPI Protocol](peripherals/SPI_Protocol.md) | Implementation guidelines and PCB routing rules for SPI bus. | 2026-05-24 |
+| [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-05-18 |
 
 ## 🛠 Latest Updates
-- Initial wiki structure created.
-- Integrated project proposal requirements.
+- **2026-05-26**: Added comprehensive Ethernet and CAN Interface documentation.
+- **2026-05-18**: Documented Ethernet/CAN protection and 0-10V Analog conditioning.
+- **2026-05-17**: Added GPIO/USART protection guidelines based on ESDA6V1BC6.
+- **2026-05-17**: Reorganized wiki into topic-based subdirectories (Karpathy style).
+- **2026-05-14**: Added USB and CAN transceiver design guidelines.
 
 ---
-*Last updated: 2026-04-22*
+*Last updated: 2026-05-26*

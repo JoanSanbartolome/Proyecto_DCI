@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "6613d2bde061a980",
+        "id": "0620dc8b8f92af9b",
         "type": "tabs",
         "children": [
           {
-            "id": "ea5afb5351419e61",
+            "id": "80d8a0f81da8b126",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "wiki/SPI_Protocol.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "SPI_Protocol"
+              "title": "Nueva pestaña"
             }
           }
         ]
@@ -94,6 +90,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "wiki/peripherals/analog-conditioning.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +100,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Enlaces entrantes"
+              "title": "Enlaces entrantes de analog-conditioning"
             }
           },
           {
@@ -180,23 +177,42 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "ea5afb5351419e61",
+  "active": "80d8a0f81da8b126",
   "lastOpenFiles": [
+    "raw/stm32f746zg.pdf",
+    "raw/STM32_Esqumaticos.pdf",
+    "raw/nucleo-f746zg.pdf",
+    "wiki/core/Microcontroller.md",
+    "wiki/peripherals/usb-design.md",
+    "wiki/peripherals/can-interface.md",
+    "wiki/peripherals/analog-conditioning.md",
+    "images/Pasted image 20260526175955.png",
+    "images",
+    "wiki/protection/ethernet-protection.md",
+    "wiki/peripherals/ethernet-interface.md",
+    "images/Pasted image 20260526170854.png",
+    "wiki/core/gpio-pin-configuration.md",
+    "wiki/peripherals/Components.md",
+    "wiki/peripherals/can-transceiver.md",
+    "wiki/index.md",
+    "wiki/core/Design_Review_2026-05-18.md",
+    "wiki/log.md",
+    "outputs/CN13_Power_Compatibility.md",
+    "wiki/core/Reference_Designs.md",
+    "Sin título.base",
+    "wiki/protection/can-protection.md",
+    "outputs/PB2_Boot_Function.md",
+    "raw/protection/2026-05-17-esda6v1bc6-datasheet-summary.md",
+    "raw/peripherals/2026-05-14-usb-impedance-power.md",
+    "raw/peripherals/2026-05-14-sn65hvd230q-can-transceiver.md",
+    "raw/dm00244518.pdf",
+    "raw/SST25VF040B-4-Mbit-SPI-Serial-Flash-Data-Sheet-20005051F.pdf",
+    "outputs/Manual_Boot_Selection.md",
+    "wiki/peripherals/SPI_Protocol.md",
+    "wiki/core/Project_Requirements.md",
+    "wiki/core/Hardware_Architecture.md",
     "GEMINI.md",
     "README.md",
-    "raw/Articulo_altium_SPI_SI.md",
-    "raw/Propuesta+Diseño+DCI+25-26.pdf",
-    "raw/dm00244518.pdf",
-    "outputs/SPI_Protocol_Synthesis.md",
-    "outputs/SPI_Advanced_Implementation.md",
-    "wiki/Microcontroller.md",
-    "wiki/Hardware_Architecture.md",
-    "wiki/Reference_Designs.md",
-    "wiki/Components.md",
-    "raw/nucleo-f746zg.pdf",
-    "outputs/Manual_Boot_Selection.md",
-    "outputs/SPI_Design_Guidelines.md",
-    "outputs/SPI_Flash_Characteristics.md",
-    "outputs/CN13_Power_Compatibility.md"
+    "raw/Propuesta+Diseño+DCI+25-26.pdf"
   ]
 }

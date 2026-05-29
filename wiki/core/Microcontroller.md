@@ -35,7 +35,7 @@ Based on project requirements and Nucleo-F746ZG reference.
     - **PC5:** RMII_RXD1
     - **PG11:** RMII_TX_EN
     - **PG13:** RMII_TXD0
-    - **PG14:** RMII_TXD1
+    - **PB13:** RMII_TXD1
 - **USB OTG FS:**
     - **PA11:** USB_DM
     - **PA12:** USB_DP
@@ -43,18 +43,18 @@ Based on project requirements and Nucleo-F746ZG reference.
     - **PA10:** USB_ID
 - **CAN Bus:**
     - **CAN1:** PD0 (RX), PD1 (TX).
-    - **CAN2:** PB5 (RX), PB13 (TX).
-    - *Note:* Transceivers (e.g., TJA1051) require VCC=5V and VIO=3.3V.
+    - **CAN2:** PB5 (RX), PB6 (TX).
+    - *Note:* Transceivers (e.g., SN65HVD230Q) require 3.3V logic.
 - **SPI Flash (SPI2):**
     - **PB10:** SCK
-    - **PC2:** MISO
-    - **PC3:** MOSI
+    - **PB14:** MISO
+    - **PB15:** MOSI
     - **PB12:** CS (NSS)
 
 ### Analog & User I/O
 - **Analog In (0-10V Scaled):** 
-    - **PA3:** ADC_CH1 (via 22k/10k divider + buffer).
-    - **PC0:** ADC_CH2 (via 22k/10k divider + buffer).
+    - **PA3:** ADC_CH1 (via OPA350 buffer).
+    - **PC0:** ADC_CH2 (via OPA350 buffer).
 - **User LED:** PB0 (Green), PB7 (Blue), PB14 (Red).
 - **User Button:** PC13.
 - **Oscillator:** PH0 (OSC_IN), PH1 (OSC_OUT) - 8 MHz Crystal.
