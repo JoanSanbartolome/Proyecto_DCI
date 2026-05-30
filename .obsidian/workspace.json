@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "0620dc8b8f92af9b",
+        "id": "e6cb7005c3aab61a",
         "type": "tabs",
         "children": [
           {
-            "id": "80d8a0f81da8b126",
+            "id": "767a7686c771f825",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -177,7 +177,7 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "80d8a0f81da8b126",
+  "active": "767a7686c771f825",
   "lastOpenFiles": [
     "raw/stm32f746zg.pdf",
     "raw/STM32_Esqumaticos.pdf",
