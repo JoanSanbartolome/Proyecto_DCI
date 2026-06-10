@@ -389,12 +389,12 @@ $$\frac{R_{19}}{R_{18} + R_{19}} = \frac{3.0}{10.0} = 0.3$$
 
 The following items were identified in the [Design Review 2026-05-18](Design_Review_2026-05-18.md) and remain **uncorrected** in the schematic prints dated 2026-06-10:
 
-| ID | Issue | Severity | Status |
-|:---|:------|:---------|:-------|
-| CRI-USB-01 | ESDA6V1BC6 on USB D+/D- (should be USBLC6-4SC6) | 🔴 CRITICAL | **FIXED** |
-| CRI-CAN-01 | C18 = 4.7 pF (should be 4.7 nF) | 🔴 CRITICAL | **FIXED** |
+| ID         | Issue                                             | Severity    | Status        |
+| :--------- | :------------------------------------------------ | :---------- | :------------ |
+| CRI-USB-01 | ESDA6V1BC6 on USB D+/D- (should be USBLC6-4SC6)   | 🔴 CRITICAL | **FIXED**     |
+| CRI-CAN-01 | C18 = 4.7 pF (should be 4.7 nF)                   | 🔴 CRITICAL | **FIXED**     |
 | CRI-ADC-01 | R18/R19 divider outputs 6.87V (should be ≤3.125V) | 🔴 CRITICAL | **NOT FIXED** |
-| CRI-ADC-02 | U5B floating inputs (unused Op-Amp channel) | 🔴 CRITICAL | **NOT FIXED** |
+| CRI-ADC-02 | U5B floating inputs (unused Op-Amp channel)       | 🔴 CRITICAL | **NOT FIXED** |
 
 > [!CAUTION]
 > **These four issues MUST be resolved before sending the design to the PCB fabrication house.** Any one of them individually is sufficient to render the board non-functional or cause permanent component damage on first power-up.
