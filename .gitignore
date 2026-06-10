@@ -43,3 +43,7 @@ Simulation/
 # --- Repositorio / Documentación raw ---
 # Se mantiene localmente pero no se sube a GitHub debido a su peso.
 raw/
+
+# --- Obsidian ---
+# Configuraciones locales de la interfaz de Obsidian
+.obsidian/
