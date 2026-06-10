@@ -126,3 +126,7 @@
 ## [2026-06-10] fix | VDDA Ferrite Bead Correction (CRI-ANA-01)
 - **Corrección aplicada:** Modificado `CRI-ANA-01` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como corregido tras confirmarse que el inductor de 100nH (L41) fue reemplazado por la ferrita Murata BLM18PG121SN1D.
 - **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues críticos de la auditoría de 5 a 4 e indicar la corrección en el log de últimas actualizaciones.
+
+## [2026-06-10] docs | Datasheet Ingestion (BLM18PG121SN1D)
+- **Ingesta:** Añadido `raw/datasheets/Murata-BLM18PG121SN1D-datasheet.pdf` al repositorio para control de versiones y soporte documental de la ferrita.
+- **Referencias:** Actualizados los enlaces de metadatos `Raw` en `wiki/peripherals/Components.md` y `wiki/core/PDN_Decoupling_Theory.md`.

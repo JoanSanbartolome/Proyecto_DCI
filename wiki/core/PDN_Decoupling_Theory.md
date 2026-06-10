@@ -1,7 +1,7 @@
 # PDN Decoupling and Bulk Capacitance Theory
 
 > Sources: Joan San Bartolome, 2026-06-10; STMicroelectronics AN4661, 2016-02-15; STMicroelectronics AN5031, 2017-09-01
-> Raw: [stm32f746zg.pdf](../../raw/datasheets/stm32f746zg.pdf); [dm00244518.pdf](../../raw/datasheets/dm00244518.pdf)
+> Raw: [stm32f746zg.pdf](../../raw/datasheets/stm32f746zg.pdf); [dm00244518.pdf](../../raw/datasheets/dm00244518.pdf); [Murata-BLM18PG121SN1D-datasheet.pdf](../../raw/datasheets/Murata-BLM18PG121SN1D-datasheet.pdf)
 
 ## Overview
 

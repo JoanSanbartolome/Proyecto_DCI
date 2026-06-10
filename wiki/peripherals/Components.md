@@ -1,7 +1,7 @@
 # Component Selection: Selected Parts Database
 
 > Sources: Joan San Bartolome, 2026-06-10; STMicroelectronics, 2016-02-15; Microchip, 2015-08-01; Texas Instruments, 2003-09-12
-> Raw: [STM32_Esqumaticos.pdf](../../raw/prints/STM32_Esqumaticos.pdf); [sn65hvd230q-q1.pdf](../../raw/datasheets/sn65hvd230q-q1.pdf); [SST25VF040B-4-Mbit-SPI-Serial-Flash-Data-Sheet-20005051F.pdf](../../raw/datasheets/SST25VF040B-4-Mbit-SPI-Serial-Flash-Data-Sheet-20005051F.pdf); [1845040000_en.pdf](../../raw/datasheets/1845040000_en.pdf); [esda6v1bc6.pdf](../../raw/datasheets/esda6v1bc6.pdf)
+> Raw: [STM32_Esqumaticos.pdf](../../raw/prints/STM32_Esqumaticos.pdf); [sn65hvd230q-q1.pdf](../../raw/datasheets/sn65hvd230q-q1.pdf); [SST25VF040B-4-Mbit-SPI-Serial-Flash-Data-Sheet-20005051F.pdf](../../raw/datasheets/SST25VF040B-4-Mbit-SPI-Serial-Flash-Data-Sheet-20005051F.pdf); [1845040000_en.pdf](../../raw/datasheets/1845040000_en.pdf); [esda6v1bc6.pdf](../../raw/datasheets/esda6v1bc6.pdf); [Murata-BLM18PG121SN1D-datasheet.pdf](../../raw/datasheets/Murata-BLM18PG121SN1D-datasheet.pdf)
 
 ## Overview
 This document lists the selected integrated circuits, passive networks, protection devices, and connectors chosen for the custom STM32F746ZG PCB, extracted from the schematic prints and layout constraints.
