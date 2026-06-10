@@ -186,7 +186,7 @@ The 50 MHz RMII reference clock is sourced from the LAN8742A (Pin 14, nINT/REFCL
 
 ## 6. CAN Bus Interface (×2)
 
-**Status: 🟠 MAJOR ISSUE**
+**Status: 🟡 MINOR ISSUE**
 
 ### ✅ What Is Correct
 - Dual SN65HVD230QDRG4Q1 transceivers (U6 ×2) correctly wired with 3.3V logic, eliminating the need for level shifting.
@@ -206,17 +206,15 @@ The 50 MHz RMII reference clock is sourced from the LAN8742A (Pin 14, nINT/REFCL
 - Change C18 from **4.7 pF** to **4.7 nF** (X7R, 50V, 0402 or 0603) to shift the filter cutoff to $564\,\text{kHz}$.
 - **Status:** ✅ Corregido. El capacitor C18 se ha actualizado a **4.7 nF X7R**, proporcionando el filtrado de modo común necesario para cumplir con los estándares de compatibilidad electromagnética (EMC).
 
-### 🟠 MAJ-CAN-02: RS Pin Grounded Without Slope Control Option
+### 🟢 MAJ-CAN-02: RS Pin Grounded Without Slope Control Option [CORREGIDO]
 
-**Finding:** Both transceivers have Pin 8 (RS) connected directly to GND.
+**Finding:** Both transceivers originally had Pin 8 (RS) connected directly to GND.
 
-**Risk:** With RS = GND, the transceiver operates in **high-speed mode** with maximum slew rate (~50 V/µs). This maximizes EMI emissions. In an industrial environment or enclosed product, this may cause:
-- Radiated emission failures during EMC testing (EN 61000-6-4).
-- Susceptibility to ringing on long bus cables (>2 m).
+**Risk:** With RS = GND, the transceiver operates in high-speed mode with maximum slew rate (~50 V/µs), maximizing EMI emissions and susceptibility to ringing on long bus cables.
 
 **Correction:**
-- Replace the direct GND connection with a **0Ω resistor footprint** (0402). Populate with 0Ω for high-speed mode. If EMC testing reveals issues, swap to 10kΩ-100kΩ for slope control without a board re-spin.
-- Document the BOM option: `R_RS = 0Ω (default) / 33kΩ (EMI fallback)`.
+- Replace the direct GND connection with a **0Ω resistor footprint** (0402). Populate with 0Ω for high-speed mode, and allow swapping to 10kΩ-100kΩ for slope control if needed.
+- **Status:** ✅ Corregido. Se ha reemplazado la conexión directa a GND por un footprint de resistencia de desacoplo/pendiente (**R_RS**). Por defecto se monta a **0Ω** para modo de alta velocidad, ofreciendo la flexibilidad de cambiar a **33kΩ** (control de pendiente) para mitigar emisiones EMI.
 
 ### 🟡 MIN-CAN-03: Missing Common-Mode Choke
 
@@ -415,7 +413,7 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 | MAJ-PDN-01 | Power | 🟢 | LDO output capacitance below datasheet minimum | **RESOLVED:** Verified C14 is 1µF, C16 remains 100nF (False Positive). |
 | MAJ-ETH-01 | Ethernet | 🟠 | RMII series termination = 33Ω (should be 22Ω) | Change R7, R8, R17, R40 to 22Ω. |
 | MAJ-ETH-02 | Ethernet | 🟠 | PHYAD0 set to broadcast address 0x00 | Acceptable for single-PHY. Document. |
-| MAJ-CAN-02 | CAN Bus | 🟠 | RS pin hard-grounded, no slope control option | Replace GND wire with 0Ω resistor footprint. |
+| MAJ-CAN-02 | CAN Bus | 🟢 | RS pin hard-grounded, no slope control option | **RESOLVED:** Replaced GND connection with a resistor footprint. |
 | MIN-PDN-02 | Power | 🟢 | Single bulk capacitor for MCU VDD cluster | **RESOLVED:** Added second 10µF bulk capacitor near Pin 72. |
 | MIN-ANA-02 | Analog Power | 🟢 | VBAT unnecessary resistors | **RESOLVED:** Verified C50 is 1µF, no resistors connected (False Positive). |
 | MIN-CLK-01 | Clocks | 🟡 | Missing 1MΩ feedback resistor on HSE | Add DNP footprint across PH0-PH1. |
@@ -439,7 +437,7 @@ There are **2 critical issues** (🔴) remaining that will cause hardware damage
 
 **Mandatory actions before fabrication:**
 1. Fix all 2 remaining critical issues (CRI-ADC-01, CRI-ADC-02).
-2. Fix all 2 remaining major issues (MAJ-ETH-01, MAJ-CAN-02).
+2. Fix the remaining major issue (MAJ-ETH-01).
 3. Regenerate schematic prints and submit for a **third review** before proceeding.
 
 The 11 remaining minor issues (🟡) should be addressed during the revision cycle but do not individually block production.

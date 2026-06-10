@@ -138,3 +138,7 @@
 ## [2026-06-10] fix | CAN Split Termination Capacitor Correction (CRI-CAN-01)
 - **Corrección aplicada:** Modificado `CRI-CAN-01` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como corregido tras confirmarse el cambio del capacitor de filtro de modo común C18 de 4.7 pF a 4.7 nF X7R.
 - **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues críticos de la auditoría de 3 a 2 e indicar la corrección en el log de últimas actualizaciones.
+
+## [2026-06-10] fix | CAN Slope Control Option Correction (MAJ-CAN-02)
+- **Corrección aplicada:** Modificado `MAJ-CAN-02` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como corregido tras confirmarse que la conexión directa a GND en los pines RS de los transceptores CAN se reemplazó por un footprint de resistencia de control de pendiente (R_RS).
+- **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues mayores de la auditoría de 2 a 1 e indicar la corrección en el log de últimas actualizaciones.
