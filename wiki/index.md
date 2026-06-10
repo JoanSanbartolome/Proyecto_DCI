@@ -32,10 +32,16 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [SPI Protocol](peripherals/SPI_Protocol.md) | Implementation guidelines and PCB routing rules for SPI bus. | 2026-05-24 |
 | [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-06-10 |
 
+## 📚 Theory & Course Materials
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [PCB Design Course Index](theory/PCB_Design_Course_Index.md) | Thematic index of the 25 PCB Design course reference documents (Altium, SI, PDN, DFM, EMC). | 2026-06-10 |
+
 ## 🛠 Latest Updates
+- **2026-06-10**: Ingested and structured the PCB Design Course Index mapping the 25 newly added theoretical reference documents.
+- **2026-06-10**: Corrected CAN slope control (MAJ-CAN-02), CAN filter capacitor (CRI-CAN-01), USB ESD (CRI-USB-01), and VDDA ferrite bead (CRI-ANA-01) in the pre-production audit.
 - **2026-06-10**: Verified LDO output decoupling (MAJ-PDN-01) and VBAT decoupling (MIN-ANA-02) as false positives, and corrected VDD bulk capacitance distribution (MIN-PDN-02) in the pre-production audit.
 - **2026-06-10**: Added theoretical article on PDN decoupling, trace inductance, and bulk capacitance.
-- **2026-06-10**: Corrected CAN slope control (MAJ-CAN-02), CAN filter capacitor (CRI-CAN-01), USB ESD (CRI-USB-01), and VDDA ferrite bead (CRI-ANA-01) in the pre-production audit.
 - **2026-06-10**: **[CRITICAL]** Pre-production design audit completed. 2 critical issues block production, 2 from previous review still unfixed.
 - **2026-06-10**: Updated components database and documented applied design technologies and methods from schematic prints.
 - **2026-05-26**: Added comprehensive Ethernet and CAN Interface documentation.

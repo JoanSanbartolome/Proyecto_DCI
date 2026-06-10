@@ -142,3 +142,7 @@
 ## [2026-06-10] fix | CAN Slope Control Option Correction (MAJ-CAN-02)
 - **Corrección aplicada:** Modificado `MAJ-CAN-02` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como corregido tras confirmarse que la conexión directa a GND en los pines RS de los transceptores CAN se reemplazó por un footprint de resistencia de control de pendiente (R_RS).
 - **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues mayores de la auditoría de 2 a 1 e indicar la corrección en el log de últimas actualizaciones.
+
+## [2026-06-10] ingest | PCB Design Course Theory Index
+- **Base de datos:** Creado `wiki/theory/PCB_Design_Course_Index.md` clasificando los 25 PDFs de teoría y DFM de la asignatura en 5 bloques temáticos (flujo, integridad, stack-ups, PDN/EMC y fabricación).
+- **Indexación:** Actualizado `wiki/index.md` con la sección `📚 Theory & Course Materials`.
