@@ -12,7 +12,7 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Reference Designs](core/Reference_Designs.md) | Insights from the Nucleo-F746ZG board. | 2026-04-22 |
 | [GPIO Pin Configuration](core/gpio-pin-configuration.md) | [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions. | 2026-05-24 |
 | [Design Technologies & Methods](core/Technologies_Methods.md) | Technologies and methodologies used for signal integrity and noise coupling. | 2026-06-10 |
-| [Pre-Production Audit 2026-06-10](core/Design_Audit_2026-06-10.md) | **[CRITICAL]** Full pre-production audit: 5 critical, 2 major, 12 minor issues (PDN corrected). Board NOT cleared. | 2026-06-10 |
+| [Pre-Production Audit 2026-06-10](core/Design_Audit_2026-06-10.md) | **[CRITICAL]** Full pre-production audit: 5 critical, 2 major, 11 minor issues (PDN & VBAT verified). Board NOT cleared. | 2026-06-10 |
 | [PDN Decoupling Theory](core/PDN_Decoupling_Theory.md) | Physical and mathematical theory of decoupling and bulk capacitance. | 2026-06-10 |
 
 ## 🛡️ Protection
@@ -33,7 +33,7 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-06-10 |
 
 ## 🛠 Latest Updates
-- **2026-06-10**: Verified LDO output decoupling stability (MAJ-PDN-01 is a false positive since C14 is already 1 µF) and corrected VDD bulk capacitance distribution (MIN-PDN-02) in the pre-production audit.
+- **2026-06-10**: Verified LDO output decoupling (MAJ-PDN-01) and VBAT decoupling (MIN-ANA-02) as false positives, and corrected VDD bulk capacitance distribution (MIN-PDN-02) in the pre-production audit.
 - **2026-06-10**: Added theoretical article on PDN decoupling, trace inductance, and bulk capacitance.
 - **2026-06-10**: **[CRITICAL]** Pre-production design audit completed. 5 critical issues block production, 4 from previous review still unfixed.
 - **2026-06-10**: Updated components database and documented applied design technologies and methods from schematic prints.

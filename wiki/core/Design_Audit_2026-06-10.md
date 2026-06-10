@@ -73,15 +73,13 @@ The VCAP pins (VCAP1 at Pin 71, VCAP2 at Pin 106) are correctly terminated with 
 - Replace L41 with a proper **ferrite bead** rated at $Z = 120\,\Omega\text{ @ }100\,\text{MHz}$, $\text{DCR} < 100\,\text{m}\Omega$, $I_{rated} \geq 300\,\text{mA}$ (e.g., **Murata BLM18PG121SN1D**, 0603 package). This provides high-frequency noise attenuation without resistive DC voltage drop and without creating a low-frequency resonance.
 - Add a **1µF X7R 0603** capacitor in parallel with the existing 100nF on VDDA (total: 100nF + 1µF). The STM32 datasheet explicitly requires **1µF + 100nF** on VDDA.
 
-### 🟡 MIN-ANA-02: VBAT Decoupling
+### 🟢 MIN-ANA-02: VBAT Decoupling [VERIFICADO / FALSO POSITIVO]
 
-**Finding:** VBAT (Pin 6) is connected to VDD with a 100nF capacitor (C55) and pull-up resistors (R59 = 220kΩ, R61 = 220kΩ). There is no dedicated battery or supercapacitor.
+**Finding:** In the initial audit, it was flagged that Pin 6 (VBAT) was connected to VDD with a 100nF capacitor (C55) through an RC network formed by R59 and R61. However, a detailed schematic review shows that Pin 6 (VBAT) is actually connected directly to a **1µF decoupling capacitor (C50)** to VDD. The resistors R59 and R61 are adjacent on the sheet but not electrically connected to VBAT.
 
-**Risk:** With VBAT tied directly to VDD, the RTC calendar is lost on every power cycle. If RTC functionality is not required, this is acceptable. However, the two 220kΩ resistors form an unnecessary RC network.
+**Risk:** None. Since there is no coin cell battery or supercapacitor, the RTC calendar is lost on power down, which is acceptable if backup timekeeping is not required. The decoupling is fully adequate.
 
-**Recommendation:**
-- If RTC is **not needed**: Remove R59 and R61. Tie VBAT directly to VDD through a short trace with only C55 = 100nF. This eliminates unnecessary high-impedance nodes that can pick up noise.
-- If RTC **is needed**: Add a CR2032 coin cell holder with a Schottky diode (BAT54) to prevent VDD from back-charging the battery.
+**Correction/Status:** ✅ No action required. The pin is decoupled with a 1µF capacitor and has no series/pull-up resistors connected.
 
 ---
 

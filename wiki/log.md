@@ -114,3 +114,7 @@
 - **Correcciones aplicadas:** Modificados `MAJ-PDN-01` (marcado como verificado/falso positivo tras confirmar que C14 ya es de 1µF) y `MIN-PDN-02` (marcado como corregido con capacitor bulk adicional de 10µF cerca de Pin 72) en `wiki/core/Design_Audit_2026-06-10.md`.
 - **Actualización de Arquitectura:** Actualizado `wiki/core/Hardware_Architecture.md` para reflejar la capacitancia de salida del LDO correcta de 1.2µF y el desacoplo de bulk distribuido, añadiendo enlaces cruzados.
 - **Indexación:** Actualizado `wiki/index.md` para reflejar los recuentos correctivos y la aclaración del falso positivo en las últimas actualizaciones.
+
+## [2026-06-10] fix | VBAT Decoupling Verification
+- **Correcciones aplicadas:** Modificado `MIN-ANA-02` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como verificado/falso positivo tras confirmar que Pin 6 (VBAT) está conectado directamente a un capacitor de desacoplo de 1µF (C50) sin ninguna resistencia de la red adyacente conectada a él.
+- **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues menores de la auditoría de 12 a 11 e indicar la verificación en el log de últimas actualizaciones.
