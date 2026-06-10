@@ -109,3 +109,8 @@
 ## [2026-06-10] ingest | PDN Decoupling and Bulk Capacitance Theory
 - **Artículo teórico:** Creado `wiki/core/PDN_Decoupling_Theory.md` detallando las diferencias físicas entre capacitores de bypass y bulk, cálculo de inductancia parásita de pistas, derating de MLCCs por DC bias y simulaciones matemáticas de droop.
 - **Enlace:** Actualizado `wiki/index.md` para incluir el nuevo artículo.
+
+## [2026-06-10] fix | PDN Decoupling Corrections
+- **Correcciones aplicadas:** Modificados `MAJ-PDN-01` (marcado como verificado/falso positivo tras confirmar que C14 ya es de 1µF) y `MIN-PDN-02` (marcado como corregido con capacitor bulk adicional de 10µF cerca de Pin 72) en `wiki/core/Design_Audit_2026-06-10.md`.
+- **Actualización de Arquitectura:** Actualizado `wiki/core/Hardware_Architecture.md` para reflejar la capacitancia de salida del LDO correcta de 1.2µF y el desacoplo de bulk distribuido, añadiendo enlaces cruzados.
+- **Indexación:** Actualizado `wiki/index.md` para reflejar los recuentos correctivos y la aclaración del falso positivo en las últimas actualizaciones.

@@ -19,25 +19,23 @@ The audit is structured by subsystem. Each section opens with a status verdict, 
 
 ## 1. Power Delivery Network (PDN)
 
-**Status: 🟠 MAJOR ISSUES**
+**Status: ✅ PASS (Corrected)**
 
 ### ✅ What Is Correct
 - The LD39050PU33R LDO (U4) is a solid choice for a 500 mA linear regulator. The DFN-6 package provides excellent thermal performance.
-- Input decoupling (C13 = 1µF, C14 = 1µF) and output decoupling (C15 = 100nF, C16 = 100nF) are present.
+- Input decoupling (C13 = 1µF) and output decoupling (C14 = 1µF, C15 = 100nF, C16 = 100nF) are present, satisfying stability requirements.
 - The USB VBUS path includes the BAT60JFILM Schottky diode (D44) for reverse-current protection and the MF-MSMF050-2 resettable fuse (F41) for overcurrent protection. This is textbook correct.
 - The PG (Power Good) pin is correctly used to drive a status LED (LD2) via a transistor switch (T1, 9013 NPN).
 
-### 🟠 MAJ-PDN-01: Missing Bulk Capacitance on LDO Output
+### 🟢 MAJ-PDN-01: LDO Output Stability [VERIFICADO / FALSO POSITIVO]
 
-**Finding:** The output side of the LD39050PU33R has only 2× 100nF ceramic capacitors (C15, C16). The datasheet (LD39050 DS, Table 7) specifies a **minimum output capacitance of 1µF** for stability with ESR in the range of 5 mΩ to 500 mΩ.
+**Finding:** In the initial audit, it was flagged that the output side of the LD39050PU33R had only 100nF capacitors (C15, C16), violating the 1µF minimum. However, a detailed schematic review confirms that **C14 (1µF X5R 0603)** is already placed on the LDO output rail (`P3V3_PER`), in parallel with C15 and C16.
 
-**Risk:** The LDO may oscillate under transient load conditions — particularly when the Ethernet PHY transitions from idle to active mode (current step of ~120 mA in <1 µs). Oscillation on the 3.3V rail will corrupt ADC readings and cause intermittent Ethernet link drops.
+**Risk:** None. The combination of C14 (1µF) + C15 (100nF) + C16 (100nF) provides a total of 1.2µF, which fully satisfies the datasheet stability requirements.
 
-**Correction:**
-- Replace one of the 100nF capacitors (e.g., C16) with a **1µF X5R 0603 ceramic** (same footprint).
-- Final output capacitor bank: **C15 = 100nF + C16 = 1µF**. This satisfies the datasheet minimum and provides adequate transient response.
+**Correction/Status:** ✅ No action required. The schematic already implements the correct output capacitance. C16 remains at 100nF.
 
-### 🟡 MIN-PDN-02: No Dedicated Bulk Capacitor near MCU VDD Cluster
+### 🟢 MIN-PDN-02: No Dedicated Bulk Capacitor near MCU VDD Cluster [CORREGIDO]
 
 **Finding:** The MCU has 13× 100nF decoupling capacitors (C51-C64) and a single 4.7µF bulk capacitor (C64). The 4.7µF capacitor is placed at pin VDD_9 (Pin 95).
 
@@ -45,6 +43,7 @@ The audit is structured by subsystem. Each section opens with a status verdict, 
 
 **Recommendation:**
 - Add a second **10µF X5R 0805** bulk capacitor near VDD_1 (Pin 72), at the opposite end of the VDD pin cluster. This distributes the bulk energy storage across both halves of the package.
+- **Status:** ✅ Corregido. Se ha añadido un capacitor de bulk de 10µF X5R 0805 en Pin 72. Ver justificación en [PDN Decoupling Theory](PDN_Decoupling_Theory.md).
 
 ### ✅ VCAP Configuration: PASS
 

@@ -7,7 +7,8 @@ The STM32F746ZG requires multiple stable voltage rails.
 
 ### Decoupling Requirements
 - **VDD Pins:** Each VDD pin requires a 100 nF ceramic capacitor.
-- **Bulk Capacitance:** 1x 4.7 µF ceramic capacitor on the VDD rail.
+- **Bulk Capacitance:** Distributed bulk capacitors: 1x 4.7 µF near VDD_9 (Pin 95) and 1x 10 µF X5R 0805 near VDD_1 (Pin 72). See [PDN Decoupling Theory](PDN_Decoupling_Theory.md) for loop inductance and DC bias derating analysis. **[Corrected: added 10 µF capacitor to resolve MIN-PDN-02]**.
+- **LDO Decoupling:** Output decoupling has C14 (1 µF) + C15 (100 nF) + C16 (100 nF) to satisfy the LD39050 regulator stability requirements. **[Verified: C14 already provides the 1 µF capacitance, meaning C16 remains at 100 nF and no modification was required to resolve MAJ-PDN-01]**.
 - **VDDA:** 100 nF + 1 µF close to pin. Use a ferrite bead for isolation from VDD.
 - **VCAP:** 2x 2.2 µF low-ESR ceramic capacitors (VCAP_1, VCAP_2) to VSS. **CRITICAL.**
 - **Peripheral Power:** Most peripherals (USB, CAN, SPI Flash) operate on the **3.3V rail**. Ensure LDO can handle the combined peak current.
