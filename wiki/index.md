@@ -11,6 +11,7 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Hardware Architecture](core/Hardware_Architecture.md) | Power delivery, clocks, and decoupling. | 2026-05-14 |
 | [Reference Designs](core/Reference_Designs.md) | Insights from the Nucleo-F746ZG board. | 2026-04-22 |
 | [GPIO Pin Configuration](core/gpio-pin-configuration.md) | [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions. | 2026-05-24 |
+| [Design Technologies & Methods](core/Technologies_Methods.md) | Technologies and methodologies used for signal integrity and noise coupling. | 2026-06-10 |
 
 ## 🛡️ Protection
 | Article | Summary | Updated |
@@ -25,11 +26,12 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [USB Design](peripherals/usb-design.md) | Guidelines for 90Ω differential impedance and power. | 2026-05-14 |
 | [CAN Interface](peripherals/can-interface.md) | SN65HVD230Q logic, dual node hierarchy, and 120Ω routing. | 2026-05-26 |
 | [Analog Conditioning](peripherals/analog-conditioning.md) | 0-10V scaling, RMII crosstalk mitigation, and Op-Amp buffers. | 2026-05-24 |
-| [Ethernet Interface](ethernet-interface.md) | RMII pin mapping, PHY pinout, and 100Ω differential routing. | 2026-05-26 |
+| [Ethernet Interface](peripherals/ethernet-interface.md) | RMII pin mapping, PHY pinout, and 100Ω differential routing. | 2026-05-26 |
 | [SPI Protocol](peripherals/SPI_Protocol.md) | Implementation guidelines and PCB routing rules for SPI bus. | 2026-05-24 |
-| [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-05-18 |
+| [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-06-10 |
 
 ## 🛠 Latest Updates
+- **2026-06-10**: Updated components database and documented applied design technologies and methods from schematic prints.
 - **2026-05-26**: Added comprehensive Ethernet and CAN Interface documentation.
 - **2026-05-18**: Documented Ethernet/CAN protection and 0-10V Analog conditioning.
 - **2026-05-17**: Added GPIO/USART protection guidelines based on ESDA6V1BC6.
@@ -37,4 +39,4 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 - **2026-05-14**: Added USB and CAN transceiver design guidelines.
 
 ---
-*Last updated: 2026-05-26*
+*Last updated: 2026-06-10*

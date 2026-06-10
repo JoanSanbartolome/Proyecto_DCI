@@ -78,3 +78,11 @@
 - **ADC Conditioning Update:** Finalized **1.6 kHz Anti-aliasing filter** ($1k\Omega/100nF$) and added post-buffer assistance capacitor (10nF) for high-speed sampling.
 - **Updated:** `wiki/peripherals/SPI_Protocol.md`
 - **Updated:** `wiki/peripherals/analog-conditioning.md`
+
+## [2026-06-10] lint | 8 issues found, 8 auto-fixed
+
+## [2026-06-10] ingest | Planos de Esquemáticos y Layout (Componentes, Tecnologías y Métodos)
+- **Ingesta de planos de diseño:** Analizados los archivos `STM32_Esqumaticos.pdf` y `STM32_Layout.pdf` añadidos a `raw/`.
+- **Base de datos de componentes seleccionados:** Actualizado `wiki/peripherals/Components.md` para incluir la base de datos detallada de los 18 componentes críticos (incluyendo cristales, protecciones transitorias, conectores y semiconductores auxiliares).
+- **Documentación de Tecnologías y Métodos:** Creado `wiki/core/Technologies_Methods.md` detallando las 5 tecnologías aplicadas (RMII, acondicionamiento de 0-10V, terminación split CAN, protecciones de baja capacitancia, regulación LDO) y 5 métodos empleados (diseño jerárquico complejo, rutado diferencial, control de crosstalk, keep-outs de cobre en magnetics, planos de tierra estrella GND/AGND).
+- **Indexación:** Actualizado `wiki/index.md` con los nuevos recursos.
