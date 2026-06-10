@@ -102,24 +102,34 @@ This document lists the selected integrated circuits, passive networks, protecti
 *   **Role:** Overcurrent protection on VBUS USB input line.
 *   **Rating:** 500 mA hold current.
 
+### 15. Murata BLM18PG121SN1D (Ferrite Bead)
+*   **Manufacturer:** Murata
+*   **Package:** 0603 (1608 Metric)
+*   **Electrical Specs:** $Z = 120\,\Omega \pm 25\%$ @ $100\,\text{MHz}$, $\text{DCR} \le 50\,\text{m}\Omega$, $I_{rated} = 2.0\,\text{A}$.
+*   **Application:** L41 on the $V_{DDA}$ / $V_{REF+}$ analog supply line to isolate high-frequency digital noise from the sensitive analog domain.
+*   **Design Rationale:**
+    *   **Ultra-low DCR:** At $2-5\,\text{mA}$ ADC consumption, the voltage drop is $< 0.15\,\text{mV}$ ($< 0.18\,\text{LSBs}$ at 12-bit), preserving DC measurement accuracy.
+    *   **Current Saturation Margin:** The $2.0\,\text{A}$ current rating prevents magnetic saturation under normal operating current ($< 5\,\text{mA}$), maintaining full $120\,\Omega$ filtering impedance.
+    *   **Resonance Damping:** Unlike standard inductors (e.g., $100\,\mu\text{H}$), its high resistive component at high frequencies ($> 30\,\text{MHz}$) absorbs and dissipates noise as heat, preventing anti-resonance peaks on $V_{DDA}$.
+
 ---
 
 ## 🔌 Connectors & Terminal Blocks
 
-### 15. Weidmüller 1845040000 (Analog Terminal Block)
+### 16. Weidmüller 1845040000 (Analog Terminal Block)
 *   **Series:** OMNIMATE Signal LM 3.50.
 *   **Specs:** 4-pole PCB terminal block, 3.50 mm pitch, 90° entry, screw clamping connection.
 *   **Application:** J41 for 0-10V Analog inputs.
 
-### 16. JST B2B-EH-A(LF)(SN) (CAN Connectors)
+### 17. JST B2B-EH-A(LF)(SN) (CAN Connectors)
 *   **Specs:** 2-pole shroud header, 2.50 mm pitch, top entry.
 *   **Application:** J42 for CAN bus physical connections.
 
-### 17. KRJ-CB4.2GYZNL (RJ45 Ethernet Jack)
+### 18. KRJ-CB4.2GYZNL (RJ45 Ethernet Jack)
 *   **Role:** Ethernet connection with integrated magnetics and status LEDs.
 *   **Details:** LED1 (Green) and LED2 (Yellow) connected via series resistors to the LAN8742A LED pins.
 
-### 18. Molex 475900001 (Micro-USB Receptacle)
+### 19. Molex 475900001 (Micro-USB Receptacle)
 *   **Specs:** Micro-USB Type AB receptacle, bottom mount.
 
 ## See Also

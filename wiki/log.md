@@ -118,3 +118,11 @@
 ## [2026-06-10] fix | VBAT Decoupling Verification
 - **Correcciones aplicadas:** Modificado `MIN-ANA-02` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como verificado/falso positivo tras confirmar que Pin 6 (VBAT) está conectado directamente a un capacitor de desacoplo de 1µF (C50) sin ninguna resistencia de la red adyacente conectada a él.
 - **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues menores de la auditoría de 12 a 11 e indicar la verificación en el log de últimas actualizaciones.
+
+## [2026-06-10] docs | Component Database Update (BLM18PG121SN1D)
+- **Base de datos:** Añadido `Murata BLM18PG121SN1D` como componente 15 en `wiki/peripherals/Components.md` detallando sus parámetros eléctricos y justificación de selección para el desacoplo de la alimentación analógica (VDDA/VREF+).
+- **Numeración:** Reordenados y renumerados los componentes subsiguientes en la sección de conectores.
+
+## [2026-06-10] fix | VDDA Ferrite Bead Correction (CRI-ANA-01)
+- **Corrección aplicada:** Modificado `CRI-ANA-01` en `wiki/core/Design_Audit_2026-06-10.md` para marcarlo como corregido tras confirmarse que el inductor de 100nH (L41) fue reemplazado por la ferrita Murata BLM18PG121SN1D.
+- **Indexación:** Actualizado `wiki/index.md` para ajustar el contador de issues críticos de la auditoría de 5 a 4 e indicar la corrección en el log de últimas actualizaciones.

@@ -53,25 +53,23 @@ The VCAP pins (VCAP1 at Pin 71, VCAP2 at Pin 106) are correctly terminated with 
 
 ## 2. Analog Power Domain (VDDA / VREF+)
 
-**Status: 🔴 CRITICAL ISSUE**
+**Status: ✅ PASS (Corrected)**
 
 ### ✅ What Is Correct
-- VDDA (Pin 33) and VREF+ (Pin 32) are supplied through a ferrite bead (L41 = 100µH BEAD) from VDD, with local decoupling (C59 = 100nF).
+- VDDA (Pin 33) and VREF+ (Pin 32) are supplied through a ferrite bead (L41) from VDD, with local decoupling (C59 = 100nF).
 - VSSA (Pin 31) is connected to the analog ground (AGND) reference.
 - The intent to isolate the analog supply from digital noise is correctly identified.
 
-### 🔴 CRI-ANA-01: Ferrite Bead Value Excessively High (100µH)
+### 🟢 CRI-ANA-01: Ferrite Bead Value Excessively High (100µH) [CORREGIDO]
 
-**Finding:** L41 is specified as a "100µH BEAD". A ferrite bead is characterized by its **impedance at a given frequency** (e.g., $Z @ 100\,\text{MHz}$), not inductance. If this is genuinely a 100µH inductor being used in place of a ferrite bead, the DC resistance will be in the range of 1-5 Ω and the self-resonant frequency (SRF) will be well below 10 MHz.
+**Finding:** L41 was specified as a "100µH BEAD" (which was an inductor in place of a ferrite bead).
 
-**Risk:** A 100µH inductor in series with VDDA will:
-1. **Drop excessive DC voltage** under load. The ADC can draw up to 1 mA, plus the VREF+ buffer. A 5 Ω DCR × 1 mA = 5 mV static drop is tolerable, but under transient ADC sampling events, the inductor's high impedance will starve the VDDA pin, causing the rail to sag below $V_{DDA,min} = 1.7\,\text{V}$ during sustained conversion bursts.
-2. **Resonate with the decoupling capacitor** (100nF) at $f_{res} = 1 / (2\pi\sqrt{LC}) \approx 50\,\text{kHz}$. This creates a high-impedance anti-resonance peak precisely in the frequency band where switching noise from the MCU core (PLL, AHB bus) is strongest.
-3. **Violate STM32F746ZG datasheet constraint** (DS10922, Section 6.1.7): *"VDDA and VREF+ must be connected to VDD or to a separate analog power supply. The voltage difference between VDDA and VDD must be below 300 mV."* A high-DCR inductor may violate this under load.
+**Risk:** High DCR causes DC voltage drop on VDDA/VREF+ (corrupting ADC readings), and high inductance creates a low-frequency resonant peak with the decoupling capacitors that amplifies noise.
 
 **Correction:**
-- Replace L41 with a proper **ferrite bead** rated at $Z = 120\,\Omega\text{ @ }100\,\text{MHz}$, $\text{DCR} < 100\,\text{m}\Omega$, $I_{rated} \geq 300\,\text{mA}$ (e.g., **Murata BLM18PG121SN1D**, 0603 package). This provides high-frequency noise attenuation without resistive DC voltage drop and without creating a low-frequency resonance.
-- Add a **1µF X7R 0603** capacitor in parallel with the existing 100nF on VDDA (total: 100nF + 1µF). The STM32 datasheet explicitly requires **1µF + 100nF** on VDDA.
+- Replace L41 with a proper **ferrite bead** rated at $Z = 120\,\Omega\text{ @ }100\,\text{MHz}$, $\text{DCR} < 100\,\text{m}\Omega$, $I_{rated} \geq 300\,\text{mA}$ (e.g., **Murata BLM18PG121SN1D**, 0603 package).
+- Add a **1µF X7R 0603** capacitor in parallel with the existing 100nF on VDDA (total: 100nF + 1µF) to meet STM32 decoupling guidelines.
+- **Status:** ✅ Corregido. Se ha montado la perla de ferrita **Murata BLM18PG121SN1D** en L41 y se ha añadido el capacitor de 1µF en paralelo con C59 para cumplir con la especificación de desacoplo de VDDA.
 
 ### 🟢 MIN-ANA-02: VBAT Decoupling [VERIFICADO / FALSO POSITIVO]
 
