@@ -1,7 +1,7 @@
 # STM32F746ZG GPIO Pin Configuration
 
 > Sources: stm32f746zg.pdf, 2026-05-24
-> Raw: [stm32f746zg.pdf](../../raw/stm32f746zg.pdf)
+> Raw: [stm32f746zg.pdf](../../raw/datasheets/stm32f746zg.pdf)
 
 ## Overview
 

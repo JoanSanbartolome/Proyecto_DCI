@@ -88,3 +88,14 @@
 - **Indexación:** Actualizado `wiki/index.md` con los nuevos recursos.
 
 ## [2026-06-10] lint | 0 issues found, 0 auto-fixed
+
+## [2026-06-10] refactor | Organización de la carpeta raw
+- **Reorganización física:** Creadas las carpetas `datasheets`, `reference_designs`, `prints`, `requirements`, `manufacturing`, `articles` dentro de `raw/` y reubicados los 12 archivos fuente para mejorar la escalabilidad y legibilidad de la base de datos.
+- **Actualización en cascada (Cascade Updates):** Corregidos los enlaces en los metadatos `Raw` de los siguientes artículos:
+  - [Design_Review_2026-05-18.md](core/Design_Review_2026-05-18.md)
+  - [Technologies_Methods.md](core/Technologies_Methods.md)
+  - [gpio-pin-configuration.md](core/gpio-pin-configuration.md)
+  - [Components.md](../peripherals/Components.md)
+- **Linting:** Validado de nuevo que todos los enlaces `Raw` y referencias internas apunten a ubicaciones válidas físicas.
+
+## [2026-06-10] lint | 0 issues found, 0 auto-fixed

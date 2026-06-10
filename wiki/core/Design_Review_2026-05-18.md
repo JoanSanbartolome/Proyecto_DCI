@@ -1,6 +1,6 @@
 # Design Review (2026-05-18)
 
-> Sources: [STM32_Esqumaticos.pdf](../../raw/STM32_Esqumaticos.pdf)
+> Sources: [STM32_Esqumaticos.pdf](../../raw/prints/STM32_Esqumaticos.pdf)
 > Status: **REMEDIAL ACTION REQUIRED**
 
 ## 🎯 Review Objective
