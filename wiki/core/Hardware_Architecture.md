@@ -19,10 +19,10 @@ The STM32F746ZG requires multiple stable voltage rails.
 
 ## 🛡 Signal Integrity & Layout
 Detailed guidelines for complex interfaces are maintained in their respective articles:
-- **USB:** See [USB Design Guidelines](peripherals/usb-design.md) ($90 \Omega$, ESD).
+- **USB:** See [USB Design Guidelines](../peripherals/usb-design.md) ($90 \Omega$, ESD).
 - **CAN:** See [CAN Interface](../peripherals/can-interface.md) ($120 \Omega$, dual hierarchy).
-- **SPI Protocol:** See [SPI Protocol](SPI_Protocol.md) ($33 \Omega$, drive strength).
-- **Ethernet:** See [Ethernet Interface](ethernet-interface.md) ($100 \Omega$ diff, LAN8742A, RMII).
+- **SPI Protocol:** See [SPI Protocol](../peripherals/SPI_Protocol.md) ($33 \Omega$, drive strength).
+- **Ethernet:** See [Ethernet Interface](../peripherals/ethernet-interface.md) ($100 \Omega$ diff, LAN8742A, RMII).
 
 - **Analog (0-10V):** 
     - Use a **22k / 10k** resistor divider to scale 10V to 3.125V.

@@ -22,7 +22,7 @@ Place resistors between the TVS diode and the MCU pin to limit current during tr
 Always verify pin type in the datasheet.
 - **FT (5V Tolerant):** Can safely handle 5V logic.
 - **TTa (3.3V Max):** Connected to ADC, will be destroyed by 5V.
-- **Reference:** See `wiki/core/Microcontroller.md` for pin assignments.
+- **Reference:** See [Microcontroller Specifications](../core/Microcontroller.md) for pin assignments.
 
 ## 📐 Layout Rules
 1. **Order:** `[Connector]` -> `[TVS Diode]` -> `[Series Resistor]` -> `[MCU Pin]`.

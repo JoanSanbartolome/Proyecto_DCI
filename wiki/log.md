@@ -99,3 +99,13 @@
 - **Linting:** Validado de nuevo que todos los enlaces `Raw` y referencias internas apunten a ubicaciones válidas físicas.
 
 ## [2026-06-10] lint | 0 issues found, 0 auto-fixed
+
+## [2026-06-10] ingest | Pre-Production Design Audit
+- **Auditoría completa:** Creado `wiki/core/Design_Audit_2026-06-10.md` con revisión exhaustiva de 12 subsistemas del diseño de la PCB.
+- **Resultado:** 5 issues críticos (🔴), 3 issues mayores (🟠), 13 issues menores (🟡). **Board NOT cleared for production.**
+- **Escalación:** 4 de los 5 issues críticos ya fueron identificados en la revisión del 2026-05-18 y permanecen sin corregir en los planos del 2026-06-10.
+- **Issue nuevo:** CRI-ANA-01 — Ferrite bead de 100µH en VDDA identificada como inductor incorrecto (riesgo de resonancia anti-resonante y caída de tensión excesiva).
+
+## [2026-06-10] ingest | PDN Decoupling and Bulk Capacitance Theory
+- **Artículo teórico:** Creado `wiki/core/PDN_Decoupling_Theory.md` detallando las diferencias físicas entre capacitores de bypass y bulk, cálculo de inductancia parásita de pistas, derating de MLCCs por DC bias y simulaciones matemáticas de droop.
+- **Enlace:** Actualizado `wiki/index.md` para incluir el nuevo artículo.

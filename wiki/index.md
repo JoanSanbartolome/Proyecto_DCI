@@ -12,6 +12,8 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Reference Designs](core/Reference_Designs.md) | Insights from the Nucleo-F746ZG board. | 2026-04-22 |
 | [GPIO Pin Configuration](core/gpio-pin-configuration.md) | [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions. | 2026-05-24 |
 | [Design Technologies & Methods](core/Technologies_Methods.md) | Technologies and methodologies used for signal integrity and noise coupling. | 2026-06-10 |
+| [Pre-Production Audit 2026-06-10](core/Design_Audit_2026-06-10.md) | **[CRITICAL]** Full pre-production audit: 5 critical, 3 major, 13 minor issues. Board NOT cleared. | 2026-06-10 |
+| [PDN Decoupling Theory](core/PDN_Decoupling_Theory.md) | Physical and mathematical theory of decoupling and bulk capacitance. | 2026-06-10 |
 
 ## 🛡️ Protection
 | Article | Summary | Updated |
@@ -31,6 +33,8 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Component Selection](peripherals/Components.md) | Database of selected ICs and their roles. | 2026-06-10 |
 
 ## 🛠 Latest Updates
+- **2026-06-10**: Added theoretical article on PDN decoupling, trace inductance, and bulk capacitance.
+- **2026-06-10**: **[CRITICAL]** Pre-production design audit completed. 5 critical issues block production, 4 from previous review still unfixed.
 - **2026-06-10**: Updated components database and documented applied design technologies and methods from schematic prints.
 - **2026-05-26**: Added comprehensive Ethernet and CAN Interface documentation.
 - **2026-05-18**: Documented Ethernet/CAN protection and 0-10V Analog conditioning.

@@ -33,7 +33,7 @@ To maintain signal integrity and maximize ESD shunting efficiency:
 - Avoid long traces for the GND connection; inductance reduces the clamping effectiveness during fast ESD transients.
 
 ## See Also
-- [Ethernet Interface](ethernet-interface.md)
+- [Ethernet Interface](../peripherals/ethernet-interface.md)
 - [Design Review 2026-05-18](../core/Design_Review_2026-05-18.md)
 
 [Source: Design Review 2026-05-18]

@@ -2,7 +2,7 @@
 
 > Sources: Design Decisions 2026-05-18
 
-![[Pasted image 20260526175955.png]]
+![Analog Conditioning Diagram](../../images/Pasted%20image%2020260526175955.png)
 ## Overview
 Stage for scaling and protecting two 0-10V analog inputs for the STM32F746ZG 3.3V ADC.
 

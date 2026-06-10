@@ -2,7 +2,7 @@
 
 Comprehensive guide for the implementation of dual CAN bus interfaces using the STM32F746ZG and SN65HVD230Q transceivers.
 
-![[Pasted image 20260526170854.png]]
+![System Architecture (Block Diagram)](../../images/Pasted%20image%2020260526170854.png)
 ## 🏗 System Architecture (Block Diagram)
 The design uses a hierarchical structure to implement two identical CAN nodes:
 `[STM32F746ZG bxCAN] <--- Logic (RX/TX 3.3V) ---> [SN65HVD230Q Transceiver] <--- Differential (CANH/CANL) ---> [Termination & TVS] <--- Connector]`
