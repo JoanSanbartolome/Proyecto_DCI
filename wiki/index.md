@@ -12,7 +12,7 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 | [Reference Designs](core/Reference_Designs.md) | Insights from the Nucleo-F746ZG board. | 2026-04-22 |
 | [GPIO Pin Configuration](core/gpio-pin-configuration.md) | [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions. | 2026-05-24 |
 | [Design Technologies & Methods](core/Technologies_Methods.md) | Technologies and methodologies used for signal integrity and noise coupling. | 2026-06-10 |
-| [Pre-Production Audit 2026-06-10](core/Design_Audit_2026-06-10.md) | **[CRITICAL]** Full pre-production audit: 4 critical, 2 major, 11 minor issues (VDDA, PDN & VBAT verified). Board NOT cleared. | 2026-06-10 |
+| [Pre-Production Audit 2026-06-10](core/Design_Audit_2026-06-10.md) | **[CRITICAL]** Full pre-production audit: 3 critical, 2 major, 11 minor issues (USB, VDDA, PDN & VBAT verified). Board NOT cleared. | 2026-06-10 |
 | [PDN Decoupling Theory](core/PDN_Decoupling_Theory.md) | Physical and mathematical theory of decoupling and bulk capacitance. | 2026-06-10 |
 
 ## 🛡️ Protection
@@ -35,8 +35,8 @@ Welcome to the central knowledge base for the STM32F746ZG PCB design project. Th
 ## 🛠 Latest Updates
 - **2026-06-10**: Verified LDO output decoupling (MAJ-PDN-01) and VBAT decoupling (MIN-ANA-02) as false positives, and corrected VDD bulk capacitance distribution (MIN-PDN-02) in the pre-production audit.
 - **2026-06-10**: Added theoretical article on PDN decoupling, trace inductance, and bulk capacitance.
-- **2026-06-10**: Corrected VDDA ferrite bead selection (CRI-ANA-01) in the pre-production audit.
-- **2026-06-10**: **[CRITICAL]** Pre-production design audit completed. 4 critical issues block production, 4 from previous review still unfixed.
+- **2026-06-10**: Corrected USB ESD protection component (CRI-USB-01) and VDDA ferrite bead (CRI-ANA-01) in the pre-production audit.
+- **2026-06-10**: **[CRITICAL]** Pre-production design audit completed. 3 critical issues block production, 3 from previous review still unfixed.
 - **2026-06-10**: Updated components database and documented applied design technologies and methods from schematic prints.
 - **2026-05-26**: Added comprehensive Ethernet and CAN Interface documentation.
 - **2026-05-18**: Documented Ethernet/CAN protection and 0-10V Analog conditioning.

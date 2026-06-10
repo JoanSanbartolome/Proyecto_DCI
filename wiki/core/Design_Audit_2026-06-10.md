@@ -154,7 +154,7 @@ The 50 MHz RMII reference clock is sourced from the LAN8742A (Pin 14, nINT/REFCL
 
 ## 5. USB Interface
 
-**Status: 🔴 CRITICAL ISSUE (Previously Identified)**
+**Status: ✅ PASS (Corrected)**
 
 ### ✅ What Is Correct
 - Micro-USB connector (Molex 475900001, CN44) correctly wired with VBUS, D+, D-, ID, GND, and Shield.
@@ -163,19 +163,15 @@ The 50 MHz RMII reference clock is sourced from the LAN8742A (Pin 14, nINT/REFCL
 - MF-MSMF050-2 resettable fuse (F41) on VBUS.
 - USB_ID on PA10 for OTG role detection.
 
-### 🔴 CRI-USB-01: Wrong ESD Protection Component (ESDA6V1BC6 instead of USBLC6-4SC6)
+### 🟢 CRI-USB-01: Wrong ESD Protection Component (ESDA6V1BC6 instead of USBLC6-4SC6) [CORREGIDO]
 
-**Finding:** The schematic shows D45 as **ESDA6V1BC6** on the USB D+/D- lines. This was flagged in the previous [Design Review 2026-05-18](Design_Review_2026-05-18.md) but the schematic prints dated 2026-06-10 **still show the ESDA6V1BC6**.
+**Finding:** The schematic originally showed D45 as **ESDA6V1BC6** on the USB D+/D- lines.
 
-**Risk:** The ESDA6V1BC6 has a line capacitance of approximately **15-20 pF per channel**. USB 2.0 Full Speed requires <10 pF total bus capacitance to maintain signal edge rates within spec. At 20 pF, the rise/fall times will be degraded beyond the 4-20 ns specification window, causing:
-- Intermittent enumeration failures.
-- Data CRC errors under heavy throughput.
-- Complete failure of USB High Speed (480 Mbps) if ever attempted.
-
-**This was previously identified as a critical error and has NOT been corrected.**
+**Risk:** The ESDA6V1BC6 has a line capacitance of approximately **15-20 pF per channel**, which violates the USB 2.0 Full Speed bus capacitance limits ($< 10\,\text{pF}$), causing signal distortion and CRC/enumeration errors.
 
 **Correction:**
-- Replace D45 (ESDA6V1BC6) with **USBLC6-4SC6** (3.5 pF per channel). Pin-compatible in SOT-23-6L package. Requires no board re-spin if the footprint matches.
+- Replace D45 (ESDA6V1BC6) with **USBLC6-4SC6** (3.5 pF per channel).
+- **Status:** ✅ Corregido. D45 ha sido reemplazado por la matriz protectora de ultra-baja capacitancia **USBLC6-4SC6** (3.5 pF), solucionando el riesgo de distorsión en las líneas de datos USB.
 
 ### 🟡 MIN-USB-02: Missing D+ Pull-Up Resistor for Full Speed Detection
 
@@ -407,7 +403,7 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 
 | ID | Issue | Severity | Status |
 |:---|:------|:---------|:-------|
-| CRI-USB-01 | ESDA6V1BC6 on USB D+/D- (should be USBLC6-4SC6) | 🔴 CRITICAL | **NOT FIXED** |
+| CRI-USB-01 | ESDA6V1BC6 on USB D+/D- (should be USBLC6-4SC6) | 🔴 CRITICAL | **FIXED** |
 | CRI-CAN-01 | C18 = 4.7 pF (should be 4.7 nF) | 🔴 CRITICAL | **NOT FIXED** |
 | CRI-ADC-01 | R18/R19 divider outputs 6.87V (should be ≤3.125V) | 🔴 CRITICAL | **NOT FIXED** |
 | CRI-ADC-02 | U5B floating inputs (unused Op-Amp channel) | 🔴 CRITICAL | **NOT FIXED** |
@@ -421,17 +417,17 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 
 | ID | Subsystem | Severity | Description | Action |
 |:---|:----------|:---------|:------------|:-------|
-| CRI-ANA-01 | Analog Power | 🔴 | L41 = 100µH inductor instead of ferrite bead on VDDA | Replace with BLM18PG121SN1D (120Ω @ 100MHz). Add 1µF cap. |
-| CRI-USB-01 | USB | 🔴 | ESDA6V1BC6 on USB D+/D- (20 pF) | Replace D45 with USBLC6-4SC6 (3.5 pF). |
+| CRI-ANA-01 | Analog Power | 🟢 | L41 = 100µH inductor instead of ferrite bead on VDDA | **RESOLVED:** Replaced L41 with Murata BLM18PG121SN1D ferrite bead and added 1µF cap. |
+| CRI-USB-01 | USB | 🟢 | ESDA6V1BC6 on USB D+/D- (20 pF) | **RESOLVED:** Replaced D45 with USBLC6-4SC6 (3.5 pF). |
 | CRI-CAN-01 | CAN Bus | 🔴 | C18 = 4.7 pF common-mode filter | Change to 4.7 nF X7R. |
 | CRI-ADC-01 | Analog Input | 🔴 | Divider outputs 6.87V to 3.3V Op-Amp | Change to R18=22kΩ, R19=10kΩ. |
 | CRI-ADC-02 | Analog Input | 🔴 | U5B inputs floating (oscillation) | Wire U5B as unity-gain buffer to AGND. |
-| MAJ-PDN-01 | Power | 🟠 | LDO output capacitance below datasheet minimum | Replace C16 with 1µF X5R. |
+| MAJ-PDN-01 | Power | 🟢 | LDO output capacitance below datasheet minimum | **RESOLVED:** Verified C14 is 1µF, C16 remains 100nF (False Positive). |
 | MAJ-ETH-01 | Ethernet | 🟠 | RMII series termination = 33Ω (should be 22Ω) | Change R7, R8, R17, R40 to 22Ω. |
 | MAJ-ETH-02 | Ethernet | 🟠 | PHYAD0 set to broadcast address 0x00 | Acceptable for single-PHY. Document. |
 | MAJ-CAN-02 | CAN Bus | 🟠 | RS pin hard-grounded, no slope control option | Replace GND wire with 0Ω resistor footprint. |
-| MIN-PDN-02 | Power | 🟡 | Single bulk capacitor for MCU VDD cluster | Add 10µF near VDD_1 (Pin 72). |
-| MIN-ANA-02 | Analog Power | 🟡 | VBAT unnecessary resistors | Remove R59, R61 if RTC not used. |
+| MIN-PDN-02 | Power | 🟢 | Single bulk capacitor for MCU VDD cluster | **RESOLVED:** Added second 10µF bulk capacitor near Pin 72. |
+| MIN-ANA-02 | Analog Power | 🟢 | VBAT unnecessary resistors | **RESOLVED:** Verified C50 is 1µF, no resistors connected (False Positive). |
 | MIN-CLK-01 | Clocks | 🟡 | Missing 1MΩ feedback resistor on HSE | Add DNP footprint across PH0-PH1. |
 | MIN-ETH-03 | Ethernet | 🟡 | Bob-Smith termination center-tap grounding | Verify connects to EARTH, not digital GND. |
 | MIN-USB-02 | USB | 🟡 | No external D+ pull-up fallback | Add 1.5kΩ DNP footprint D+ to 3.3V. |
@@ -449,14 +445,14 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 
 **The board is NOT cleared for production in its current state.**
 
-There are **5 critical issues** (🔴) that will cause hardware damage or complete functional failure. Four of these were identified in the previous design review (2026-05-18) and remain unaddressed. This is unacceptable for a design approaching production.
+There are **3 critical issues** (🔴) remaining that will cause hardware damage or complete functional failure. Three of these were identified in the previous design review (2026-05-18) and remain unaddressed.
 
 **Mandatory actions before fabrication:**
-1. Fix all 5 critical issues (CRI-ANA-01, CRI-USB-01, CRI-CAN-01, CRI-ADC-01, CRI-ADC-02).
-2. Fix all 3 major issues (MAJ-PDN-01, MAJ-ETH-01, MAJ-CAN-02).
-3. Regenerate schematic prints and submit for a **second review** before proceeding.
+1. Fix all 3 remaining critical issues (CRI-CAN-01, CRI-ADC-01, CRI-ADC-02).
+2. Fix all 2 remaining major issues (MAJ-ETH-01, MAJ-CAN-02).
+3. Regenerate schematic prints and submit for a **third review** before proceeding.
 
-The 13 minor issues (🟡) should be addressed during the revision cycle but do not individually block production.
+The 11 remaining minor issues (🟡) should be addressed during the revision cycle but do not individually block production.
 
 ## See Also
 
