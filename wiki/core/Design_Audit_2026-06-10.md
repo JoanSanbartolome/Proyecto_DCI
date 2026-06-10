@@ -196,25 +196,15 @@ The 50 MHz RMII reference clock is sourced from the LAN8742A (Pin 14, nINT/REFCL
 - Split termination network: 2× 60Ω (R29, R30) with a capacitor (C18) to GND.
 - RS pin (Pin 8) connected to GND for high-speed mode.
 
-### 🔴 CRI-CAN-01: Common-Mode Filter Capacitor Value Error
+### 🟢 CRI-CAN-01: Common-Mode Filter Capacitor Value Error [CORREGIDO]
 
-**Finding:** C18 = **4.7 pF**. This was flagged in the previous [Design Review 2026-05-18](Design_Review_2026-05-18.md) with the correction to change to 4.7 nF. The schematic prints dated 2026-06-10 **still show 4.7 pF**.
+**Finding:** The schematic originally showed C18 as **4.7 pF** on the split termination network.
 
-**Risk:** The split termination capacitor ($2 \times 60\,\Omega + C_{CM}$) forms a common-mode low-pass filter. The cutoff frequency is:
-
-$$f_c = \frac{1}{2\pi \cdot R \cdot C} = \frac{1}{2\pi \cdot 60 \cdot 4.7 \times 10^{-12}} \approx 564\,\text{MHz}$$
-
-At 564 MHz, this capacitor provides **zero common-mode noise filtering**. The bus will be dominated by common-mode emissions in the 1-30 MHz range (where automotive/industrial EMC limits are strictest), causing EMC certification failure.
-
-With $C = 4.7\,\text{nF}$:
-$$f_c = \frac{1}{2\pi \cdot 60 \cdot 4.7 \times 10^{-9}} \approx 564\,\text{kHz}$$
-
-This places the cutoff safely below the CAN bit rate while providing strong common-mode rejection above 1 MHz.
-
-**This was previously identified as a critical error and has NOT been corrected.**
+**Risk:** The split termination capacitor ($2 \times 60\,\Omega + C_{CM}$) forms a common-mode low-pass filter. With a value of $4.7\,\text{pF}$, the cutoff frequency is $564\,\text{MHz}$, which provides no common-mode noise filtering in the critical $1-30\,\text{MHz}$ range, risking EMC test failure.
 
 **Correction:**
-- Change C18 from **4.7 pF** to **4.7 nF** (X7R, 50V, 0402 or 0603).
+- Change C18 from **4.7 pF** to **4.7 nF** (X7R, 50V, 0402 or 0603) to shift the filter cutoff to $564\,\text{kHz}$.
+- **Status:** ✅ Corregido. El capacitor C18 se ha actualizado a **4.7 nF X7R**, proporcionando el filtrado de modo común necesario para cumplir con los estándares de compatibilidad electromagnética (EMC).
 
 ### 🟠 MAJ-CAN-02: RS Pin Grounded Without Slope Control Option
 
@@ -404,7 +394,7 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 | ID | Issue | Severity | Status |
 |:---|:------|:---------|:-------|
 | CRI-USB-01 | ESDA6V1BC6 on USB D+/D- (should be USBLC6-4SC6) | 🔴 CRITICAL | **FIXED** |
-| CRI-CAN-01 | C18 = 4.7 pF (should be 4.7 nF) | 🔴 CRITICAL | **NOT FIXED** |
+| CRI-CAN-01 | C18 = 4.7 pF (should be 4.7 nF) | 🔴 CRITICAL | **FIXED** |
 | CRI-ADC-01 | R18/R19 divider outputs 6.87V (should be ≤3.125V) | 🔴 CRITICAL | **NOT FIXED** |
 | CRI-ADC-02 | U5B floating inputs (unused Op-Amp channel) | 🔴 CRITICAL | **NOT FIXED** |
 
@@ -419,7 +409,7 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 |:---|:----------|:---------|:------------|:-------|
 | CRI-ANA-01 | Analog Power | 🟢 | L41 = 100µH inductor instead of ferrite bead on VDDA | **RESOLVED:** Replaced L41 with Murata BLM18PG121SN1D ferrite bead and added 1µF cap. |
 | CRI-USB-01 | USB | 🟢 | ESDA6V1BC6 on USB D+/D- (20 pF) | **RESOLVED:** Replaced D45 with USBLC6-4SC6 (3.5 pF). |
-| CRI-CAN-01 | CAN Bus | 🔴 | C18 = 4.7 pF common-mode filter | Change to 4.7 nF X7R. |
+| CRI-CAN-01 | CAN Bus | 🟢 | C18 = 4.7 pF common-mode filter | **RESOLVED:** Changed C18 to 4.7 nF X7R. |
 | CRI-ADC-01 | Analog Input | 🔴 | Divider outputs 6.87V to 3.3V Op-Amp | Change to R18=22kΩ, R19=10kΩ. |
 | CRI-ADC-02 | Analog Input | 🔴 | U5B inputs floating (oscillation) | Wire U5B as unity-gain buffer to AGND. |
 | MAJ-PDN-01 | Power | 🟢 | LDO output capacitance below datasheet minimum | **RESOLVED:** Verified C14 is 1µF, C16 remains 100nF (False Positive). |
@@ -445,10 +435,10 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 
 **The board is NOT cleared for production in its current state.**
 
-There are **3 critical issues** (🔴) remaining that will cause hardware damage or complete functional failure. Three of these were identified in the previous design review (2026-05-18) and remain unaddressed.
+There are **2 critical issues** (🔴) remaining that will cause hardware damage or complete functional failure. Both of these were identified in the previous design review (2026-05-18) and remain unaddressed.
 
 **Mandatory actions before fabrication:**
-1. Fix all 3 remaining critical issues (CRI-CAN-01, CRI-ADC-01, CRI-ADC-02).
+1. Fix all 2 remaining critical issues (CRI-ADC-01, CRI-ADC-02).
 2. Fix all 2 remaining major issues (MAJ-ETH-01, MAJ-CAN-02).
 3. Regenerate schematic prints and submit for a **third review** before proceeding.
 
