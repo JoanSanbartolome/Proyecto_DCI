@@ -1,8 +1,10 @@
 # Design Technologies & Methods
 
-This document details the hardware technologies and PCB design methodologies applied to the custom STM32F746ZG board to ensure electrical performance, signal integrity, and manufacturing compliance.
+> Sources: Joan San Bartolome, 2026-06-10; STMicroelectronics, 2016-02-15
+> Raw: [STM32_Esqumaticos.pdf](../../raw/STM32_Esqumaticos.pdf); [STM32_Layout.pdf](../../raw/STM32_Layout.pdf); [stm32f746zg.pdf](../../raw/stm32f746zg.pdf)
 
----
+## Overview
+This document details the hardware technologies and PCB design methodologies applied to the custom STM32F746ZG board to ensure electrical performance, signal integrity, and manufacturing compliance.
 
 ## ⚡ Applied Technologies
 
@@ -73,6 +75,8 @@ This document details the hardware technologies and PCB design methodologies app
     *   A dedicated analog ground plane (**AGND**) is routed underneath the ADC and conditioning circuitry, while a digital ground (**GND**) covers the MCU and high-speed peripherals.
     *   The two planes are joined at a single point (star connection/bridge) near the MCU power input, preventing noisy digital return currents from flowing through the sensitive analog return path.
 
----
+## See Also
 
-[Source: STM32_Esqumaticos.pdf, Lab Circuits, Design Review 2026-05-24]
+*   [Hardware Architecture](Hardware_Architecture.md)
+*   [Project Requirements](Project_Requirements.md)
+*   [Component Selection](../peripherals/Components.md)

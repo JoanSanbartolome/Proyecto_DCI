@@ -86,3 +86,5 @@
 - **Base de datos de componentes seleccionados:** Actualizado `wiki/peripherals/Components.md` para incluir la base de datos detallada de los 18 componentes críticos (incluyendo cristales, protecciones transitorias, conectores y semiconductores auxiliares).
 - **Documentación de Tecnologías y Métodos:** Creado `wiki/core/Technologies_Methods.md` detallando las 5 tecnologías aplicadas (RMII, acondicionamiento de 0-10V, terminación split CAN, protecciones de baja capacitancia, regulación LDO) y 5 métodos empleados (diseño jerárquico complejo, rutado diferencial, control de crosstalk, keep-outs de cobre en magnetics, planos de tierra estrella GND/AGND).
 - **Indexación:** Actualizado `wiki/index.md` con los nuevos recursos.
+
+## [2026-06-10] lint | 0 issues found, 0 auto-fixed
