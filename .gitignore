@@ -39,3 +39,7 @@ Simulation/
 # Si los subes, molestarás a tus colaboradores cambiando su configuración visual.
 *.DsnWrk.Annotation
 *.PcbDoc.Annotation
+
+# --- Repositorio / Documentación raw ---
+# Se mantiene localmente pero no se sube a GitHub debido a su peso.
+raw/
