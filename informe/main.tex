@@ -177,26 +177,40 @@ Para garantizar la estabilidad temporal del sistema, el diseño incorpora dos os
 
 El arranque de la placa (\textit{boot}) se gestiona de forma manual mediante el pin \texttt{BOOT0}: por defecto se mantiene a nivel bajo ($0$) con una resistencia de pulso hacia abajo (\textit{pull-down}) de $10\text{ k}\Omega$ para iniciar desde la memoria Flash interna, pero cuenta con un pulsador físico que lo conecta a $3.3\text{ V}$ (a través de una resistencia en serie de $100\,\Omega$) para forzar el arranque en modo \textit{System Memory} (cargador de arranque por defecto de ST). La programación y depuración de la placa se realizan a través de un puerto SWD simplificado empleando los pines dedicados \texttt{PA13} (SWDIO) y \texttt{PA14} (SWCLK), además de la línea de reinicio activa a nivel bajo \texttt{NRST}.
 
-\subsection{ADC}
-Esta placa incorpora 2 pequeños ADC los cuales transforman 2 señales analógicas de 0 a 10V a una señal de 3.3V (para poder ser introducido en el microcontrolador). El ADC consta de un divisor resistivo que baja de 10V a 3.3V, también tiene un pequeño filtro paso bajo, para filtral alta frecuencia y posterior a ese divisor resistivo tiene un pequeño buffer para adaptación de impedancia.
+\subsection{ADC y Acondicionamiento de Señal Analógica}
+
+La placa incorpora dos canales independientes para la adquisición de señales analógicas industriales en un rango de $0-10\text{ V}$. Dado que el rango de entrada del ADC del microcontrolador está limitado a $0-3.3\text{ V}$ (tensión de referencia analógica), es necesario acondicionar la señal mediante etapas de atenuación, filtrado y adaptación de impedancia.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Imagenes/ADC_esquema.png}
-    \caption{Esquemático ADC}
+    \includegraphics[width=0.75\linewidth]{Imagenes/ADC_esquema.png}
+    \caption{Esquemático de la etapa de acondicionamiento analógico de entrada.}
     \label{fig:adc_esquema}
 \end{figure}
 
+El circuito de acondicionamiento de cada canal consta de las siguientes etapas:
+\begin{enumerate}
+    \item \textbf{Divisor de tensión atenuador:} En el diseño preliminar se colocó un divisor con $R_{18}=100\text{ k}\Omega$ y $R_{19}=220\text{ k}\Omega$ que producía una tensión de salida de $6.87\text{ V}$ ante una entrada de $10\text{ V}$, lo que habría destruido las entradas analógicas. Para solucionarlo, se rediseñó el divisor utilizando $R_{18} = 22\text{ k}\Omega$ y $R_{19} = 10\text{ k}\Omega$, atenuando la entrada de $10\text{ V}$ a un valor seguro de $3.125\text{ V}$.
+    \item \textbf{Buffer de adaptación de impedancia:} Se implementa mediante el amplificador operacional de alta precisión \textbf{OPA350EA/250} en configuración de seguidor de tensión. Este elemento proporciona una impedancia de entrada extremadamente alta para no sobrecargar los sensores y una baja resistencia de salida para alimentar el ADC sin introducir errores de ganancia.
+    \item \textbf{Filtro paso bajo (Anti-aliasing):} Formado por $R_{20} = 1\text{ k}\Omega$ y $C_{12} = 100\text{ nF}$ a la salida del operacional, limitando el ancho de banda del canal a $f_c \approx 1.59\text{ kHz}$ para eliminar ruidos de alta frecuencia procedentes de las etapas de conmutación de potencia cercanas. Además, el condensador actúa como depósito de carga rápida para el condensador de muestreo interno del ADC ($C_{ADC} \approx 6\text{ pF}$).
+\end{enumerate}
+
+Para evitar oscilaciones térmicas y consumos indeseados, el segundo canal del amplificador operacional (\texttt{U5B}), al no ser utilizado en este bloque jerárquico, se ha estabilizado conectándolo en modo seguidor con su pin no inversor unido a la masa analógica (\texttt{AGND}).
+
 \subsubsection{Pines asignados para el ADC}
 
-\begin{table}[h]
+Las señales acondicionadas se conectan a los siguientes pines del microcontrolador:
+
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|c|c|l|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
-ADC1 & PB0 & Entrada analógica \\ \hline
-ADC2 & PB1 & Entrada analógica \\ \hline
+\textbf{Señal} & \textbf{Pin MCU} & \textbf{Función del Periférico} \\ \hline
+ADC\_CH1 & PB0 & Canal de conversión analógico-digital (ADC12\_IN8) \\ \hline
+ADC\_CH2 & PB1 & Canal de conversión analógico-digital (ADC12\_IN9) \\ \hline
 \end{tabular}
+\caption{Asignación de pines para los canales analógicos.}
+\label{tab:adc_pines}
 \end{table}
 
 
