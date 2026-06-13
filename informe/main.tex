@@ -240,14 +240,15 @@ La interfaz lógica entre el microcontrolador y los transceptores se realiza a t
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c|c|l|l|}
+\small
+\begin{tabularx}{\textwidth}{|c|c|l|X|}
 \hline
 \textbf{Periférico} & \textbf{Pin MCU} & \textbf{Señal Lógica} & \textbf{Función} \\ \hline
 \multirow{2}{*}{CAN1} & PD0 & CAN1\_RX & Recepción de datos lógicos del transceptor \\ \cline{2-4} 
                       & PD1 & CAN1\_TX & Transmisión de datos lógicos al transceptor \\ \hline
 \multirow{2}{*}{CAN2} & PB5 & CAN2\_RX & Recepción de datos lógicos del transceptor \\ \cline{2-4} 
                       & PB6 & CAN2\_TX & Transmisión de datos lógicos al transceptor \\ \hline
-\end{tabular}
+\end{tabularx}
 \caption{Asignación de pines de comunicación lógica para los controladores CAN.}
 \label{tab:can_pines}
 \end{table}
@@ -346,7 +347,7 @@ La distribución física de las patillas de alimentación y masa del microcontro
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{|l|c|p{7.5cm}|}
+\begin{tabularx}{\textwidth}{|l|c|X|}
 \hline
 \textbf{Dominio de Potencia} & \textbf{Símbolo Pin} & \textbf{Pines Físicos (LQFP144)} \\ \hline
 Alimentación Digital & VDD & 16, 30, 39, 52, 62, 72, 84, 95, 108, 121, 131, 144 \\ \hline
@@ -356,7 +357,7 @@ Masa Analógica & VSSA & 32 \\ \hline
 Tensión de Referencia Analógica & VREF+ / VREF- & 35 / 34 \\ \hline
 Alimentación de Batería & VBAT & 6 \\ \hline
 Condensadores del Regulador Núcleo & VCAP\_1 / VCAP\_2 & 71 / 106 \\ \hline
-\end{tabular}
+\end{tabularx}
 \caption{Pines físicos de alimentación y referencia en encapsulado LQFP144.}
 \label{tab:alimentacion_pines}
 \end{table}
@@ -449,34 +450,30 @@ La Tabla~\ref{tab:conectores_pines} muestra el mapeo detallado de cada pin del c
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{|l|c|X|l|}
+\begin{tabularx}{\textwidth}{|X|c|c|X|}
 \hline
-\textbf{Señal del Esquema} & \textbf{Pin MCU} & \textbf{Función Asignada} & \textbf{Pin Conector CN41} \\ \hline
-GND & -- & Plano de Masa de Referencia & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
-P5V & -- & Alimentación +5 V (desde USB) & 3, 4 \\ \hline
-P3V3 & -- & Alimentación +3.3 V Regulada & 5, 6 \\ \hline
-PinG4 & PG4 & I/O de Propósito General & 9 \\ \hline
-PinC6 & PC6 & I/O de Propósito General & 10 \\ \hline
-PinG5 & PG5 & I/O de Propósito General & 11 \\ \hline
-PinG8 & PG8 & I/O de Propósito General & 12 \\ \hline
-PinG2 & PG2 & I/O de Propósito General & 15 \\ \hline
-PinG7 & PG7 & I/O de Propósito General & 16 \\ \hline
-PinG3 & PG3 & I/O de Propósito General & 17 \\ \hline
-PinG6 & PG6 & I/O de Propósito General & 18 \\ \hline
-PinD14 & PD14 & I/O de Propósito General & 19 \\ \hline
-PinD11 & PD11 & I/O de Propósito General & 20 \\ \hline
-PinD15 & PD15 & I/O de Propósito General & 23 \\ \hline
-PinD10 & PD10 & I/O de Propósito General & 24 \\ \hline
-PinD12 & PD12 & I/O de Propósito General & 25 \\ \hline
-PinD9 & PD9 & I/O de Propósito General & 26 \\ \hline
-PinD13 & PD13 & I/O de Propósito General & 27 \\ \hline
-PinD8 & PD8 & I/O de Propósito General & 28 \\ \hline
-USART7\_TX & PE8 & Transmisión USART7 / GPIO & 31 \\ \hline
-USART6\_TX & PG14 & Transmisión USART6 / GPIO & 32 \\ \hline
-USART7\_RX & PE7 & Recepción USART7 / GPIO & 33 \\ \hline
-USART6\_RX & PG9 & Recepción USART6 / GPIO & 34 \\ \hline
+\multicolumn{2}{|c|}{\textbf{LADO IMPAR (Izquierda)}} & \multicolumn{2}{c|}{\textbf{LADO PAR (Derecha)}} \\ \hline
+\textbf{Señal del Esquema (Pin MCU)} & \textbf{Pin} & \textbf{Pin} & \textbf{Señal del Esquema (Pin MCU)} \\ \hline
+GND & 1 & 2 & GND \\ \hline
+P5V & 3 & 4 & P5V \\ \hline
+P3V3 & 5 & 6 & P3V3 \\ \hline
+GND & 7 & 8 & GND \\ \hline
+PinG4 (PG4) & 9 & 10 & PinC6 (PC6) \\ \hline
+PinG5 (PG5) & 11 & 12 & PinG8 (PG8) \\ \hline
+GND & 13 & 14 & GND \\ \hline
+PinG2 (PG2) & 15 & 16 & PinG7 (PG7) \\ \hline
+PinG3 (PG3) & 17 & 18 & PinG6 (PG6) \\ \hline
+PinD14 (PD14) & 19 & 20 & PinD11 (PD11) \\ \hline
+GND & 21 & 22 & GND \\ \hline
+PinD15 (PD15) & 23 & 24 & PinD10 (PD10) \\ \hline
+PinD12 (PD12) & 25 & 26 & PinD9 (PD9) \\ \hline
+PinD13 (PD13) & 27 & 28 & PinD8 (PD8) \\ \hline
+GND & 29 & 30 & GND \\ \hline
+USART7\_TX (PE8) & 31 & 32 & USART6\_TX (PG14) \\ \hline
+USART7\_RX (PE7) & 33 & 34 & USART6\_RX (PG9) \\ \hline
+GND & 35 & 36 & GND \\ \hline
 \end{tabularx}
-\caption{Distribución de pines del conector de expansión general (CN41) y su asignación en el microcontrolador.}
+\caption{Distribución de pines del conector de expansión general (CN41) y su disposición de doble fila simétrica.}
 \label{tab:conectores_pines}
 \end{table}
 
