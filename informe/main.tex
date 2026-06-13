@@ -272,7 +272,7 @@ El diseño físico y eléctrico de esta interfaz se fundamenta en las siguientes
             \item Un fusible rearmable PTC de $0.5\text{ A}$ (\textbf{MF-MSMF050-2}) para proteger al puerto del host frente a cortocircuitos o sobrecorrientes en nuestra placa.
             \item Un diodo Schottky \textbf{BAT60JFILM} que previene corrientes de retorno inversas hacia el host cuando la placa se alimenta mediante otra fuente de alimentación externa.
         \end{itemize}
-    \item \textbf{Sensado de VBUS:} La línea VBUS se conecta al pin de entrada analógica/digital \texttt{PA9} del microcontrolador (compatible con $5\text{ V}$), lo que permite al firmware detectar la presencia física de la alimentación del host para iniciar o pausar el stack de comunicaciones USB de forma automática.
+    \item \textbf{Sensado de VBUS:} La línea VBUS se conecta al pin de entrada analógica/digital \texttt{PA9} del microcontrolador a través de una resistencia en serie de $10\text{ k}\Omega$. Aprovechando que el pin \texttt{PA9} es tolerante a $5\text{ V}$, esta resistencia actúa como un limitador de corriente para salvaguardar la entrada ante picos de tensión o transitorios en la línea de alimentación USB, permitiendo al firmware detectar la presencia del host y gestionar el stack de comunicaciones de forma dinámica.
 \end{enumerate}
 
 \subsubsection{Pines asignados para el puerto USB}
