@@ -252,28 +252,45 @@ La interfaz lógica entre el microcontrolador y los transceptores se realiza a t
 \label{tab:can_pines}
 \end{table}
 
-\subsection{USB}
-La tarjeta incorpora un pequeño USB que sirve como alimentación a la placa y también como salida de datos del microcontrolador al puerto.
+\subsection{Interfaz Micro-USB}
+
+Hemos integrado un puerto Micro-USB de tipo AB (receptáculo \textbf{Molex 475900001}) para dotar a la tarjeta de conectividad de datos (USB 2.0 Full-Speed a $12\text{ Mbps}$) y permitir la alimentación del sistema a través del bus VBUS del host.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Imagenes/USB_esquema.png}
-    \caption{Esquema USB}
+    \includegraphics[width=0.75\linewidth]{Imagenes/USB_esquema.png}
+    \caption{Esquemático de la etapa del conector USB con sus elementos de protección y filtrado.}
     \label{fig:usb_esquema}
 \end{figure}
 
-El USB incorpora una serie de protecciones como TVS para la descarga electrostática y varistores para limitar la corriente de entrada, también un pequeño diodo donde para evitar polaridad inversa.
-\subsubsection{Pines asignados para el USB}
-\begin{table}[h]
+El diseño físico y eléctrico de esta interfaz se fundamenta en las siguientes decisiones de hardware:
+\begin{enumerate}
+    \item \textbf{Adaptación de impedancia diferencial:} Las líneas de datos $D+$ y $D-$ se rutan como par diferencial directamente desde el conector hacia los pines del microcontrolador, sin resistencias serie de terminación externas. Hemos aprovechado que el transceptor Full-Speed integrado en el microcontrolador STM32F746ZGT6 cuenta con una impedancia de salida adaptada por hardware. El par se ha diseñado para presentar una impedancia diferencial de \textbf{$90\,\Omega \pm 10\%$}.
+    \item \textbf{Protección contra descargas electrostáticas (ESD):} Para proteger las líneas de datos de transitorios de alta velocidad sin degradar la señal por efecto capacitivo, hemos colocado el circuito integrado de capacitancia ultra-baja ($C_{in} \approx 1\text{ pF}$) \textbf{USBLC6-4SC6} lo más cerca posible del conector físico. Las pistas del par de datos se rutan pasando directamente a través de las patillas del integrado para evitar stubs en el diseño de la pista.
+    \item \textbf{Seguridad de alimentación (VBUS):} La entrada de alimentación desde el puerto USB (\texttt{USB\_PWR}) cuenta con dos niveles de protección activa:
+        \begin{itemize}
+            \item Un fusible rearmable PTC de $0.5\text{ A}$ (\textbf{MF-MSMF050-2}) para proteger al puerto del host frente a cortocircuitos o sobrecorrientes en nuestra placa.
+            \item Un diodo Schottky \textbf{BAT60JFILM} que previene corrientes de retorno inversas hacia el host cuando la placa se alimenta mediante otra fuente de alimentación externa.
+        \end{itemize}
+    \item \textbf{Sensado de VBUS:} La línea VBUS se conecta al pin de entrada analógica/digital \texttt{PA9} del microcontrolador (compatible con $5\text{ V}$), lo que permite al firmware detectar la presencia física de la alimentación del host para iniciar o pausar el stack de comunicaciones USB de forma automática.
+\end{enumerate}
+
+\subsubsection{Pines asignados para el puerto USB}
+
+El mapeo de pines entre el microcontrolador y el conector USB se detalla a continuación:
+
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|c|c|l|l|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
-USB\_VBUS & PA9 & Alimentación a toda la placa \\ \hline
-USB\_ID & PA10 & Identificador \\ \hline
-USB\_DM & PA11 & Línea de transmisión de datos. \\ \hline
-USB\_DP & PA12 & Línea de transmisión de datos. \\ \hline
+\textbf{Señal} & \textbf{Pin MCU} & \textbf{Señal Lógica} & \textbf{Función del Periférico} \\ \hline
+USB\_VBUS & PA9 & OTG\_FS\_VBUS & Entrada de detección de presencia de tensión de VBUS \\ \hline
+USB\_ID & PA10 & OTG\_FS\_ID & Línea de detección de modo Host/Device (OTG) \\ \hline
+USB\_DM & PA11 & OTG\_FS\_DM & Línea de datos diferencial negativa (D-) \\ \hline
+USB\_DP & PA12 & OTG\_FS\_DP & Línea de datos diferencial positiva (D+) \\ \hline
 \end{tabular}
+\caption{Asignación de pines para la interfaz Micro-USB.}
+\label{tab:usb_pines}
 \end{table}
 
 \subsection{Alimentación}
