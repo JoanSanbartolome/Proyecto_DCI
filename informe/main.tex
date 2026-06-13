@@ -215,30 +215,41 @@ ADC\_CH2 & PB1 & Canal de conversión analógico-digital (ADC12\_IN9) \\ \hline
 
 
 
-\subsection{CAN}
-La comunicación CAN es una comunicación de tipo diferencial la cual aporta mayor robustez a la comunicación porque “resiste” ante perturbaciones externas.
+\subsection{Interfaz de Comunicación CAN (Controller Area Network)}
+
+El estándar CAN es un protocolo robusto de comunicación diferencial, idóneo para entornos industriales debido a su elevada inmunidad al ruido electromagnético. Hemos implementado en la placa dos nodos CAN independientes (\texttt{CAN1} y \texttt{CAN2}) utilizando una arquitectura jerárquica idéntica.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Imagenes/CAN_esquema.png}
-    \caption{CAN esquemático}
+    \includegraphics[width=0.75\linewidth]{Imagenes/CAN_esquema.png}
+    \caption{Esquemático de la etapa del transceptor CAN e inmunidad contra ESD.}
     \label{fig:can_esquema}
 \end{figure}
 
+Para cada canal hemos tomado las siguientes decisiones de diseño de hardware:
+\begin{enumerate}
+    \item \textbf{Transceptor de baja potencia a $3.3\text{ V}$:} Hemos integrado el chip \textbf{SN65HVD230Q}, el cual opera directamente con la tensión lógica del microcontrolador ($3.3\text{ V}$), eliminando la necesidad de emplear desplazadores de nivel de tensión que habrían encarecido y complicado el ruteado.
+    \item \textbf{Terminación de línea dividida (Split Termination):} En lugar de una única resistencia de $120\,\Omega$, hemos implementado una terminación dividida compuesta por dos resistencias de $60\,\Omega$ en serie, conectando el punto común de unión a masa a través de un condensador de $4.7\text{ nF}$. Esta configuración actúa como un filtro paso bajo para el ruido en modo común, disipando las interferencias de alta frecuencia a tierra sin alterar la impedancia diferencial del bus. La conexión de esta red es opcional y se puede seleccionar físicamente mediante un puente (\textit{jumper}).
+    \item \textbf{Control de pendiente (RS Pin):} El pin de control de velocidad (\texttt{RS}) del transceptor se conecta a masa a través de una resistencia de $33\text{ k}\Omega$. Esto limita el tiempo de subida y bajada de las transiciones (control de pendiente), reduciendo la radiación EMI emitida para una velocidad máxima de diseño de $500\text{ kbps}$.
+    \item \textbf{Protección contra transitorios (ESD):} Hemos colocado un diodo de protección ESD bidireccional específico para CAN en encapsulado SOT-23 (\textbf{PESD2CAN}) lo más cerca posible del conector físico de salida para derivar descargas electrostáticas y transitorios directamente a la masa del sistema.
+\end{enumerate}
 
-Aunque el micro sea posible conectar directamente la comunicación CAN, se le tiene que incorporar un pequeño módulo CAN para adaptación de tensión y además sirve como protección ante problemas en el bus.
+\subsubsection{Pines asignados para el bus CAN}
 
-\subsubsection{Pines asignados para el CAN}
-\begin{table}[h]
+La interfaz lógica entre el microcontrolador y los transceptores se realiza a través de las siguientes líneas:
+
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|c|c|l|l|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
-CAN1H & PD0 & Línea de recepción de CAN 1 \\ \hline
-CAN1L & PD1 & Línea de transmisión de CAN 1 \\ \hline
-CAN2H & PB5 & Línea de recepción de CAN 2 \\ \hline
-CAN2L & PB6 & Línea de transmisión de CAN 2 \\ \hline
+\textbf{Periférico} & \textbf{Pin MCU} & \textbf{Señal Lógica} & \textbf{Función} \\ \hline
+\multirow{2}{*}{CAN1} & PD0 & CAN1\_RX & Recepción de datos lógicos del transceptor \\ \cline{2-4} 
+                      & PD1 & CAN1\_TX & Transmisión de datos lógicos al transceptor \\ \hline
+\multirow{2}{*}{CAN2} & PB5 & CAN2\_RX & Recepción de datos lógicos del transceptor \\ \cline{2-4} 
+                      & PB6 & CAN2\_TX & Transmisión de datos lógicos al transceptor \\ \hline
 \end{tabular}
+\caption{Asignación de pines de comunicación lógica para los controladores CAN.}
+\label{tab:can_pines}
 \end{table}
 
 \subsection{USB}
