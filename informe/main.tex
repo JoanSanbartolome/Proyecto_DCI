@@ -147,9 +147,20 @@
 
 \section{Introducción}
 
-El presente trabajo aborda el diseño y desarrollo de una tarjeta de circuito impreso (PCB) funcional y fabricable basada en el microcontrolador STM32F746ZG. Tomando como referencia la plataforma de desarrollo de bajo coste ST NUCLEO-F746 , el objetivo es adaptar y simplificar su arquitectura original en Altium Designer mediante la eliminación de componentes redundantes (como el depurador integrado ST-LINK) y la integración de interfaces específicas de conectividad y acondicionamiento de señal.
+El presente trabajo aborda el diseño, desarrollo y validación de una tarjeta de circuito impreso (PCB) funcional y fabricable basada en el microcontrolador de alto rendimiento STM32F746ZG. Tomando como referencia la plataforma de desarrollo comercial ST NUCLEO-F746ZG, el objetivo principal es adaptar y optimizar su arquitectura original en Altium Designer. Para ello, se simplifica el sistema mediante la eliminación de componentes redundantes y de evaluación (como el depurador integrado ST-LINK/V2-1) y se integran de forma nativa periféricos y acondicionadores de señal adaptados a aplicaciones específicas de control y conectividad.
 
-Entre los requisitos clave del sistema se incluye la incorporación de conectividad Ethernet , puertos Micro-USB , dos transceptores CAN , acondicionadores para señales analógicas de 0-10V y memoria SPI Flash. El diseño final exige un ruteado y emplazamiento completamente original , estructurado en una tecnología de 4 capas con planos internos dedicados a potencia y masa , y cumpliendo estrictamente con las directivas de fabricación para asegurar un prototipo operativo.
+Una de las decisiones clave de simplificación consiste en sustituir el programador/depurador ST-LINK embebido por un conector de depuración y programación SWD (Serial Wire Debug) estándar de 10 pines y paso de 100 mils. Esta decisión reduce sustancialmente el área de la placa y el consumo de potencia, permitiendo realizar la depuración mediante un programador externo o puenteando las señales desde el propio bloque ST-LINK de una placa NUCLEO comercial.
+
+Entre los requisitos y capacidades integradas en este diseño se encuentran:
+\begin{itemize}
+    \item \textbf{Conectividad de red:} Interfaz Ethernet a través de un conector RJ45 de montaje inserción con LEDs de estado y magnéticos externos.
+    \item \textbf{Comunicación serie y buses diferenciales:} Un puerto Micro-USB y dos transceptores CAN con opción de terminación de línea seleccionable mediante puente.
+    \item \textbf{Adquisición de datos analógicos:} Dos canales de acondicionamiento de señal para entradas analógicas en rango de $0-10\text{ V}$, reduciéndolas y adaptándolas al rango de $0-3.3\text{ V}$ compatible con el ADC del microcontrolador.
+    \item \textbf{Almacenamiento no volátil:} Una memoria SPI Flash de 2 MB para el almacenamiento de datos o firmware.
+    \item \textbf{Expansión:} Un conector con 16 señales GPIO de propósito general protegidas y desacopladas.
+\end{itemize}
+
+El diseño físico de la tarjeta se ha planteado en una tecnología de 4 capas para garantizar la integridad de las señales de alta velocidad (RMII de Ethernet, USB y CAN) y optimizar la Red de Distribución de Alimentación (PDN). Se configuran planos internos dedicados para masa (GND) y alimentación (PWR, este último partido para abastecer los diferentes niveles de tensión). El diseño cumple estrictamente las directivas de fabricación especificadas por el fabricante \textit{Lab Circuits}, restringiendo el grosor total de la placa a un máximo de $1.6\text{ mm}$ y aplicando reglas de ruteado originales para distanciar este prototipo del formato de evaluación de ST.
 
 \section{Especificaciones de la placa}
 La placa cuenta con distintos elementos que hacen que sea funcional para muchas situaciones y entornos, a continuación, se verán los diferentes elementos y funcionalidades de la placa a la vez que su construcción.
