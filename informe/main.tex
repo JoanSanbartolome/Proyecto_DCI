@@ -512,63 +512,76 @@ VDD & Pin 8 & -- & Alimentación a +3.3 V, desacoplada localmente con condensado
 \label{tab:flash_pines}
 \end{table}
 
-
-
 \subsection{Stack-up}
 
-Para poder hacer un buen ajuste de impedancias dentro de la PCB es muy importante el diseño adecuado del Stack-up, en esta PCB hay líneas diferenciales de CAN ($120\Omega$), Ethernet ($100\Omega$), USB ($90\Omega$). También la PCB cuenta con una impedancia Singel ended de 50 $\Omega$ para todas las líneas de alimentación y señales no tan críticas.
+Para garantizar la integridad de señal en los buses de datos de alta velocidad y cumplir con las directrices de compatibilidad electromagnética (EMC), hemos diseñado un stack-up controlado de 4 capas. El uso de una estructura multicapa permite definir planos de referencia de masa y alimentación continuos y adyacentes a las capas externas de señal, lo cual minimiza el área del lazo de retorno de corriente, reduce la inductancia parásita del plano y bloquea la radiación electromagnética (EMI) de modo común.
 
-La PCB consta de 4 capas, 2 para señales (top y bottom) y 2 para alimentaciones (3.3V y GND). Como consideraciones a tener en cuenta es que la PCB debe de ser aproximadamente de 1.6mm de espesor, en concreto esta PCB es de 1.62mm, un valor muy próximo a esos 1.6mm. En lo que respecta al espesor del cobre, como no es una PCB de potencia (donde va a pasar gran cantidad de corriente) por lo que en este caso se ha puesto en capas de señal media onza y en alimentación, una onza. Aquí está el diseño del stack-up:
+Hemos estructurado las capas de la placa de la siguiente manera:
+\begin{itemize}
+    \item \textbf{Capa 1 (Top Layer):} Capa externa de ruteado de señales de alta velocidad y periféricos principales.
+    \item \textbf{Capa 2 (Int1 - GND):} Plano de referencia de masa continuo para el camino de retorno de señales de la capa Top.
+    \item \textbf{Capa 3 (Int2 - PWR):} Plano de alimentación segmentado en las diferentes tensiones necesarias ($3.3\,\text{V}$, $3.3\,\text{V}$ analógico y masa auxiliar en ciertas regiones).
+    \item \textbf{Capa 4 (Bottom Layer):} Capa externa de señal secundaria para el conexionado final y ruteado de líneas menos críticas.
+\end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{Imagenes/Captura_stackup.png}
-    \caption{Propuesta de Stack-Up 4 capas}
-    \label{fig:stackup}
-\end{figure}
+El espesor dieléctrico entre las capas externas y los planos internos adyacentes se ha seleccionado de dimensiones reducidas (aproximadamente $0.137\,\text{mm}$ mediante la combinación simétrica de dos hojas de prepreg PP-004 y PP-006). Esta reducida separación física permite alcanzar las impedancias características deseadas utilizando anchos de traza realizables y manejables bajo las restricciones de fabricación de Clase 6 del fabricante Lab Circuits.
 
-\subsubsection{Impedancias de los diferentes buses de comunicación y pistas}
-
-Ahora se va a poner una tabla con los valores de impedancia obtenidos con este stack-up.
+El detalle físico del stack-up diseñado en el Gestor de Capas (Layer Stack Manager) de Altium Designer se presenta en la Tabla~\ref{tab:stackup_capas}:
 
 \begin{table}[H]
 \centering
-\footnotesize
-\caption{Comparación entre impedancias ideales y obtenidas}
-\label{tab:impedancias}
-\begin{tabular}{|p{2.8cm}|p{2.8cm}|c|c|c|}
+\small
+\begin{tabularx}{\textwidth}{|c|l|X|c|c|c|}
 \hline
-\textbf{Comunicación} &
-\textbf{Tipo de comunicación} &
-\textbf{Impedancia ideal} &
-\textbf{Impedancia real} &
-\textbf{Variación} \\ \hline
+\textbf{\#} & \textbf{Nombre de Capa} & \textbf{Tipo de Material} & \textbf{Espesor} & \textbf{Permitividad ($D_k$)} & \textbf{Grosor Cobre} \\ \hline
+-- & Top Overlay & Leyenda (Silkscreen) & -- & -- & -- \\ \hline
+-- & Top Solder & Máscara de soldadura (SM-001) & $0.0254\,\text{mm}$ & $4.0$ & -- \\ \hline
+-- & Acabado Superficial & Oro químico (ENIG) & $0.0040\,\text{mm}$ & -- & -- \\ \hline
+1 & Top Layer & Capa de señal externa (Cobre) & $0.0175\,\text{mm}$ & -- & $1/2\,\text{oz}$ ($17.5\,\mu\text{m}$) \\ \hline
+-- & Dielectric 1 & Dieléctrico / Prepreg (PP-004) & $0.06604\,\text{mm}$ & $3.8$ & -- \\ \hline
+-- & Dielectric 2 & Dieléctrico / Prepreg (PP-006) & $0.07112\,\text{mm}$ & $4.1$ & -- \\ \hline
+2 & Int1 (GND) & Plano de masa interno (Cobre) & $0.0350\,\text{mm}$ & -- & $1\,\text{oz}$ ($35\,\mu\text{m}$) \\ \hline
+-- & Dielectric 3 & Núcleo dieléctrico (Core-039) & $1.1000\,\text{mm}$ & $4.8$ & -- \\ \hline
+3 & Int2 (PWR) & Plano de potencia interno (Cobre) & $0.0350\,\text{mm}$ & -- & $1\,\text{oz}$ ($35\,\mu\text{m}$) \\ \hline
+-- & Dielectric 4 & Dieléctrico / Prepreg (PP-006) & $0.07112\,\text{mm}$ & $4.1$ & -- \\ \hline
+-- & Dielectric 5 & Dieléctrico / Prepreg (PP-004) & $0.06604\,\text{mm}$ & $3.8$ & -- \\ \hline
+4 & Bottom Layer & Capa de señal externa (Cobre) & $0.0175\,\text{mm}$ & -- & $1/2\,\text{oz}$ ($17.5\,\mu\text{m}$) \\ \hline
+-- & Acabado Superficial & Oro químico (ENIG) & $0.0040\,\text{mm}$ & -- & -- \\ \hline
+-- & Bottom Solder & Máscara de soldadura (SM-001) & $0.0254\,\text{mm}$ & $4.0$ & -- \\ \hline
+-- & Bottom Overlay & Leyenda (Silkscreen) & -- & -- & -- \\ \hline
+\end{tabularx}
+\caption{Detalle de las capas físicas, espesores dieléctricos y grosor de cobre del stack-up diseñado.}
+\label{tab:stackup_capas}
+\end{table}
 
-CAN &
-Diferencial &
-$120\,\Omega$ &
-$113\,\Omega$ &
-$5.89$\,\% \\ \hline
+El espesor dieléctrico total acumulado es de aproximadamente $1.49\,\text{mm}$. Al añadir las capas protectoras de soldadura y acabados de oro químico, el espesor final de la placa es de aproximadamente $1.54\,\text{mm}$, el cual cumple con la tolerancia comercial de fabricación estándar de $1.6\,\text{mm}$ establecida por Lab Circuits.
 
-Ethernet &
-Diferencial &
-$100\,\Omega$ &
-$104\,\Omega$ &
-$4.3$\,\% \\ \hline
+\subsubsection{Cálculo Geométrico e Impedancias de los Buses}
 
-USB &
-Diferencial &
-$90\,\Omega$ &
-$94.45\,\Omega$ &
-$4.95$\,\% \\ \hline
+Utilizando el simulador de líneas de transmisión integrado SIMBEOR en Altium Designer, hemos calculado las dimensiones geométricas óptimas (ancho de traza $W$ y espaciado de par diferencial $G$) necesarias para cumplir los requerimientos de impedancia diferencial e individual en las capas de señal externas (L1 y L4):
 
-Resto de pistas &
-Single-ended &
-$50\,\Omega$ &
-$53.65\,\Omega$ &
-$7.3$\,\% \\ \hline
+\begin{itemize}
+    \item \textbf{Bus CAN ($120\,\Omega$):} La impedancia objetivo de la norma ISO 11898 es de $120\,\Omega$. Hemos configurado trazas de ancho $W = 0.150\,\text{mm}$ con una separación de par de $G = 0.3628\,\text{mm}$.
+    \item \textbf{Bus Ethernet ($100\,\Omega$):} Para el par diferencial MDI de la PHY, se requiere una impedancia controlada de $100\,\Omega$. Hemos calculado un ancho de traza de $W = 0.182\,\text{mm}$ y una separación de par de $G = 0.180\,\text{mm}$.
+    \item \textbf{Bus USB ($90\,\Omega$):} La especificación USB 2.0 Full-Speed requiere un par de señal balanceado de $90\,\Omega$ de impedancia diferencial. Hemos implementado un ancho de traza de $W = 0.190\,\text{mm}$ con un espacio entre ellas de $G = 0.150\,\text{mm}$.
+    \item \textbf{Líneas Single-Ended ($50\,\Omega$):} Para trazas de señales generales críticas y líneas de alimentación del sistema, se fija un target estándar de $50\,\Omega$. El ancho de pista resultante es de $W \approx 0.230\,\text{mm}$.
+\end{itemize}
 
-\end{tabular}
+La Tabla~\ref{tab:impedancias} resume la comparación entre las impedancias ideales especificadas, las obtenidas mediante simulación electromagnética en Altium Designer y el porcentaje de variación final de diseño:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|X|c|c|c|}
+\hline
+\textbf{Interfaz / Bus} & \textbf{Tipo de Línea} & \textbf{Geometría ($W$ y $G$)} & \textbf{$Z$ Ideal} & \textbf{$Z$ Simulada} & \textbf{Variación} \\ \hline
+\textbf{CAN} & Diferencial (L1 / L4) & $W=0.150\,\text{mm}$, $G=0.363\,\text{mm}$ & $120\,\Omega$ & $119.97\,\Omega$ & $-0.025$\,\% \\ \hline
+\textbf{Ethernet} & Diferencial (L1 / L4) & $W=0.182\,\text{mm}$, $G=0.180\,\text{mm}$ & $100\,\Omega$ & $99.99\,\Omega$ & $-0.010$\,\% \\ \hline
+\textbf{USB} & Diferencial (L1 / L4) & $W=0.190\,\text{mm}$, $G=0.150\,\text{mm}$ & $90\,\Omega$ & $94.91\,\Omega$ & $+5.460$\,\% \\ \hline
+\textbf{GPIO / Señal} & Single-Ended (L1 / L4) & $W=0.230\,\text{mm}$ & $50\,\Omega$ & $53.65\,\Omega$ & $+7.300$\,\% \\ \hline
+\end{tabularx}
+\caption{Comparación entre impedancias ideales especificadas por los estándares y los valores calculados en el stack-up final.}
+\label{tab:impedancias}
 \end{table}
 
 
