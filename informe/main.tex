@@ -167,9 +167,15 @@ La placa cuenta con distintos elementos que hacen que sea funcional para muchas 
 
 \subsection{Microcontrolador}
 
-El microcontrolador utilizado en la placa es el STM32F746ZG. Este dispositivo opera con una tensión de alimentación comprendida entre 1,7 V y 3,6 V, y puede alcanzar una frecuencia máxima de reloj de 216 MHz. Además, dispone de 320 KB de memoria SRAM y un encapsulado de 114 pines que integran múltiples funciones de entrada/salida y periféricos internos.
+El cerebro de la tarjeta es el microcontrolador de muy alto rendimiento \textbf{STM32F746ZGT6}, basado en el núcleo ARM Cortex-M7 con FPU de 32 bits. Este dispositivo opera con un rango de tensión de alimentación de $1.7\text{ V}$ a $3.6\text{ V}$ y alcanza una frecuencia de reloj máxima de $216\text{ MHz}$. Dispone de $1\text{ MB}$ de memoria Flash, $320\text{ KB}$ de memoria SRAM (incluyendo memorias TCM de baja latencia) y se presenta en un encapsulado \textbf{LQFP144 de 144 pines}.
 
-En el presente diseño no se han empleado todos los pines disponibles, ya que la placa ha sido desarrollada para una aplicación específica y únicamente se han utilizado aquellos necesarios para cumplir los requisitos del sistema. Asimismo, el microcontrolador incorpora un oscilador externo de 32 kHz.
+Para garantizar la estabilidad temporal del sistema, el diseño incorpora dos osciladores externos:
+\begin{itemize}
+    \item \textbf{Oscilador de Alta Velocidad (HSE):} Un cristal de cuarzo de $8\text{ MHz}$ conectado a los pines \texttt{PH0} y \texttt{PH1}, esencial para alimentar el PLL principal y derivar los relojes de alta precisión necesarios para Ethernet (RMII) y USB.
+    \item \textbf{Oscilador de Baja Velocidad (LSE):} Un cristal de $32.768\text{ kHz}$ en los pines \texttt{PC14} y \texttt{PC15} dedicado al reloj de tiempo real (RTC) y estados de bajo consumo.
+\end{itemize}
+
+El arranque de la placa (\textit{boot}) se gestiona de forma manual mediante el pin \texttt{BOOT0}: por defecto se mantiene a nivel bajo ($0$) con una resistencia de pulso hacia abajo (\textit{pull-down}) de $10\text{ k}\Omega$ para iniciar desde la memoria Flash interna, pero cuenta con un pulsador físico que lo conecta a $3.3\text{ V}$ (a través de una resistencia en serie de $100\,\Omega$) para forzar el arranque en modo \textit{System Memory} (cargador de arranque por defecto de ST). La programación y depuración de la placa se realizan a través de un puerto SWD simplificado empleando los pines dedicados \texttt{PA13} (SWDIO) y \texttt{PA14} (SWCLK), además de la línea de reinicio activa a nivel bajo \texttt{NRST}.
 
 \subsection{ADC}
 Esta placa incorpora 2 pequeños ADC los cuales transforman 2 señales analógicas de 0 a 10V a una señal de 3.3V (para poder ser introducido en el microcontrolador). El ADC consta de un divisor resistivo que baja de 10V a 3.3V, también tiene un pequeño filtro paso bajo, para filtral alta frecuencia y posterior a ese divisor resistivo tiene un pequeño buffer para adaptación de impedancia.
