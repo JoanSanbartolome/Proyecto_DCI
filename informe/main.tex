@@ -179,7 +179,7 @@ El arranque de la placa (\textit{boot}) se gestiona de forma manual mediante el 
 
 \subsection{ADC y Acondicionamiento de Señal Analógica}
 
-La placa incorpora dos canales independientes para la adquisición de señales analógicas industriales en un rango de $0-10\text{ V}$. Dado que el rango de entrada del ADC del microcontrolador está limitado a $0-3.3\text{ V}$ (tensión de referencia analógica), es necesario acondicionar la señal mediante etapas de atenuación, filtrado y adaptación de impedancia.
+La placa incorpora dos canales independientes para la adquisición de señales analógicas industriales en un rango de $0-10\text{ V}$. Dado que el rango de entrada del ADC del microcontrolador está limitado a $0-3.3\text{ V}$ (tensión de referencia analógica), hemos diseñado una etapa de acondicionamiento para atenuar, filtrar y adaptar la impedancia de la señal.
 
 \begin{figure}[H]
     \centering
@@ -190,9 +190,9 @@ La placa incorpora dos canales independientes para la adquisición de señales a
 
 El circuito de acondicionamiento de cada canal consta de las siguientes etapas:
 \begin{enumerate}
-    \item \textbf{Divisor de tensión atenuador:} En el diseño preliminar se colocó un divisor con $R_{18}=100\text{ k}\Omega$ y $R_{19}=220\text{ k}\Omega$ que producía una tensión de salida de $6.87\text{ V}$ ante una entrada de $10\text{ V}$, lo que habría destruido las entradas analógicas. Para solucionarlo, se rediseñó el divisor utilizando $R_{18} = 22\text{ k}\Omega$ y $R_{19} = 10\text{ k}\Omega$, atenuando la entrada de $10\text{ V}$ a un valor seguro de $3.125\text{ V}$.
-    \item \textbf{Buffer de adaptación de impedancia:} Se implementa mediante el amplificador operacional de alta precisión \textbf{OPA350EA/250} en configuración de seguidor de tensión. Este elemento proporciona una impedancia de entrada extremadamente alta para no sobrecargar los sensores y una baja resistencia de salida para alimentar el ADC sin introducir errores de ganancia.
-    \item \textbf{Filtro paso bajo (Anti-aliasing):} Formado por $R_{20} = 1\text{ k}\Omega$ y $C_{12} = 100\text{ nF}$ a la salida del operacional, limitando el ancho de banda del canal a $f_c \approx 1.59\text{ kHz}$ para eliminar ruidos de alta frecuencia procedentes de las etapas de conmutación de potencia cercanas. Además, el condensador actúa como depósito de carga rápida para el condensador de muestreo interno del ADC ($C_{ADC} \approx 6\text{ pF}$).
+    \item \textbf{Divisor de tensión atenuador:} Para adaptar la señal al rango del microcontrolador, hemos diseñado un divisor resistivo con $R_{18} = 22\text{ k}\Omega$ y $R_{19} = 10\text{ k}\Omega$. Este divisor atenúa la tensión máxima de entrada de $10\text{ V}$ a un valor seguro de $3.125\text{ V}$, protegiendo el pin de entrada y aprovechando el $95\%$ del rango dinámico del ADC.
+    \item \textbf{Filtro paso bajo (Anti-aliasing):} Conectado a la entrada no inversora del amplificador operacional, este filtro RC pasivo está formado por $R_{20} = 1\text{ k}\Omega$ y $C_{12} = 100\text{ nF}$. Fija la frecuencia de corte en $f_c \approx 1.59\text{ kHz}$, adecuada para eliminar interferencias electromagnéticas y ruido de alta frecuencia de sensores industriales.
+    \item \textbf{Buffer de adaptación de impedancia:} Se implementa mediante el amplificador operacional de alta precisión \textbf{OPA350EA/250} en configuración de seguidor de tensión (ganancia unidad). Al estar colocado tras el filtro, este buffer aprovecha la impedancia de entrada casi infinita de sus terminales para no cargar el filtro RC, ofreciendo a su vez una salida de muy baja impedancia idónea para alimentar el circuito de muestreo del ADC del microcontrolador ($R_{ADC} \approx 6\text{ k}\Omega$) sin errores de carga.
 \end{enumerate}
 
 Para evitar oscilaciones térmicas y consumos indeseados, el segundo canal del amplificador operacional (\texttt{U5B}), al no ser utilizado en este bloque jerárquico, se ha estabilizado conectándolo en modo seguidor con su pin no inversor unido a la masa analógica (\texttt{AGND}).
