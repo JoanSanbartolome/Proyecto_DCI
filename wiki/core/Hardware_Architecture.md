@@ -35,6 +35,8 @@ Detailed guidelines for complex interfaces are maintained in their respective ar
 ## 📐 PCB Stack-up
 - **Layers:** 4 layers (Signal / GND / PWR / Signal).
 - **Thickness:** Max **1.6 mm** (Lab Circuits).
+- **Fabrication Class:** **Clase 5** (required by via drill 0.3 mm — AR = 5.33 > Clase 4 limit; annular ring 0.19 mm). See [Manufacturing Constraints](Manufacturing_Constraints.md).
+- **Via stitching:** Drill 0.3 mm / Pad **0.68 mm** (DFM corrected from 0.6 mm). See [Via Stitching & GND Guard Rings](Via_Stitching_GND_Guard_Rings.md).
 - **Mounting:** 4x 3.5mm holes connected to **EARTH**.
 
-[Source: stm32f746zg.pdf, dm00244518.pdf, Project Proposal]
+[Source: stm32f746zg.pdf, dm00244518.pdf, Project Proposal, Lab Circuits - Tablas de parámetros.pdf]

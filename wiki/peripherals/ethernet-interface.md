@@ -51,6 +51,7 @@ The LAN8742A is a high-performance 10/100 Ethernet Transceiver.
 - **Impedance:** **50 $\Omega$ single-ended** impedance.
 - **Clock (REF_CLK):** Route with special care as it is a 50 MHz signal. Minimize vias and avoid crossing plane splits.
 - **Length Matching:** Ensure RMII data lines (TXD, RXD) and control lines (TX_EN, CRS_DV) are roughly the same length to meet timing requirements.
+- **⚠️ Crosstalk Risk (MIN-SPI-02):** Signal **RMII_TXD1 (PB13, Pin 74)** is physically adjacent to **SPI2_MISO (PB14, Pin 75)** on the LQFP-144 package. Route these signals on different PCB layers or maintain ≥ 3× trace width separation if on the same layer. See [SPI Protocol](SPI_Protocol.md) for mitigation details.
 
 ### 3. Power & Grounding
 - **Decoupling:** 100 nF capacitors on every VDD pin. 1 µF and 10 µF bulk capacitors near the PHY.
@@ -65,3 +66,9 @@ The **USBLC6-4SC6** protects the two differential pairs:
 - **Pin 5:** VCC (3.3V).
 
 [Source: stm32f746zg.pdf, STM32_Esqumaticos.pdf, Propuesta+Diseño+DCI+25-26.pdf]
+
+## See Also
+
+- [SPI Protocol](SPI_Protocol.md) — Crosstalk entre RMII_TXD1 (PB13) y SPI2_MISO (PB14)
+- [Design Audit 2026-06-10](../core/Design_Audit_2026-06-10.md) — MAJ-ETH-01, MIN-ETH-03
+- [Ethernet Protection](../protection/ethernet-protection.md) — USBLC6-4SC6 layout
