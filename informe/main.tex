@@ -1,0 +1,426 @@
+% =============================================================
+%  PREÁMBULO
+% =============================================================
+
+\documentclass[12pt,a4paper]{article}
+
+% --- Codificación y fuente ---
+\usepackage{lmodern}           % Estabiliza métricas base (fix glue units)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{csquotes}  % Requerido por biblatex + babel
+
+% --- Tipografía ---
+\usepackage[sfdefault]{FiraSans}  % Fuente moderna sin conflictos con pgfplots
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Márgenes ---
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=3cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm,
+    headheight=14.5pt  % Requerido por fancyhdr
+}
+
+% --- Matemáticas ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{definicion}{Definición}[section]
+
+% --- Gráficos y figuras ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{rotating}
+
+% --- Tablas ---
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+
+% --- Código (Matlab) ---
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    language=Matlab,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{orange},
+    backgroundcolor=\color{lightgray!20},
+    frame=single,
+    breaklines=true,
+    captionpos=b,
+    showstringspaces=false
+}
+
+% --- Plots ---
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Miscelánea ---
+\usepackage{enumerate}
+\usepackage{eurosym}
+\usepackage{ragged2e}
+
+% --- Encabezados y pie de página ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}  % Limpia todos los campos
+\fancyhead[L]{\small\itshape Diseño de Circuitos Impresos}
+\fancyhead[R]{\small\itshape UPV · ETSIT}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Bibliografía ---
+\usepackage[backend=biber]{biblatex}
+\addbibresource{mybibliography.bib}
+
+% --- Hipervínculos (siempre al final del preámbulo) ---
+\usepackage[
+    colorlinks = true,
+    linkcolor  = {blue!60!black},
+    citecolor  = {blue!60!black},
+    urlcolor   = {blue!60!black}
+]{hyperref}
+
+% =============================================================
+
+\begin{document}
+
+% --- PORTADA ---
+\begin{titlepage}
+    \centering
+
+    % Logo UPV
+    \includegraphics[width=0.60\textwidth]{190470_190083_keystone_profile_school_logo-marca_UPV_principal_negro300.png}
+
+    \vspace{1.2cm}
+
+    {\large Escuela Técnica Superior de Ingeniería de Telecomunicación}\\[0.2cm]
+    {\large Universitat Politècnica de València}
+
+    \vspace{1.8cm}
+    \rule{\linewidth}{0.8pt}\\[0.5cm]
+
+    {\Huge\bfseries Trabajo Final\\[0.4cm]
+    Diseño de Circuitos Impresos}\\[0.5cm]
+
+    \rule{\linewidth}{0.8pt}
+
+    \vspace{1.2cm}
+
+    {\large\itshape Informe de diseño}\\[0.3cm]
+    {\normalsize Descripción del diseño, justificación de decisiones\\
+    y resultados de simulación y análisis}
+
+    \vfill
+
+    \begin{tabular}{rl}
+        \textbf{Autores:}         & Joan San Bartolomé \\
+                                  & Raúl Tarazona      \\[0.6cm]
+        \textbf{Asignatura:}      & Diseño de Circuitos Impresos \\[0.6cm]
+        \textbf{Curso académico:} & 2025--2026
+    \end{tabular}
+
+    \vspace{1.5cm}
+
+\end{titlepage}
+
+% Activa encabezados a partir de aquí (la portada usa su propio estilo vacío)
+\pagestyle{fancy}
+
+\newpage
+\thispagestyle{plain}  % ToC sin encabezado, solo número de página
+\tableofcontents
+
+\newpage
+
+\section{Introducción}
+
+El presente trabajo aborda el diseño y desarrollo de una tarjeta de circuito impreso (PCB) funcional y fabricable basada en el microcontrolador STM32F746ZG. Tomando como referencia la plataforma de desarrollo de bajo coste ST NUCLEO-F746 , el objetivo es adaptar y simplificar su arquitectura original en Altium Designer mediante la eliminación de componentes redundantes (como el depurador integrado ST-LINK) y la integración de interfaces específicas de conectividad y acondicionamiento de señal.
+
+Entre los requisitos clave del sistema se incluye la incorporación de conectividad Ethernet , puertos Micro-USB , dos transceptores CAN , acondicionadores para señales analógicas de 0-10V y memoria SPI Flash. El diseño final exige un ruteado y emplazamiento completamente original , estructurado en una tecnología de 4 capas con planos internos dedicados a potencia y masa , y cumpliendo estrictamente con las directivas de fabricación para asegurar un prototipo operativo.
+
+\section{Especificaciones de la placa}
+La placa cuenta con distintos elementos que hacen que sea funcional para muchas situaciones y entornos, a continuación, se verán los diferentes elementos y funcionalidades de la placa a la vez que su construcción.
+
+\subsection{Microcontrolador}
+
+El microcontrolador utilizado en la placa es el STM32F746ZG. Este dispositivo opera con una tensión de alimentación comprendida entre 1,7 V y 3,6 V, y puede alcanzar una frecuencia máxima de reloj de 216 MHz. Además, dispone de 320 KB de memoria SRAM y un encapsulado de 114 pines que integran múltiples funciones de entrada/salida y periféricos internos.
+
+En el presente diseño no se han empleado todos los pines disponibles, ya que la placa ha sido desarrollada para una aplicación específica y únicamente se han utilizado aquellos necesarios para cumplir los requisitos del sistema. Asimismo, el microcontrolador incorpora un oscilador externo de 32 kHz.
+
+\subsection{ADC}
+Esta placa incorpora 2 pequeños ADC los cuales transforman 2 señales analógicas de 0 a 10V a una señal de 3.3V (para poder ser introducido en el microcontrolador). El ADC consta de un divisor resistivo que baja de 10V a 3.3V, también tiene un pequeño filtro paso bajo, para filtral alta frecuencia y posterior a ese divisor resistivo tiene un pequeño buffer para adaptación de impedancia.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/ADC_esquema.png}
+    \caption{Esquemático ADC}
+    \label{fig:adc_esquema}
+\end{figure}
+
+\subsubsection{Pines asignados para el ADC}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
+ADC1 & PB0 & Entrada analógica \\ \hline
+ADC2 & PB1 & Entrada analógica \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{CAN}
+La comunicación CAN es una comunicación de tipo diferencial la cual aporta mayor robustez a la comunicación porque “resiste” ante perturbaciones externas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/CAN_esquema.png}
+    \caption{CAN esquemático}
+    \label{fig:can_esquema}
+\end{figure}
+
+
+Aunque el micro sea posible conectar directamente la comunicación CAN, se le tiene que incorporar un pequeño módulo CAN para adaptación de tensión y además sirve como protección ante problemas en el bus.
+
+\subsubsection{Pines asignados para el CAN}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
+CAN1H & PD0 & Línea de recepción de CAN 1 \\ \hline
+CAN1L & PD1 & Línea de transmisión de CAN 1 \\ \hline
+CAN2H & PB5 & Línea de recepción de CAN 2 \\ \hline
+CAN2L & PB6 & Línea de transmisión de CAN 2 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{USB}
+La tarjeta incorpora un pequeño USB que sirve como alimentación a la placa y también como salida de datos del microcontrolador al puerto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/USB_esquema.png}
+    \caption{Esquema USB}
+    \label{fig:usb_esquema}
+\end{figure}
+
+El USB incorpora una serie de protecciones como TVS para la descarga electrostática y varistores para limitar la corriente de entrada, también un pequeño diodo donde para evitar polaridad inversa.
+\subsubsection{Pines asignados para el CAN}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
+USB\_VBUS & PA9 & Alimentación a toda la placa \\ \hline
+USB\_ID & PA10 & Identificador \\ \hline
+USB\_DM & PA11 & Línea de transmisión de datos. \\ \hline
+USB\_DP & PA12 & Línea de transmisión de datos. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Alimentación}
+Como  se ha comentado en el apartado anterior, el puerto USB es el encargado de dar alimentación a la placa, pero esa tensión es de 5V y gran parte de la placa es alimentada a 3.3V, por ello se ha puesto un regulador lineal para bajar de 5V a 3.3V. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/Alimentacion_squema.png}
+    \caption{Esquema de alimentación}
+    \label{fig:alimentacion_esquema}
+\end{figure}
+
+\subsubsection{Pines de alimentación del microcontrolador}
+\begin{table}[h]
+\centering
+\footnotesize % Reduce el tamaño de la letra para ganar espacio
+\begin{tabular}{|l|l|p{6cm}|} % p{6cm} limita el ancho de la última columna y hace salto de línea
+\hline
+\textbf{TIPO} & \textbf{PIN} & \textbf{NÚMERO(S) DE PIN FÍSICO} \\ \hline
+Digital & VDD & 16, 30, 39, 52, 62, 72, 84, 95, 108, 121, 131, 144 \\ \hline
+Tierra & VSS & 15, 31, 38, 51, 61, 71, 83, 94, 107, 120, 130, 143 \\ \hline
+Analógica & VDDA & 33 \\ \hline
+Tierra An. & VSSA & 32 \\ \hline
+Ref. An. & VREF+ / - & 35 / 34 \\ \hline
+Batería & VBAT & 6 \\ \hline
+Regulador & VCAP\_1 / 2 & 106 / 49 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Ethernet}
+El puerto Ethernet sirve para conectar la placa a una red local o a Internet por cable, ofreciendo una comunicación rápida, estable y libre de interferencias. Permite al microcontrolador enviar datos de sensores en tiempo real, recibir comandos de control industrial y permitir su configuración remota desde cualquier navegador web.
+
+\subsubsection{Pines asignados al ethernet}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|l|p{4.5cm}|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
+RMII\_TX\_EN & PG11 & Habilitación de la transmisión \\ \hline
+RMII\_TXD0 & PG13 & Transmisión de datos \\ \hline
+RMII\_TXD1 & PB13 & Transmisión de datos \\ \hline
+RMII\_RXD0 & PC4 & Recepción de datos \\ \hline
+RMII\_RXD1 & PC5 & Recepción de datos \\ \hline
+RMII\_CRS\_DV & PA7 & Bit de comprobación \\ \hline
+RMII\_MDC & PC1 & Reloj \\ \hline
+RMII\_MDIO & PA2 & Línea donde se envían comandos de lectura y escritura \\ \hline
+RMII\_REF\_CLK & PA1 & Referencia de reloj \\ \hline
+NRST & P25 & Reset \\ \hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Conectores}
+Además de todo lo anterior la placa cuenta con 16 puertos de entrada salida general. Estos cuentan con una protección ante descargas electrostáticas mediante el uso de TVS y resistencias en serie para así también limitar la corriente del GPIO y evitar que se queme.
+
+\subsubsection{Pines de los conectores}
+% IMPORTANTE: Añade esto en el preámbulo de tu documento (antes de \begin{document}):
+% \usepackage{tabularx}
+
+\begin{table}[H]
+\centering
+\small % Reduce un poco la letra si es necesario
+% width=\textwidth obliga a la tabla a medir exactamente el ancho del texto de la página
+\begin{tabularx}{\textwidth}{|l|X|l|X|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} & \textbf{Nº de PIN del conector} \\ \hline
+GND & & Masa & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
+3V3 & & Pines de alimentación & 5, 6 \\ \hline
+USB\_PWR & & Alimentación directa USB & 3, 4 \\ \hline
+Entrada propósito general & PG4, PC6, PG5, PG8, PG2, PG7, PG3, PG6, PD14, PD11, PD15, PD10, PD12, PD9, PD13, PD8, PE8, PG14, PE7, PG9 & Recepción de datos & 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 24, 25, 26, 27, 28, 31, 32, 33, 34 \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Memoria Flash}
+Para la memoria del microcontrolador se ha usado una memoria flash de 2Mb para el almacenamiento del programa. Esta se comunica con el microcontrolador mediante el bus de comunicación SPI.
+
+\subsubsection{Asignación de los pines de la memoria Flash}
+% Recuerda añadir \usepackage{tabularx} en el preámbulo de tu documento si no lo has hecho ya.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\hline
+\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} & \textbf{Nº de PIN del conector} \\ \hline
+SPI\_IN & PB14 & Línea de datos MISO & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
+SPI\_OUT & PB15 & Línea de datos MOSI & 5, 6 \\ \hline
+CE & PB12 & Chip select & 3, 4 \\ \hline
+SPI\_CLK & PB10 & Reloj & 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 24, 25, 26, 27, 28, 31, 32, 33, 34 \\ \hline
+\end{tabularx}
+\end{table}
+
+
+
+\subsection{Stack-up}
+
+Para poder hacer un buen ajuste de impedancias dentro de la PCB es muy importante el diseño adecuado del Stack-up, en esta PCB hay líneas diferenciales de CAN ($120\Omega$), Ethernet ($100\Omega$), USB ($90\Omega$). También la PCB cuenta con una impedancia Singel ended de 50 $\Omega$ para todas las líneas de alimentación y señales no tan críticas.
+
+La PCB consta de 4 capas, 2 para señales (top y bottom) y 2 para alimentaciones (3.3V y GND). Como consideraciones a tener en cuenta es que la PCB debe de ser aproximadamente de 1.6mm de espesor, en concreto esta PCB es de 1.62mm, un valor muy próximo a esos 1.6mm. En lo que respecta al espesor del cobre, como no es una PCB de potencia (donde va a pasar gran cantidad de corriente) por lo que en este caso se ha puesto en capas de señal media onza y en alimentación, una onza. Aquí está el diseño del stack-up:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/Stak-up.png}
+    \caption{Propuesta de Stack-Up 4 capas}
+    \label{fig:stackup}
+\end{figure}
+
+\subsubsection{Impedancias de los diferentes buses de comunicación y pistas}
+
+Ahora se va a poner una tabla con los valores de impedancia obtenidos con este stack-up.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Comparación entre impedancias ideales y obtenidas}
+\label{tab:impedancias}
+\begin{tabular}{|p{2.8cm}|p{2.8cm}|c|c|c|}
+\hline
+\textbf{Comunicación} &
+\textbf{Tipo de comunicación} &
+\textbf{Impedancia ideal} &
+\textbf{Impedancia real} &
+\textbf{Variación} \\ \hline
+
+CAN &
+Diferencial &
+$120\,\Omega$ &
+$113\,\Omega$ &
+$5.89$\,\% \\ \hline
+
+Ethernet &
+Diferencial &
+$100\,\Omega$ &
+$104\,\Omega$ &
+$4.3$\,\% \\ \hline
+
+USB &
+Diferencial &
+$90\,\Omega$ &
+$94.45\,\Omega$ &
+$4.95$\,\% \\ \hline
+
+Resto de pistas &
+Single-ended &
+$50\,\Omega$ &
+$53.65\,\Omega$ &
+$7.3$\,\% \\ \hline
+
+\end{tabular}
+\end{table}
+
+
+\section{Reflexiones}
+
+Para comprobar el buen rutado de la placa se va a realizar un análisis para la integridad de señal en las pistas del PCB para ver si tanto el rutado, las consideraciones y los cálculos son correctos para evitar reflexiones en las pistas que pueden afectar al buen funcionamiento del PCB.
+
+\subsection{CAN}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/Reflexiones CAN.png}
+    \caption{Reflexiones Can}
+    \label{fig:reflexiones_can}
+\end{figure}
+
+Como se observa en la imagen las gráficas de las reflexiones del bus CAN no se aprecian reflexiones, lo que es positivo porque eso quiere decir que existe una buena adaptación de impedancias.
+
+
+\subsection{USB}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Data_reflexions.png}
+    \caption{USB}
+    \label{fig:reflexiones_usb}
+\end{figure}
+
+Aquí se muestra el análisis del USB, como se muestra en la imagen las 2 señales se encuentran perfectas sin aparente distorsión ni sobreoscilaciones.
+
+
+\subsection{Ethernet}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/ether_con_UWU.png}
+    \caption{Ethernet}
+    \label{fig:reflexiones_ethernet}
+\end{figure}
+
+Aquí se muestra el análisis del USB, como se muestra en la imagen las 2 señales del ethernet, se encuentran perfectas sin aparente distorsión ni sobreoscilaciones.
+
+\end{document}

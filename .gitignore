@@ -47,3 +47,19 @@ raw/
 # --- Obsidian ---
 # Configuraciones locales de la interfaz de Obsidian
 .obsidian/
+
+# --- LaTeX ---
+# Ignorar archivos auxiliares de compilación
+informe/*.aux
+informe/*.toc
+informe/*.out
+informe/*.log
+informe/*.bcf
+informe/*.run.xml
+informe/*.fdb_latexmk
+informe/*.fls
+informe/*.synctex.gz
+informe/*.bbl
+informe/*.blg
+informe/*.pdf
+# Nota: Si deseas subir el PDF final del informe a Git, puedes comentar la línea anterior.
