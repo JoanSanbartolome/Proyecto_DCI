@@ -512,6 +512,31 @@ VDD & Pin 8 & -- & Alimentación a +3.3 V, desacoplada localmente con condensado
 \label{tab:flash_pines}
 \end{table}
 
+\subsection{Distribución y Emplazado de Componentes (Placement)}
+
+Para optimizar el comportamiento térmico, electromagnético y la integridad de las señales en la placa, hemos diseñado una distribución espacial (placement) basada en la segregación estricta de componentes por bloques funcionales. El emplazado de componentes respeta el flujo natural de las señales lógicas y de potencia, minimizando la longitud de las trazas críticas y evitando el acoplamiento cruzado de ruido (crosstalk) entre bloques de alta frecuencia, circuitos analógicos de precisión y convertidores de potencia.
+
+En la Figura~\ref{fig:layout_placement} se muestra el plano de distribución y emplazado físico de componentes en el plano de la serigrafía de ensamblaje (Assembly Drawing) de la PCB:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\linewidth]{Imagenes/Layout_placement.png}
+    \caption{Plano de distribución espacial y emplazado de componentes (Placement) en la PCB.}
+    \label{fig:layout_placement}
+\end{figure}
+
+El diseño físico de la distribución de componentes en la PCB se ha estructurado en torno a las siguientes decisiones de ingeniería de layout:
+
+\begin{enumerate}
+    \item \textbf{Microcontrolador Central (U42):} Hemos ubicado el STM32F746ZGT6 en el centro geométrico de la placa. Esta posición central equidistante facilita un ruteado simétrico y balanceado en estrella de los buses de datos de alta velocidad y las líneas analógicas hacia los extremos. El anillo de condensadores de desacoplo de alimentación digital se coloca en la capa superior (Top) inmediatamente adyacente a cada pin de alimentación para minimizar la inductancia intrínseca de conexión.
+    \item \textbf{Zona Analógica de Precisión (E41 y Acondicionamiento):} Situada en el borde superior central de la placa. Alberga el bloque de bornes Weidmüller E41 y las etapas de amplificación y filtrado analógico (U5\_U\_ADC1 y U5\_U\_ADC2). Esta zona analógica está aislada físicamente de los transceptores lógicos de alta conmutación (USB y Ethernet) y de las fuentes conmutadas para evitar la inducción de ruido térmico o electromagnético en los canales del ADC.
+    \item \textbf{Bloque de Red Ethernet (PHY y RJ45):} Emplazado de forma exclusiva en la esquina superior derecha de la placa. La PHY LAN8742A (U2) y su oscilador local de $25\,\text{MHz}$ (X1) se disponen adyacentes al jack RJ45 (CN1) con magnetizados integrados. Esta cercanía minimiza la longitud de los pares diferenciales críticos MDI y las trazas de reloj de alta frecuencia, reduciendo la emisión por radiación de la interfaz física de red.
+    \item \textbf{Módulos de Transmisión CAN (CAN 1 y CAN 2):} Ubicados en el borde derecho inferior de la placa de forma simétrica. Los transceptores SN65HVD230Q (U6\_U\_Can1/2) y los conectores JST J41/J42 de bus de campo se sitúan en paralelo en el extremo exterior. Las protecciones TVS PESD2CANFD24V-TR (D44/D45) se emplazan directamente en la entrada del conector, desviando las descargas electrostáticas a tierra de forma inmediata y evitando su propagación por la placa.
+    \item \textbf{Etapa de Alimentación y Puerto USB:} Colocada en la esquina inferior izquierda de la placa. Agrupa el conector Micro-USB (CN43), el regulador lineal de baja caída LDO LD39050 (U4) y los dispositivos de protección VBUS (polyfuse F41 y diodo Schottky D48). Al agrupar el bloque de potencia en un extremo, el calor generado por la disipación del LDO no se propaga hacia el microcontrolador o la zona analógica de precisión, mejorando la estabilidad térmica general.
+    \item \textbf{Interfaz de Depuración (SWD):} El conector CN42 (SWD) se encuentra situado en la parte inferior central de la placa, cerca de la base del microcontrolador. Esta disposición acorta el camino de las líneas de programación de alta velocidad SWDIO y SWCLK, disminuyendo la radiación EMI emitida por el programador.
+    \item \textbf{Periféricos de Usuario y Memoria Flash:} Los tres pulsadores físicos (USER B42, BOOT B43, RESET B41) y los diodos LED indicadores se sitúan a lo largo del borde inferior para facilitar el acceso manual. Por su parte, la memoria Flash externa SPI (U7) y sus líneas de control se emplazan inmediatamente por encima del microcontrolador para reducir la longitud del bus SPI2 a menos de $15\,\text{mm}$.
+\end{enumerate}
+
 \subsection{Stack-up}
 
 Para garantizar la integridad de señal en los buses de datos de alta velocidad y cumplir con las directrices de compatibilidad electromagnética (EMC), hemos diseñado un stack-up controlado de 4 capas. El uso de una estructura multicapa permite definir planos de referencia de masa y alimentación continuos y adyacentes a las capas externas de señal, lo cual minimiza el área del lazo de retorno de corriente, reduce la inductancia parásita del plano y bloquea la radiación electromagnética (EMI) de modo común.
