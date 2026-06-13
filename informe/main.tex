@@ -422,43 +422,94 @@ nRST (PHY) & Pin 25 & Línea de reinicio por hardware del microcontrolador (NRST
 
 
 \subsection{Conectores}
-Además de todo lo anterior la placa cuenta con 16 puertos de entrada salida general. Estos cuentan con una protección ante descargas electrostáticas mediante el uso de TVS y resistencias en serie para así también limitar la corriente del GPIO y evitar que se queme.
+Además de las interfaces de comunicación específicas, hemos integrado conectores de expansión y terminales de conexión externa para interactuar con señales analógicas y digitales del sistema:
 
-\subsubsection{Pines de los conectores}
-% IMPORTANTE: Añade esto en el preámbulo de tu documento (antes de \begin{document}):
-% \usepackage{tabularx}
+\begin{enumerate}
+    \item \textbf{Conector de Expansión General (CN41):} Se trata de un conector macho de cabezal de $18\times2$ vías (paso de $2.54\,\text{mm}$) que expone un total de 16 líneas GPIO generales del microcontrolador (pertenecientes a los puertos C, D y G) y 4 líneas correspondientes a las interfaces USART6 y USART7.
+    \item \textbf{Conector de Depuración SWD (CN42):} Un cabezal de $6\times1$ vías utilizado para la programación y depuración del STM32F746ZG, exponiendo las líneas de depuración esenciales (SWCLK, SWDIO, SWO y el pin de reinicio NRST).
+    \item \textbf{Terminales de Entrada Analógica (J41):} Un bloque de bornes de tornillo Weidmüller, modelo \textbf{1845040000} (paso de $3.50\,\text{mm}$ y entrada a $90^\circ$), que proporciona una conexión segura para las dos entradas analógicas acondicionadas de $0-10\,\text{V}$.
+    \item \textbf{Conectores de Bus CAN (J42 y J43):} Conectores macho de 2 pines JST tipo \textbf{B2B-EH-A(LF)(SN)} para las conexiones físicas de los buses de comunicación CAN1 y CAN2.
+\end{enumerate}
+
+\subsubsection{Estrategia de Protección de Entradas/Salidas}
+Para garantizar la inmunidad del microcontrolador frente a eventos externos de sobretensión y descargas electrostáticas (ESD), hemos diseñado e implementado un esquema de protección multietapa para todas las líneas de entrada y salida expuestas:
+\begin{itemize}
+    \item \textbf{Protección ESD Primaria (TVS Diodes):} Inmediatamente después del conector físico, hemos colocado matrices de diodos de supresión de tensiones transitorias (TVS) de 4 canales bidireccionales, modelo \textbf{ESDA6V1BC6} (D46, D47, D48 y D49). Estos dispositivos poseen una tensión de ruptura de $6.1\,\text{V}$, ideal para proteger pines tolerantes a $5\,\text{V}$ sin distorsionar señales de datos. Su ubicación física adyacente al conector y su baja inductancia de conexión a masa aseguran que los transitorios se deriven a tierra de forma instantánea.
+    \item \textbf{Protección de Línea CAN:} Los puertos J42 y J43 disponen de diodos de protección TVS específicos de bus CAN de alta inmunidad y baja capacitancia modelo \textbf{PESD2CANFD24V-TR} (D44 y D45), situados en paralelo con las líneas diferenciales CAN\_H y CAN\_L.
+    \item \textbf{Limitación de Corriente Secundaria (Resistencias Serie):} Entre las matrices TVS y los pines de entrada del microcontrolador, hemos introducido resistencias de protección en serie. Para las líneas de propósito general expuestas en CN41, hemos seleccionado resistencias de $100\,\Omega$ (R58 a R65 para el puerto D, y R69 a R73 para los puertos G/C). Estas resistencias limitan la corriente transitoria residual que pudiera llegar al microcontrolador a un nivel seguro inferior al límite de conducción de los diodos de fijación (clamping diodes) internos del STM32F746ZG ($I_{IN} < 10\,\text{mA}$).
+    \item \textbf{Líneas de Depuración SWD:} Las señales del conector CN42 (SWCLK, SWDIO, SWO y NRST) se conectan al MCU mediante resistencias en serie de $22\,\Omega$ (R43, R44, R45 y R46), las cuales reducen sobreoscilaciones (overshoot/undershoot) y previenen reflexiones de alta frecuencia causadas por la impedancia de los cables de programación.
+\end{itemize}
+
+La topología de ruteado implementada respeta estrictamente la secuencia física: \textbf{[Conector Exterior]} $\rightarrow$ \textbf{[Diodo TVS ESDA6V1BC6 / PESD2CANFD]} $\rightarrow$ \textbf{[Resistencia Serie]} $\rightarrow$ \textbf{[Pin del MCU]}.
+
+\subsubsection{Asignación de Pines del Conector General (CN41)}
+
+La Tabla~\ref{tab:conectores_pines} muestra el mapeo detallado de cada pin del conector CN41, incluyendo las señales de alimentación y tierra correspondientes:
 
 \begin{table}[H]
 \centering
-\small % Reduce un poco la letra si es necesario
-% width=\textwidth obliga a la tabla a medir exactamente el ancho del texto de la página
-\begin{tabularx}{\textwidth}{|l|X|l|X|}
+\small
+\begin{tabularx}{\textwidth}{|l|c|X|l|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} & \textbf{Nº de PIN del conector} \\ \hline
-GND & & Masa & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
-3V3 & & Pines de alimentación & 5, 6 \\ \hline
-USB\_PWR & & Alimentación directa USB & 3, 4 \\ \hline
-Entrada propósito general & PG4, PC6, PG5, PG8, PG2, PG7, PG3, PG6, PD14, PD11, PD15, PD10, PD12, PD9, PD13, PD8, PE8, PG14, PE7, PG9 & Recepción de datos & 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 24, 25, 26, 27, 28, 31, 32, 33, 34 \\ \hline
+\textbf{Señal del Esquema} & \textbf{Pin MCU} & \textbf{Función Asignada} & \textbf{Pin Conector CN41} \\ \hline
+GND & -- & Plano de Masa de Referencia & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
+P5V & -- & Alimentación +5 V (desde USB) & 3, 4 \\ \hline
+P3V3 & -- & Alimentación +3.3 V Regulada & 5, 6 \\ \hline
+PinG4 & PG4 & I/O de Propósito General & 9 \\ \hline
+PinC6 & PC6 & I/O de Propósito General & 10 \\ \hline
+PinG5 & PG5 & I/O de Propósito General & 11 \\ \hline
+PinG8 & PG8 & I/O de Propósito General & 12 \\ \hline
+PinG2 & PG2 & I/O de Propósito General & 15 \\ \hline
+PinG7 & PG7 & I/O de Propósito General & 16 \\ \hline
+PinG3 & PG3 & I/O de Propósito General & 17 \\ \hline
+PinG6 & PG6 & I/O de Propósito General & 18 \\ \hline
+PinD14 & PD14 & I/O de Propósito General & 19 \\ \hline
+PinD11 & PD11 & I/O de Propósito General & 20 \\ \hline
+PinD15 & PD15 & I/O de Propósito General & 23 \\ \hline
+PinD10 & PD10 & I/O de Propósito General & 24 \\ \hline
+PinD12 & PD12 & I/O de Propósito General & 25 \\ \hline
+PinD9 & PD9 & I/O de Propósito General & 26 \\ \hline
+PinD13 & PD13 & I/O de Propósito General & 27 \\ \hline
+PinD8 & PD8 & I/O de Propósito General & 28 \\ \hline
+USART7\_TX & PE8 & Transmisión USART7 / GPIO & 31 \\ \hline
+USART6\_TX & PG14 & Transmisión USART6 / GPIO & 32 \\ \hline
+USART7\_RX & PE7 & Recepción USART7 / GPIO & 33 \\ \hline
+USART6\_RX & PG9 & Recepción USART6 / GPIO & 34 \\ \hline
 \end{tabularx}
+\caption{Distribución de pines del conector de expansión general (CN41) y su asignación en el microcontrolador.}
+\label{tab:conectores_pines}
 \end{table}
 
 \subsection{Memoria Flash}
-Para la memoria del microcontrolador se ha usado una memoria flash de 2Mb para el almacenamiento del programa. Esta se comunica con el microcontrolador mediante el bus de comunicación SPI.
+Para el almacenamiento de firmware auxiliar, archivos de configuración o parámetros no volátiles del sistema, hemos incorporado una memoria Flash externa de tipo SPI NOR de $4\,\text{Mbit}$ ($512\,\text{KB}$), modelo \textbf{SST25VF040B-50-4I-S2AF} (encapsulado SOIC-8). Este chip se comunica con el microcontrolador a través del bus serie síncrono SPI2.
 
-\subsubsection{Asignación de los pines de la memoria Flash}
-% Recuerda añadir \usepackage{tabularx} en el preámbulo de tu documento si no lo has hecho ya.
+\subsubsection{Criterios de Diseño para la Integridad de la Señal SPI}
+Debido a la alta frecuencia de conmutación del bus SPI (que puede operar hasta $50\,\text{MHz}$), hemos tomado las siguientes precauciones en el diseño del circuito:
+\begin{itemize}
+    \item \textbf{Amortiguación del Reloj (SCK):} Hemos colocado una resistencia amortiguadora en serie de $33\,\Omega$ (R32) en la línea de reloj (SPI\_CLK / SCK), ubicada en la cercanía física del microcontrolador (emisor). Esto permite controlar la impedancia de salida del driver, reducir la velocidad de subida del flanco (slew rate) y prevenir rebotes o sobreoscilaciones destructivas que podrían causar falsas transiciones de reloj en la memoria.
+    \item \textbf{Resistencias de Pull-Up en Control:} Hemos colocado resistencias de pull-up de $10\,\text{k}\Omega$ a la línea de $3.3\,\text{V}$ (R31) en las líneas de control activas a nivel bajo: \textbf{CE\#} (Chip Enable), \textbf{WP\#} (Write Protect) y \textbf{HOLD\#} (Hold). Estas resistencias de pull-up aseguran que durante el arranque del microcontrolador (cuando sus pines se encuentran en alta impedancia), la memoria permanezca deshabilitada y protegida contra cualquier escritura o borrado accidental.
+    \item \textbf{Desacoplo local:} Hemos colocado un condensador de desacoplo de $100\,\text{nF}$ (C61) en paralelo al terminal de alimentación VDD (Pin 8) a masa, ubicado lo más próximo posible al integrado.
+\end{itemize}
 
-\begin{table}[h]
+La asignación de pines y conexiones físicas para la memoria Flash SPI se detallan en la Tabla~\ref{tab:flash_pines}:
+
+\begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\begin{tabularx}{\textwidth}{|l|c|c|X|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} & \textbf{Nº de PIN del conector} \\ \hline
-SPI\_IN & PB14 & Línea de datos MISO & 1, 2, 7, 8, 13, 14, 21, 22, 29, 30, 35, 36 \\ \hline
-SPI\_OUT & PB15 & Línea de datos MOSI & 5, 6 \\ \hline
-CE & PB12 & Chip select & 3, 4 \\ \hline
-SPI\_CLK & PB10 & Reloj & 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 24, 25, 26, 27, 28, 31, 32, 33, 34 \\ \hline
+\textbf{Señal del Esquema} & \textbf{Pin Memoria (SOIC-8)} & \textbf{Pin MCU} & \textbf{Descripción y Detalles de Diseño} \\ \hline
+SPI\_CS / CE\# & Pin 1 & PB12 & Habilitación de chip (Chip Enable). Dispone de un pull-up de $10\,\text{k}\Omega$ a 3.3V. \\ \hline
+SPI\_MISO / SO & Pin 2 & PB14 & Salida de datos serie (Serial Data Output). Conexión directa a MISO del bus SPI2. \\ \hline
+WP\# & Pin 3 & -- & Entrada de protección contra escritura. Conectada a +3.3 V mediante pull-up de $10\,\text{k}\Omega$. \\ \hline
+GND / VSS & Pin 4 & -- & Terminal de referencia de masa. \\ \hline
+SPI\_MOSI / SI & Pin 5 & PB15 & Entrada de datos serie (Serial Data Input). Conexión directa a MOSI del bus SPI2. \\ \hline
+SPI\_CLK / SCK & Pin 6 & PB10 & Reloj serie (Serial Clock). Conectado mediante resistencia amortiguadora serie de $33\,\Omega$. \\ \hline
+HOLD\# & Pin 7 & -- & Entrada de pausa temporal de bus. Conectada a +3.3 V mediante pull-up de $10\,\text{k}\Omega$. \\ \hline
+VDD & Pin 8 & -- & Alimentación a +3.3 V, desacoplada localmente con condensador cerámico de $100\,\text{nF}$. \\ \hline
 \end{tabularx}
+\caption{Mapeo de pines y criterios de conexión para la memoria Flash SPI externa SST25VF040B.}
+\label{tab:flash_pines}
 \end{table}
 
 
