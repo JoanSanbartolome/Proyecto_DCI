@@ -361,27 +361,63 @@ Condensadores del Regulador Núcleo & VCAP\_1 / VCAP\_2 & 71 / 106 \\ \hline
 \label{tab:alimentacion_pines}
 \end{table}
 
-\subsection{Ethernet}
-El puerto Ethernet sirve para conectar la placa a una red local o a Internet por cable, ofreciendo una comunicación rápida, estable y libre de interferencias. Permite al microcontrolador enviar datos de sensores en tiempo real, recibir comandos de control industrial y permitir su configuración remota desde cualquier navegador web.
+\subsection{Interfaz de Red Ethernet}
 
-\subsubsection{Pines asignados al ethernet}
-\begin{table}[h]
+Hemos incorporado conectividad Ethernet 10/100Base-TX mediante el uso del microcontrolador en modo MAC y un transceptor de capa física (PHY) externo de bajo consumo \textbf{LAN8742A-CZ-TR} en encapsulado QFN-24. La conexión física se realiza a través de un conector RJ45 con transformador magnético integrado (\textbf{KRJ-CB4.2GYZNL}).
+
+El diseño de esta etapa se basa en las siguientes decisiones técnicas de hardware:
+\begin{enumerate}
+    \item \textbf{Uso de interfaz RMII (Reduced Media Independent Interface):} Para reducir el número de patillas necesarias en el microcontrolador de 17 (modo MII) a 9, hemos configurado la comunicación en modo RMII. La señal de reloj de referencia de $50\text{ MHz}$ (\texttt{RMII\_REF\_CLK}) es generada por el propio PHY a partir de un cristal local de $25\text{ MHz}$ y se introduce en el pin \texttt{PA1} del microcontrolador.
+    \item \textbf{Aislamiento galvánico bajo los magnéticos:} Para evitar el acoplamiento de ruido electromagnético de modo común procedente de la línea de red cableada hacia los planos internos de alimentación y masa de la placa, hemos definido un área de exclusión de cobre (\textit{keep-out}) en todas las capas de la PCB por debajo de la zona ocupada por los transformadores magnéticos del conector RJ45.
+    \item \textbf{Protección contra transitorios:} Hemos colocado un array de diodos de capacitancia ultra-baja \textbf{USBLC6-4SC6} adyacente a las líneas diferenciales del conector para filtrar picos de ESD antes de que alcancen el lado del transceptor.
+\end{enumerate}
+
+\subsubsection{Cálculo de Impedancia del Par Diferencial Ethernet}
+
+Las líneas del bus MDI que enlazan el transceptor PHY con el conector RJ45 (\texttt{TX+/TX-} y \texttt{RX+/RX-}) requieren un control de impedancia diferencial de **$100\,\Omega$**. Hemos calculado la geometría del par en base a la pila de capas de $1.6\text{ mm}$ de \textit{Lab Circuits} utilizando el motor de cálculo \textit{SIMBEOR} de Altium Designer. Los valores resultantes se detallan en la Tabla~\ref{tab:ethernet_diffpair_params}:
+
+\begin{table}[H]
 \centering
 \small
-\begin{tabular}{|l|l|p{4.5cm}|}
+\begin{tabular}{|l|c|}
 \hline
-\textbf{TIPO} & \textbf{PIN DEL MICROCONTROLADOR} & \textbf{FUNCIÓN} \\ \hline
-RMII\_TX\_EN & PG11 & Habilitación de la transmisión \\ \hline
-RMII\_TXD0 & PG13 & Transmisión de datos \\ \hline
-RMII\_TXD1 & PB13 & Transmisión de datos \\ \hline
-RMII\_RXD0 & PC4 & Recepción de datos \\ \hline
-RMII\_RXD1 & PC5 & Recepción de datos \\ \hline
-RMII\_CRS\_DV & PA7 & Bit de comprobación \\ \hline
-RMII\_MDC & PC1 & Reloj \\ \hline
-RMII\_MDIO & PA2 & Línea donde se envían comandos de lectura y escritura \\ \hline
-RMII\_REF\_CLK & PA1 & Referencia de reloj \\ \hline
-NRST & P25 & Reset \\ \hline
+\textbf{Parámetro del Par Diferencial} & \textbf{Valor de Diseño} \\ \hline
+Impedancia Objetivo ($Z_{diff}$) & $100\,\Omega$ \\ \hline
+Tolerancia de Diseño & $10\%$ \\ \hline
+Ancho de Pista ($W1$ / $W2$) & $0.182\text{ mm}$ ($\approx 7.2\text{ mils}$) \\ \hline
+Separación de Pistas (Gap, $G$) & $0.180\text{ mm}$ ($\approx 7.1\text{ mils}$) \\ \hline
+Grosor de la Máscara de Soldadura ($C1$ / $C2$) & $0.0254\text{ mm}$ ($1\text{ mil}$) \\ \hline
+\textbf{Impedancia Diferencial Calculada ($Z_{diff}$)} & $\mathbf{99.99\,\Omega}$ \\ \hline
+Desviación de Impedancia Obtenida & $0.01\%$ \\ \hline
+Retardo de Propagación (Delay) & $5.91\text{ ns/m}$ \\ \hline
 \end{tabular}
+\caption{Parámetros de diseño calculados para el par diferencial Ethernet de 100 Ohm.}
+\label{tab:ethernet_diffpair_params}
+\end{table}
+
+\subsubsection{Pines asignados para el bus Ethernet}
+
+Las señales lógicas del bus de control y datos RMII están distribuidas de acuerdo con la siguiente tabla:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|c|X|}
+\hline
+\textbf{Señal RMII} & \textbf{Pin MCU} & \textbf{Función de la Señal} \\ \hline
+RMII\_REF\_CLK & PA1 & Reloj de referencia de 50 MHz para sincronización \\ \hline
+RMII\_MDIO & PA2 & Gestión de datos bidireccional (SMI) \\ \hline
+RMII\_MDC & PC1 & Reloj de la interfaz de gestión (SMI) \\ \hline
+RMII\_CRS\_DV & PA7 & Detección de portadora y validación de datos recibidos \\ \hline
+RMII\_RXD0 & PC4 & Línea 0 de recepción de datos \\ \hline
+RMII\_RXD1 & PC5 & Línea 1 de recepción de datos \\ \hline
+RMII\_TX\_EN & PG11 & Habilitación de transmisión de datos \\ \hline
+RMII\_TXD0 & PG13 & Línea 0 de transmisión de datos \\ \hline
+RMII\_TXD1 & PB13 & Línea 1 de transmisión de datos \\ \hline
+nRST (PHY) & Pin 25 & Línea de reinicio por hardware del microcontrolador (NRST) \\ \hline
+\end{tabularx}
+\caption{Asignación de pines para la interfaz Ethernet en modo RMII.}
+\label{tab:ethernet_pines}
 \end{table}
 
 
