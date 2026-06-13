@@ -319,30 +319,46 @@ USB\_DP & PA12 & OTG\_FS\_DP & Línea de datos diferencial positiva (D+) \\ \hli
 \label{tab:usb_pines}
 \end{table}
 
-\subsection{Alimentación}
-Como  se ha comentado en el apartado anterior, el puerto USB es el encargado de dar alimentación a la placa, pero esa tensión es de 5V y gran parte de la placa es alimentada a 3.3V, por ello se ha puesto un regulador lineal para bajar de 5V a 3.3V. 
+\subsection{Sistema de Alimentación y Red de Distribución de Potencia (PDN)}
+
+La tarjeta se alimenta primariamente a través del puerto Micro-USB ($5\text{ V}$). Dado que la electrónica principal (núcleo del microcontrolador, transceptores y periféricos) funciona a un nivel nominal de $3.3\text{ V}$, hemos implementado una etapa de regulación lineal y una red de desacoplo distribuida (PDN) para asegurar el suministro limpio y estable de energía.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Imagenes/Alimentacion_squema.png}
-    \caption{Esquema de alimentación}
+    \includegraphics[width=0.75\linewidth]{Imagenes/Alimentacion_squema.png}
+    \caption{Esquema de la etapa del regulador LDO de 3.3V y filtrado de alimentación.}
     \label{fig:alimentacion_esquema}
 \end{figure}
 
+Las decisiones de diseño tomadas para la red de alimentación son las siguientes:
+\begin{enumerate}
+    \item \textbf{Regulador LDO de alta eficiencia:} Hemos seleccionado el regulador de bajo descarte (LDO) \textbf{LD39050PU33R} de STMicroelectronics en encapsulado DFN-6, capaz de suministrar hasta $500\text{ mA}$ con una excelente relación de rechazo al rizado (PSRR). Este regulador incorpora una patilla de \textit{Power Good} (PG) para verificar la correcta estabilidad de la tensión y un pin de habilitación (\texttt{EN}) para control lógico. Su salida está estabilizada mediante una red de condensadores de $1\,\mu\text{F}$ y $100\text{ nF}$.
+    \item \textbf{Desacoplo local del microcontrolador:} Para minimizar la inductancia del bucle de retorno y atenuar el ruido de conmutación de alta frecuencia, hemos colocado un condensador de desacoplo cerámico de $100\text{ nF}$ (encapsulado 0402) inmediatamente adyacente a cada uno de los 12 pines de alimentación digital \texttt{VDD} del microcontrolador.
+    \item \textbf{Condensadores de almacenamiento masivo (Bulk):} Para responder ante transitorios de corriente rápidos del núcleo a $216\text{ MHz}$, hemos distribuido estratégicamente condensadores bulk en los extremos de la placa: un condensador de $4.7\,\mu\text{F}$ en las proximidades del pin 95 y otro de $10\,\mu\text{F}$ (X5R, 0805) junto al pin 72.
+    \item \textbf{Regulación interna del núcleo (VCAP):} El regulador interno de $1.2\text{ V}$ para el núcleo digital del microcontrolador requiere estabilidad externa obligatoria. Para ello, hemos conectado dos condensadores cerámicos de bajo ESR de $2.2\,\mu\text{F}$ desde los pines dedicados \texttt{VCAP\_1} y \texttt{VCAP\_2} directamente a masa.
+    \item \textbf{Aislamiento del dominio analógico ($V_{DDA}$ / $V_{REF+}$):} Para evitar el acoplamiento de ruido digital de alta frecuencia en las medidas del ADC, hemos aislado la alimentación analógica mediante una perla de ferrita de muy baja resistencia en continua (\textbf{Murata BLM18PG121SN1D}), acompañada de un desacoplo local de $1\,\mu\text{F}$ y $100\text{ nF}$. La baja DCR ($< 50\text{ m}\Omega$) garantiza una caída de tensión insignificante ($< 0.15\text{ mV}$), preservando la precisión de las lecturas analógicas.
+\end{enumerate}
+
 \subsubsection{Pines de alimentación del microcontrolador}
-\begin{table}[h]
+
+La distribución física de las patillas de alimentación y masa del microcontrolador STM32F746ZGT6 se describe en la siguiente tabla:
+
+\begin{table}[H]
 \centering
-\footnotesize % Reduce el tamaño de la letra para ganar espacio
-\begin{tabular}{|l|l|p{6cm}|} % p{6cm} limita el ancho de la última columna y hace salto de línea
+\small
+\begin{tabular}{|l|c|p{7.5cm}|}
 \hline
-\textbf{TIPO} & \textbf{PIN} & \textbf{NÚMERO(S) DE PIN FÍSICO} \\ \hline
-Digital & VDD & 16, 30, 39, 52, 62, 72, 84, 95, 108, 121, 131, 144 \\ \hline
-Tierra & VSS & 15, 31, 38, 51, 61, 71, 83, 94, 107, 120, 130, 143 \\ \hline
-Analógica & VDDA & 33 \\ \hline
-Tierra An. & VSSA & 32 \\ \hline
-Ref. An. & VREF+ / - & 35 / 34 \\ \hline
-Batería & VBAT & 6 \\ \hline
-Regulador & VCAP\_1 / 2 & 106 / 49 \\ \hline
+\textbf{Dominio de Potencia} & \textbf{Símbolo Pin} & \textbf{Pines Físicos (LQFP144)} \\ \hline
+Alimentación Digital & VDD & 16, 30, 39, 52, 62, 72, 84, 95, 108, 121, 131, 144 \\ \hline
+Masa Común & VSS & 15, 31, 38, 51, 61, 71, 83, 94, 107, 120, 130, 143 \\ \hline
+Alimentación Analógica & VDDA & 33 \\ \hline
+Masa Analógica & VSSA & 32 \\ \hline
+Tensión de Referencia Analógica & VREF+ / VREF- & 35 / 34 \\ \hline
+Alimentación de Batería & VBAT & 6 \\ \hline
+Condensadores del Regulador Núcleo & VCAP\_1 / VCAP\_2 & 71 / 106 \\ \hline
 \end{tabular}
+\caption{Pines físicos de alimentación y referencia en encapsulado LQFP144.}
+\label{tab:alimentacion_pines}
 \end{table}
 
 \subsection{Ethernet}
