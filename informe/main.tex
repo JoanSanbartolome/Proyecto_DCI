@@ -275,20 +275,53 @@ El diseño físico y eléctrico de esta interfaz se fundamenta en las siguientes
     \item \textbf{Sensado de VBUS:} La línea VBUS se conecta al pin de entrada analógica/digital \texttt{PA9} del microcontrolador a través de una resistencia en serie de $10\text{ k}\Omega$. Aprovechando que el pin \texttt{PA9} es tolerante a $5\text{ V}$, esta resistencia actúa como un limitador de corriente para salvaguardar la entrada ante picos de tensión o transitorios en la línea de alimentación USB, permitiendo al firmware detectar la presencia del host y gestionar el stack de comunicaciones de forma dinámica.
 \end{enumerate}
 
+\subsubsection{Cálculo de Impedancia del Par Diferencial USB}
+
+Para asegurar la integridad de la señal en el bus de datos USB, hemos realizado el cálculo geométrico del par diferencial utilizando el motor de cálculo \textit{SIMBEOR} integrado en el gestor de pila de capas (\textit{Layer Stack Manager}) de Altium Designer. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Imagenes/diffPair_USB.png}
+    \caption{Cálculo y simulación de la impedancia diferencial para el bus USB en Altium Designer.}
+    \label{fig:diffpair_usb}
+\end{figure}
+
+Tomando como base la pila de capas de $1.6\text{ mm}$ de \textit{Lab Circuits}, los parámetros geométricos y eléctricos que definen el par diferencial de datos USB ($90\,\Omega$) se muestran en la Tabla~\ref{tab:usb_diffpair_params}:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Parámetro del Par Diferencial} & \textbf{Valor de Diseño} \\ \hline
+Impedancia Objetivo ($Z_{diff}$) & $90\,\Omega$ \\ \hline
+Tolerancia de Diseño & $15\%$ \\ \hline
+Ancho de Pista ($W1$ / $W2$) & $0.19\text{ mm}$ ($\approx 7.5\text{ mils}$) \\ \hline
+Separación de Pistas (Gap, $G$) & $0.15\text{ mm}$ ($\approx 6\text{ mils}$) \\ \hline
+Grosor de la Máscara de Soldadura ($C1$ / $C2$) & $0.0254\text{ mm}$ ($1\text{ mil}$) \\ \hline
+\textbf{Impedancia Diferencial Calculada ($Z_{diff}$)} & $\mathbf{94.91\,\Omega}$ \\ \hline
+Desviación de Impedancia Obtenida & $5.46\%$ (dentro de límites) \\ \hline
+Retardo de Propagación (Delay) & $5.90\text{ ns/m}$ \\ \hline
+\end{tabular}
+\caption{Parámetros de diseño calculados para el par diferencial USB de 90 Ohm.}
+\label{tab:usb_diffpair_params}
+\end{table}
+
 \subsubsection{Pines asignados para el puerto USB}
 
 El mapeo de pines entre el microcontrolador y el conector USB se detalla a continuación:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c|c|l|l|}
+\small
+\begin{tabularx}{\textwidth}{|c|c|l|X|}
 \hline
 \textbf{Señal} & \textbf{Pin MCU} & \textbf{Señal Lógica} & \textbf{Función del Periférico} \\ \hline
 USB\_VBUS & PA9 & OTG\_FS\_VBUS & Entrada de detección de presencia de tensión de VBUS \\ \hline
 USB\_ID & PA10 & OTG\_FS\_ID & Línea de detección de modo Host/Device (OTG) \\ \hline
 USB\_DM & PA11 & OTG\_FS\_DM & Línea de datos diferencial negativa (D-) \\ \hline
 USB\_DP & PA12 & OTG\_FS\_DP & Línea de datos diferencial positiva (D+) \\ \hline
-\end{tabular}
+\end{tabularx}
 \caption{Asignación de pines para la interfaz Micro-USB.}
 \label{tab:usb_pines}
 \end{table}
@@ -393,7 +426,7 @@ La PCB consta de 4 capas, 2 para señales (top y bottom) y 2 para alimentaciones
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Imagenes/Stak-up.png}
+    \includegraphics[width=1\linewidth]{Imagenes/Captura_stackup.png}
     \caption{Propuesta de Stack-Up 4 capas}
     \label{fig:stackup}
 \end{figure}
