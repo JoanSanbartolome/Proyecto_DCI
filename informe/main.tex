@@ -157,7 +157,7 @@ Entre los requisitos y capacidades integradas en este diseño se encuentran:
     \item \textbf{Comunicación serie y buses diferenciales:} Un puerto Micro-USB y dos transceptores CAN con red de terminación de línea dividida (Split Termination) integrada de forma permanente en el ruteado.
     \item \textbf{Adquisición de datos analógicos:} Dos canales de acondicionamiento de señal para entradas analógicas en rango de $0-10\text{ V}$, reduciéndolas y adaptándolas al rango de $0-3.3\text{ V}$ compatible con el ADC del microcontrolador.
     \item \textbf{Almacenamiento no volátil:} Una memoria SPI Flash de 2 MB para el almacenamiento de datos o firmware.
-    \item \textbf{Expansión:} Un conector con 16 señales GPIO de propósito general protegidas y desacopladas.
+    \item \textbf{Expansión:} Un conector que expone un total de 20 líneas de E/S configurables por software: 16 de ellas son GPIO de propósito general dedicados y 2 corresponden a interfaces de comunicación serie multiplexadas (USART6 y USART7, que suman 4 líneas físicas de señal) que pueden operar alternativamente como GPIO o como puertos USART.
 \end{itemize}
 
 El diseño físico de la tarjeta se ha planteado en una tecnología de 4 capas para garantizar la integridad de las señales de alta velocidad (RMII de Ethernet, USB y CAN) y optimizar la Red de Distribución de Alimentación (PDN). Se configuran planos internos dedicados para masa (GND) y alimentación (PWR, este último partido para abastecer los diferentes niveles de tensión). El diseño cumple estrictamente las directivas de fabricación especificadas por el fabricante \textit{Lab Circuits}, restringiendo el grosor total de la placa a un máximo de $1.6\text{ mm}$ y aplicando reglas de ruteado originales para distanciar este prototipo del formato de evaluación de ST.
@@ -229,7 +229,7 @@ El estándar CAN es un protocolo robusto de comunicación diferencial, idóneo p
 Para cada canal hemos tomado las siguientes decisiones de diseño de hardware:
 \begin{enumerate}
     \item \textbf{Transceptor de baja potencia a $3.3\text{ V}$:} Hemos integrado el chip \textbf{SN65HVD230Q}, el cual opera directamente con la tensión lógica del microcontrolador ($3.3\text{ V}$), eliminando la necesidad de emplear desplazadores de nivel de tensión que habrían encarecido y complicado el ruteado.
-    \item \textbf{Terminación de línea dividida (Split Termination):} En lugar de una única resistencia de $120\,\Omega$, hemos implementado de forma integrada una terminación dividida compuesta por dos resistencias de $60\,\Omega$ en serie, conectando el punto común de unión a masa a través de un condensador de $4.7\text{ nF}$. Esta configuración actúa como un filtro paso bajo para el ruido en modo común, disipando las interferencias de alta frecuencia a tierra sin alterar la impedancia diferencial del bus. Esta red forma parte del ruteado permanente de la tarjeta.
+    \item \textbf{Terminación de línea dividida permanente (Split Termination):} En lugar de una única resistencia de $120\,\Omega$, hemos implementado una terminación dividida integrada de forma fija y permanente por hardware, compuesta por dos resistencias de $60\,\Omega$ en serie y un condensador de $4.7\text{ nF}$ al nodo central de masa. Esta red actúa como un filtro paso bajo de modo común para disipar el ruido de alta frecuencia a tierra sin alterar la impedancia diferencial del bus. Cabe destacar que la terminación no es seleccionable ni desconectable mediante puentes (jumpers) o interruptores; es fija en el layout, lo que impone que esta tarjeta deba operar obligatoriamente en uno de los dos extremos físicos del bus CAN para evitar desadaptaciones de impedancia en la red.
     \item \textbf{Control de pendiente (RS Pin):} El pin de control de modo/pendiente (\texttt{RS}) del transceptor se conecta a masa a través de una resistencia de $0\,\Omega$ por defecto. Esto configura el transceptor en modo de alta velocidad (\textit{High-Speed Mode}). Sin embargo, la huella permite sustituir esta resistencia por un valor mayor ($10\text{ k}\Omega$ a $100\text{ k}\Omega$) para pasar a modo de control de pendiente y limitar la velocidad de transición de los flancos en caso de no cumplir con los ensayos de compatibilidad electromagnética (EMI).
     \item \textbf{Protección contra transitorios (ESD):} Hemos colocado un diodo de protección ESD bidireccional específico para CAN en encapsulado SOT-23 (\textbf{PESD2CAN}) lo más cerca posible del conector físico de salida para derivar descargas electrostáticas y transitorios directamente a la masa del sistema.
 \end{enumerate}
@@ -426,7 +426,7 @@ nRST (PHY) & Pin 25 & Línea de reinicio por hardware del microcontrolador (NRST
 Además de las interfaces de comunicación específicas, hemos integrado conectores de expansión y terminales de conexión externa para interactuar con señales analógicas y digitales del sistema:
 
 \begin{enumerate}
-    \item \textbf{Conector de Expansión General (CN41):} Se trata de un conector macho de cabezal de $18\times2$ vías (paso de $2.54\,\text{mm}$) que expone un total de 16 líneas GPIO generales del microcontrolador (pertenecientes a los puertos C, D y G) y 4 líneas correspondientes a las interfaces USART6 y USART7.
+    \item \textbf{Conector de Expansión General (CN41):} Se trata de un conector macho de cabezal de $18\times2$ vías (paso de $2.54\,\text{mm}$) que expone un total de 20 líneas de E/S configurables por software. Analizando detalladamente el esquemático, se observa que este puerto proporciona 16 líneas de propósito general (GPIO) dedicadas (puertos C, D y G) y 2 interfaces de comunicación serie multiplexadas (USART6 y USART7, que ocupan un total de 4 líneas físicas de señal: TX/RX de cada una). Estas 4 líneas se pueden utilizar alternativamente como puertos serie o como líneas GPIO de entrada/salida convencionales según la configuración del firmware.
     \item \textbf{Conector de Depuración SWD (CN42):} Un cabezal de $6\times1$ vías utilizado para la programación y depuración del STM32F746ZG, exponiendo las líneas de depuración esenciales (SWCLK, SWDIO, SWO y el pin de reinicio NRST).
     \item \textbf{Terminales de Entrada Analógica (J41):} Un bloque de bornes de tornillo Weidmüller, modelo \textbf{1845040000} (paso de $3.50\,\text{mm}$ y entrada a $90^\circ$), que proporciona una conexión segura para las dos entradas analógicas acondicionadas de $0-10\,\text{V}$.
     \item \textbf{Conectores de Bus CAN (J42 y J43):} Conectores macho de 2 pines JST tipo \textbf{B2B-EH-A(LF)(SN)} para las conexiones físicas de los buses de comunicación CAN1 y CAN2.
@@ -550,26 +550,26 @@ El espesor dieléctrico entre las capas externas y los planos internos adyacente
 
 El detalle físico del stack-up diseñado en el Gestor de Capas (Layer Stack Manager) de Altium Designer se presenta en la Tabla~\ref{tab:stackup_capas}:
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabularx}{\textwidth}{|c|l|X|c|c|c|}
 \hline
-\textbf{\#} & \textbf{Nombre de Capa} & \textbf{Tipo de Material} & \textbf{Espesor} & \textbf{Permitividad ($D_k$)} & \textbf{Grosor Cobre} \\ \hline
+\textbf{\#} & \textbf{Capa} & \textbf{Material / Función} & \textbf{Espesor} & \textbf{$D_k$} & \textbf{Grosor Cobre} \\ \hline
 -- & Top Overlay & Leyenda (Silkscreen) & -- & -- & -- \\ \hline
--- & Top Solder & Máscara de soldadura (SM-001) & $0.0254\,\text{mm}$ & $4.0$ & -- \\ \hline
--- & Acabado Superficial & Oro químico (ENIG) & $0.0040\,\text{mm}$ & -- & -- \\ \hline
-1 & Top Layer & Capa de señal externa (Cobre) & $0.0175\,\text{mm}$ & -- & $1/2\,\text{oz}$ ($17.5\,\mu\text{m}$) \\ \hline
--- & Dielectric 1 & Dieléctrico / Prepreg (PP-004) & $0.06604\,\text{mm}$ & $3.8$ & -- \\ \hline
--- & Dielectric 2 & Dieléctrico / Prepreg (PP-006) & $0.07112\,\text{mm}$ & $4.1$ & -- \\ \hline
-2 & Int1 (GND) & Plano de masa interno (Cobre) & $0.0350\,\text{mm}$ & -- & $1\,\text{oz}$ ($35\,\mu\text{m}$) \\ \hline
--- & Dielectric 3 & Núcleo dieléctrico (Core-039) & $1.1000\,\text{mm}$ & $4.8$ & -- \\ \hline
-3 & Int2 (PWR) & Plano de potencia interno (Cobre) & $0.0350\,\text{mm}$ & -- & $1\,\text{oz}$ ($35\,\mu\text{m}$) \\ \hline
--- & Dielectric 4 & Dieléctrico / Prepreg (PP-006) & $0.07112\,\text{mm}$ & $4.1$ & -- \\ \hline
--- & Dielectric 5 & Dieléctrico / Prepreg (PP-004) & $0.06604\,\text{mm}$ & $3.8$ & -- \\ \hline
-4 & Bottom Layer & Capa de señal externa (Cobre) & $0.0175\,\text{mm}$ & -- & $1/2\,\text{oz}$ ($17.5\,\mu\text{m}$) \\ \hline
--- & Acabado Superficial & Oro químico (ENIG) & $0.0040\,\text{mm}$ & -- & -- \\ \hline
--- & Bottom Solder & Máscara de soldadura (SM-001) & $0.0254\,\text{mm}$ & $4.0$ & -- \\ \hline
+-- & Top Solder & Máscara de soldadura (SM-001) & $25.4\,\mu\text{m}$ & $4.0$ & -- \\ \hline
+-- & Acabado Sup. & Oro químico (ENIG) & $4.0\,\mu\text{m}$ & -- & -- \\ \hline
+1 & Top Layer & Señal externa (Cobre) & $17.5\,\mu\text{m}$ & -- & $17.5\,\mu\text{m}$ ($1/2\,\text{oz}$) \\ \hline
+-- & Dielectric 1 & Prepreg FR4 (PP-004) & $66.0\,\mu\text{m}$ & $3.8$ & -- \\ \hline
+-- & Dielectric 2 & Prepreg FR4 (PP-006) & $71.1\,\mu\text{m}$ & $4.1$ & -- \\ \hline
+2 & Int1 (GND) & Plano de masa (Cobre) & $35.0\,\mu\text{m}$ & -- & $35.0\,\mu\text{m}$ ($1\,\text{oz}$) \\ \hline
+-- & Dielectric 3 & Núcleo (Core-039) & $1.10\,\text{mm}$ & $4.8$ & -- \\ \hline
+3 & Int2 (PWR) & Plano de alimentación (Cobre) & $35.0\,\mu\text{m}$ & -- & $35.0\,\mu\text{m}$ ($1\,\text{oz}$) \\ \hline
+-- & Dielectric 4 & Prepreg FR4 (PP-006) & $71.1\,\mu\text{m}$ & $4.1$ & -- \\ \hline
+-- & Dielectric 5 & Prepreg FR4 (PP-004) & $66.0\,\mu\text{m}$ & $3.8$ & -- \\ \hline
+4 & Bottom Layer & Señal externa (Cobre) & $17.5\,\mu\text{m}$ & -- & $17.5\,\mu\text{m}$ ($1/2\,\text{oz}$) \\ \hline
+-- & Acabado Sup. & Oro químico (ENIG) & $4.0\,\mu\text{m}$ & -- & -- \\ \hline
+-- & Bottom Solder & Máscara de soldadura (SM-001) & $25.4\,\mu\text{m}$ & $4.0$ & -- \\ \hline
 -- & Bottom Overlay & Leyenda (Silkscreen) & -- & -- & -- \\ \hline
 \end{tabularx}
 \caption{Detalle de las capas físicas, espesores dieléctricos y grosor de cobre del stack-up diseñado.}
@@ -606,6 +606,34 @@ La Tabla~\ref{tab:impedancias} resume la comparación entre las impedancias idea
 \label{tab:impedancias}
 \end{table}
 
+\subsection{Modelado y Vista Tridimensional (3D) de la PCB}
+
+Para complementar la validación espacial y el análisis de distribución física de los componentes, hemos generado el modelo tridimensional (3D) de la PCB en Altium Designer. Esta representación permite realizar una inspección visual interactiva y verificar la compatibilidad de los encapsulados físicos, la orientación de los conectores y la altura relativa de los componentes para asegurar que no existan interferencias mecánicas en el montaje final.
+
+En la Figura~\ref{fig:render_3d} se muestran los renders tridimensionales obtenidos para ambas caras de la tarjeta:
+\begin{itemize}
+    \item \textbf{Vista de la cara superior (Top Side):} Permite apreciar la distribución del microcontrolador en formato LQFP144 en la parte central, flanqueado por los bloques Ethernet en la esquina superior derecha, el conector Weidmüller en la parte superior central y la etapa de alimentación y puerto USB en la esquina inferior izquierda.
+    \item \textbf{Vista de la cara inferior (Bottom Side):} Muestra el ruteado secundario y el plano de masa de la placa, con componentes pasivos adicionales dispuestos para minimizar las distancias de desacoplo.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Imagenes/STM32_3D_page1.png}
+        \caption{Vista tridimensional de la cara superior (Top Layer).}
+        \label{fig:3d_top}
+    \end{subfigure}
+    \vspace{0.3cm}
+    \begin{subfigure}{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Imagenes/STM32_3D_page2.png}
+        \caption{Vista tridimensional de la cara inferior (Bottom Layer).}
+        \label{fig:3d_bottom}
+    \end{subfigure}
+    \caption{Modelado en tres dimensiones (3D) de la placa final diseñada en Altium Designer.}
+    \label{fig:render_3d}
+\end{figure}
 
 \section{Análisis de Integridad de Señal (Reflexiones)}
 
