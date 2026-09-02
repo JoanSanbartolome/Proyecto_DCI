@@ -1,49 +1,65 @@
-# --- Archivos de Salida y Fabricación ---
-# Ignoramos la carpeta por defecto donde se generan los PDFs, Gerbers, BOMs, etc.
-Project\ Outputs*\
-Out/
-Generated/
+# ==========================================
+# 1. Archivos Privados, IA y Metadatos de Entorno
+# ==========================================
+raw/
+GEMINI.md
+.antigravitycli/
+.obsidian/
 
-# --- Archivos Temporales y de Trabajo de Altium ---
-# Archivos de bloqueo (evitan que dos personas editen a la vez, no deben ir a Git)
+# ==========================================
+# 2. Altium Designer / EDA - Temporales y Caches
+# ==========================================
+# Archivos de bloqueo y logs
 *.Lck
 *.Err
-
-# Historial local de Altium (Backups automáticos)
-# ¡IMPORTANTE! Git ya es tu historial, no necesitas los archivos .Zip de Altium
-History/
-*.Zip
-
-# Archivos de compilación y datos de diseño temporales
-__Preview/
-*.Annotation
-*.PcbDoc.htm
-*.Constraint
-*.Resources
-*.SchDoc.htm
-
-# Logs de validación y reportes
 *.log
 *.rep
 *.DXPLog
 *.StatusReports.txt
 
-# --- Archivos de Simulación ---
-# Si usas SPICE o simulaciones, estos archivos suelen ser pesados y regenerables
+# Historial local y backups automáticos
+History/
+*.Zip
+*.Bak
+
+# Archivos de previsualización y compilación temporal
+__Preview/
+*.Annotation
+*.PcbDoc.htm
+*.SchDoc.htm
+*.Constraint
+*.Resources
+
+# Simulaciones pesadas
 Simulation/
 *.sdf
 *.nsx
 
-# --- Configuraciones de Usuario locales ---
-# Estos archivos guardan cómo TENÍAS TÚ abierta la interfaz (zoom, paneles, etc.)
-# Si los subes, molestarás a tus colaboradores cambiando su configuración visual.
+# Configuraciones de interfaz local de usuario
 *.DsnWrk.Annotation
 *.PcbDoc.Annotation
 
-# --- Repositorio / Documentación raw ---
-# Se mantiene localmente pero no se sube a GitHub debido a su peso.
-raw/
+# ==========================================
+# 3. LaTeX - Archivos Auxiliares y Compilación
+# ==========================================
+*.aux
+*.toc
+*.out
+*.log
+*.bcf*
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+*.SAVE-ERROR
 
-# --- Obsidian ---
-# Configuraciones locales de la interfaz de Obsidian
-.obsidian/
+# ==========================================
+# 4. Sistema Operativo y Editores
+# ==========================================
+.DS_Store
+Thumbs.db
+*.tmp
+.vscode/
+.idea/

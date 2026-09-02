@@ -51,6 +51,7 @@ The project supports optional line termination:
 - **Value:** $10\text{ k}\Omega$ ($\sim 15\text{ V/µs}$) to $100\text{ k}\Omega$ ($\sim 2\text{ V/µs}$). A $33\text{ k}\Omega$ resistor is standard for $500\text{ kbps}$ operation.
 
 ## 🛡 ESD Protection
+See [CAN Bus Protection](../protection/can-protection.md) for full ESD design guidelines and TVS selection.
 Uses SOT-23 TVS diodes:
 - **Pin 1:** CANH
 - **Pin 2:** CANL
@@ -82,3 +83,7 @@ Use a **Blanket** or **Parameter Set** directive to apply specific rules to the 
 - **Vias:** Use at least two GND vias for the transceiver's GND pin (Pin 2) and the TVS diode's GND pin to minimize parasitic inductance.
 
 [Source: sn65hvd230q-q1.pdf, STM32_Esqumaticos.pdf, Design Best Practices]
+
+## See Also
+
+- [CAN Bus Protection](../protection/can-protection.md) — Detailed ESD and overvoltage protection routing and placement.

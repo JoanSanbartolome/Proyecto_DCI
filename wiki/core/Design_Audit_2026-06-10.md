@@ -403,29 +403,29 @@ The following items were identified in the [Design Review 2026-05-18](Design_Rev
 
 ## 13. Complete Issue Tracker
 
-| ID | Subsystem | Severity | Description | Action |
-|:---|:----------|:---------|:------------|:-------|
-| CRI-ANA-01 | Analog Power | 🟢 | L41 = 100µH inductor instead of ferrite bead on VDDA | **RESOLVED:** Replaced L41 with Murata BLM18PG121SN1D ferrite bead and added 1µF cap. |
-| CRI-USB-01 | USB | 🟢 | ESDA6V1BC6 on USB D+/D- (20 pF) | **RESOLVED:** Replaced D45 with USBLC6-4SC6 (3.5 pF). |
-| CRI-CAN-01 | CAN Bus | 🟢 | C18 = 4.7 pF common-mode filter | **RESOLVED:** Changed C18 to 4.7 nF X7R. |
-| CRI-ADC-01 | Analog Input | 🔴 | Divider outputs 6.87V to 3.3V Op-Amp | Change to R18=22kΩ, R19=10kΩ. |
-| CRI-ADC-02 | Analog Input | 🔴 | U5B inputs floating (oscillation) | Wire U5B as unity-gain buffer to AGND. |
-| MAJ-PDN-01 | Power | 🟢 | LDO output capacitance below datasheet minimum | **RESOLVED:** Verified C14 is 1µF, C16 remains 100nF (False Positive). |
-| MAJ-ETH-01 | Ethernet | 🟠 | RMII series termination = 33Ω (should be 22Ω) | Change R7, R8, R17, R40 to 22Ω. |
-| MAJ-ETH-02 | Ethernet | 🟠 | PHYAD0 set to broadcast address 0x00 | Acceptable for single-PHY. Document. |
-| MAJ-CAN-02 | CAN Bus | 🟢 | RS pin hard-grounded, no slope control option | **RESOLVED:** Replaced GND connection with a resistor footprint. |
-| MIN-PDN-02 | Power | 🟢 | Single bulk capacitor for MCU VDD cluster | **RESOLVED:** Added second 10µF bulk capacitor near Pin 72. |
-| MIN-ANA-02 | Analog Power | 🟢 | VBAT unnecessary resistors | **RESOLVED:** Verified C50 is 1µF, no resistors connected (False Positive). |
-| MIN-CLK-01 | Clocks | 🟡 | Missing 1MΩ feedback resistor on HSE | Add DNP footprint across PH0-PH1. |
-| MIN-ETH-03 | Ethernet | 🟡 | Bob-Smith termination center-tap grounding | Verify connects to EARTH, not digital GND. |
-| MIN-USB-02 | USB | 🟡 | No external D+ pull-up fallback | Add 1.5kΩ DNP footprint D+ to 3.3V. |
-| MIN-CAN-03 | CAN Bus | 🟡 | No common-mode choke on CAN bus | Add CMC footprint (DNP by default). |
-| MIN-ADC-03 | Analog Input | 🟡 | Wiki/schematic pin assignment discrepancy for ADC | Reconcile documentation. |
-| MIN-SPI-01 | SPI Flash | 🟡 | No series resistor on MOSI line | Add 33Ω on PB15-SI. |
-| MIN-SPI-02 | SPI Flash | 🟡 | PB13 (RMII) adjacent to PB14 (MISO) crosstalk risk | Layer separation + GND guard in layout. |
-| MIN-MCU-01 | MCU Config | 🟡 | PB14 dual-assigned (LED + SPI MISO) in wiki | Verify and reconcile. |
-| MIN-DEC-01 | Decoupling | 🟡 | 100nF capacitor dielectric not specified | Specify X7R in BOM. |
-| MIN-GPIO-01 | GPIO/ESD | 🟡 | Layout note as free text instead of DRC rule | Create Altium proximity constraint. |
+| ID          | Subsystem    | Severity | Description                                          | Action                                                                                |
+| :---------- | :----------- | :------- | :--------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| CRI-ANA-01  | Analog Power | 🟢       | L41 = 100µH inductor instead of ferrite bead on VDDA | **RESOLVED:** Replaced L41 with Murata BLM18PG121SN1D ferrite bead and added 1µF cap. |
+| CRI-USB-01  | USB          | 🟢       | ESDA6V1BC6 on USB D+/D- (20 pF)                      | **RESOLVED:** Replaced D45 with USBLC6-4SC6 (3.5 pF).                                 |
+| CRI-CAN-01  | CAN Bus      | 🟢       | C18 = 4.7 pF common-mode filter                      | **RESOLVED:** Changed C18 to 4.7 nF X7R.                                              |
+| CRI-ADC-01  | Analog Input | 🔴       | Divider outputs 6.87V to 3.3V Op-Amp                 | Change to R18=22kΩ, R19=10kΩ.                                                         |
+| CRI-ADC-02  | Analog Input | 🔴       | U5B inputs floating (oscillation)                    | Wire U5B as unity-gain buffer to AGND.                                                |
+| MAJ-PDN-01  | Power        | 🟢       | LDO output capacitance below datasheet minimum       | **RESOLVED:** Verified C14 is 1µF, C16 remains 100nF (False Positive).                |
+| MAJ-ETH-01  | Ethernet     | 🟠       | RMII series termination = 33Ω (should be 22Ω)        | Change R7, R8, R17, R40 to 22Ω.                                                       |
+| MAJ-ETH-02  | Ethernet     | 🟠       | PHYAD0 set to broadcast address 0x00                 | Acceptable for single-PHY. Document.                                                  |
+| MAJ-CAN-02  | CAN Bus      | 🟢       | RS pin hard-grounded, no slope control option        | **RESOLVED:** Replaced GND connection with a resistor footprint.                      |
+| MIN-PDN-02  | Power        | 🟢       | Single bulk capacitor for MCU VDD cluster            | **RESOLVED:** Added second 10µF bulk capacitor near Pin 72.                           |
+| MIN-ANA-02  | Analog Power | 🟢       | VBAT unnecessary resistors                           | **RESOLVED:** Verified C50 is 1µF, no resistors connected (False Positive).           |
+| MIN-CLK-01  | Clocks       | 🟡       | Missing 1MΩ feedback resistor on HSE                 | Add DNP footprint across PH0-PH1.                                                     |
+| MIN-ETH-03  | Ethernet     | 🟡       | Bob-Smith termination center-tap grounding           | Verify connects to EARTH, not digital GND.                                            |
+| MIN-USB-02  | USB          | 🟡       | No external D+ pull-up fallback                      | Add 1.5kΩ DNP footprint D+ to 3.3V.                                                   |
+| MIN-CAN-03  | CAN Bus      | 🟡       | No common-mode choke on CAN bus                      | Add CMC footprint (DNP by default).                                                   |
+| MIN-ADC-03  | Analog Input | 🟡       | Wiki/schematic pin assignment discrepancy for ADC    | Reconcile documentation.                                                              |
+| MIN-SPI-01  | SPI Flash    | 🟡       | No series resistor on MOSI line                      | Add 33Ω on PB15-SI.                                                                   |
+| MIN-SPI-02  | SPI Flash    | 🟡       | PB13 (RMII) adjacent to PB14 (MISO) crosstalk risk   | Layer separation + GND guard in layout.                                               |
+| MIN-MCU-01  | MCU Config   | 🟡       | PB14 dual-assigned (LED + SPI MISO) in wiki          | Verify and reconcile.                                                                 |
+| MIN-DEC-01  | Decoupling   | 🟡       | 100nF capacitor dielectric not specified             | Specify X7R in BOM.                                                                   |
+| MIN-GPIO-01 | GPIO/ESD     | 🟡       | Layout note as free text instead of DRC rule         | Create Altium proximity constraint.                                                   |
 
 ---
 

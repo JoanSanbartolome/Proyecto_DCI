@@ -146,3 +146,32 @@
 ## [2026-06-10] ingest | PCB Design Course Theory Index
 - **Base de datos:** Creado `wiki/theory/PCB_Design_Course_Index.md` clasificando los 25 PDFs de teoría y DFM de la asignatura en 5 bloques temáticos (flujo, integridad, stack-ups, PDN/EMC y fabricación).
 - **Indexación:** Actualizado `wiki/index.md` con la sección `📚 Theory & Course Materials`.
+
+## [2026-06-13] ingest | Via Stitching & GND Guard Rings
+- Created: `raw/articles/2026-06-13-via-stitching-plan-stm32f746zg.md`
+- Created: `raw/articles/2026-06-13-via-guard-ring-crystal-hse-lse.md`
+- Created: `wiki/core/Via_Stitching_GND_Guard_Rings.md`
+- Updated: `wiki/index.md`
+
+## [2026-06-13] ingest | SPI Signal Integrity (Altium, Z. Peterson, 2026-02-17)
+- Created: `raw/articles/2026-06-13-altium-spi-trace-impedance-signal-integrity.md`
+- Created: `wiki/theory/SPI_Signal_Integrity_Theory.md`
+- Updated: `wiki/peripherals/SPI_Protocol.md` (expansión masiva: física de terminaciones, verificación setup/hold, tabla completa de layout)
+- Updated: `wiki/peripherals/ethernet-interface.md` (nota crosstalk RMII_TXD1/SPI_MISO + See Also)
+- Updated: `wiki/theory/PCB_Design_Course_Index.md` (See Also con enlace a SPI SI Theory)
+- Updated: `wiki/index.md`
+
+## [2026-06-13] ingest | Manufacturing Constraints — Lab Circuits DFM
+- Source: `raw/manufacturing/Lab Circuits - Tablas de parámetros.pdf` (Lab Circuits S.A., 2023-04-28)
+- Created: `raw/manufacturing/2026-06-13-lab-circuits-parametros-fabricacion.md`
+- Created: `wiki/core/Manufacturing_Constraints.md`
+  - Identifies fabrication class: **Clase 5** (AR = 5.33 > Clase 4 limit of 5)
+  - Identifies 3 DFM conflicts: AR, corona externas, corona internas
+  - Corrects via pad: 0.6 mm → **0.68 mm** (corona = 0.19 mm, compatible with Clase 5)
+  - Full reference tables: Classes 3–7, all parameters
+- Updated: `wiki/core/Via_Stitching_GND_Guard_Rings.md` (pad corrected 0.68 mm, Clase 5, DFM warning)
+- Updated: `wiki/core/Hardware_Architecture.md` (fabrication class + via stitching DFM correction in stackup section)
+- Updated: `wiki/index.md` (new entry, updated dates)
+
+
+

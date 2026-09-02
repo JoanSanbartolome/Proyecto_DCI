@@ -75,3 +75,8 @@ Populated with available GPIOs on a 100 mil pitch header:
 - **Port D:** PD2, PD3.
 
 [Source: stm32f746zg.pdf, dm00244518.pdf, Project Proposal]
+
+## See Also
+
+- [GPIO Pin Configuration](gpio-pin-configuration.md) — [Archived] Comprehensive classification of GPIO pins by voltage tolerance and functions.
+

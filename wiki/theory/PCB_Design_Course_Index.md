@@ -87,3 +87,4 @@ PCB fabrication processes, design-for-manufacturing limitations, and schematic r
 *   [Hardware Architecture](../core/Hardware_Architecture.md)
 *   [PDN Decoupling Theory](../core/PDN_Decoupling_Theory.md)
 *   [Design Technologies & Methods](../core/Technologies_Methods.md)
+*   [SPI Signal Integrity Theory](SPI_Signal_Integrity_Theory.md) — Artículo compilado aplicando Bloques 2 y 3 al bus SPI2 del diseño
