@@ -139,7 +139,7 @@ Para t_r = 3 ns: $f_{-3dB} \approx 117 \text{ MHz}$.
 El crosstalk capacitivo entre líneas SPI adyacentes (especialmente SCK hacia MOSI/MISO) aumenta linealmente con la frecuencia. Las emisiones de modo común también aumentan. Por ello:
 
 - **Frenar el flanco** (con $R_s$) reduce directamente el espectro de alta frecuencia → menos crosstalk y menos EMI.
-- **Separación de trazas**: aplicar la regla 3W (separación ≥ 3× ancho de traza) entre SCK y MISO para este diseño (crosstalk documentado en [SPI Protocol](SPI_Protocol.md) y [Design Audit](../core/Design_Audit_2026-06-10.md) MIN-SPI-02).
+- **Separación de trazas**: aplicar la regla 3W (separación ≥ 3× ancho de traza) entre SCK y MISO para este diseño (crosstalk documentado en [SPI Protocol](../peripherals/SPI_Protocol.md) y [Design Audit](../core/Design_Audit_2026-06-10.md) MIN-SPI-02).
 
 ---
 
@@ -180,7 +180,7 @@ El crosstalk capacitivo entre líneas SPI adyacentes (especialmente SCK hacia MO
 
 ## See Also
 
-- [SPI Protocol](SPI_Protocol.md) — Implementación práctica: pinout, frecuencias, hardware SPI2
+- [SPI Protocol](../peripherals/SPI_Protocol.md) — Implementación práctica: pinout, frecuencias, hardware SPI2
 - [Design Audit 2026-06-10](../core/Design_Audit_2026-06-10.md) — MIN-SPI-01, MIN-SPI-02
 - [Technologies & Methods](../core/Technologies_Methods.md) — Método de rutado diferencial y regla 3W
 - [Via Stitching & GND Guard Rings](../core/Via_Stitching_GND_Guard_Rings.md) — PDN y retorno de corriente

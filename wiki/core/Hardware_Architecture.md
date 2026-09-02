@@ -40,3 +40,8 @@ Detailed guidelines for complex interfaces are maintained in their respective ar
 - **Mounting:** 4x 3.5mm holes connected to **EARTH**.
 
 [Source: stm32f746zg.pdf, dm00244518.pdf, Project Proposal, Lab Circuits - Tablas de parámetros.pdf]
+
+## See Also
+
+- [Reference Designs](Reference_Designs.md) — Key design patterns and insights from the Nucleo-F746ZG reference board.
+
