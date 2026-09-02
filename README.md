@@ -1,5 +1,10 @@
 # Proyecto de Diseño de PCB - STM32F746ZG
 
+![MCU](https://img.shields.io/badge/MCU-STM32F746ZG-003545?style=for-the-badge&logo=stmicroelectronics&logoColor=white)
+![EDA](https://img.shields.io/badge/EDA-Altium%20Designer-A200FF?style=for-the-badge&logo=altiumdesigner&logoColor=white)
+![Informe](https://img.shields.io/badge/Informe-LaTeX-008080?style=for-the-badge&logo=latex&logoColor=white)
+![Wiki](https://img.shields.io/badge/Wiki-Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
+
 Este repositorio contiene el proyecto completo de diseño de circuito impreso (PCB) para una placa basada en el microcontrolador **STM32F746ZG**, abarcando esquemáticos, trazado de PCB (layout), archivos de fabricación, informe de diseño y una wiki técnica detallada.
 
 ---
